@@ -11,16 +11,20 @@ import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 
 @ExclusiveOptionals
-public class IntentValueParam {
+public class Intent {
 
 	@Parameter
-	private String intentName;  
+	private String name;  
+	
+	@Parameter
+	private String confirmationRequired;  
+	
 
 	@Parameter
 	@Optional
 	@NullSafe
 	@Expression(ExpressionSupport.NOT_SUPPORTED)
-	private List<SlotParams> slots = new LinkedList<>();
+	private List<Slot> slots = new LinkedList<>();
 
 	@Parameter
 	@Optional
@@ -32,29 +36,31 @@ public class IntentValueParam {
 	@Optional
 	@NullSafe
 	@Expression(ExpressionSupport.NOT_SUPPORTED)
-	private List<PromptParams> promts = new LinkedList<>();
+	private List<Prompt> promts = new LinkedList<>();
+	
+	
 
-	public List<PromptParams> getPromts() {
-		return promts;
+	public String getConfirmationRequired() {
+		return confirmationRequired;
 	}
 
-	public void setPromts(List<PromptParams> promts) {
-		this.promts = promts;
+	public void setConfirmationRequired(String confirmationRequired) {
+		this.confirmationRequired = confirmationRequired;
 	}
 
-	public String getIntentName() {
-		return intentName;
+	public String getName() {
+		return name;
 	}
 
-	public void setIntentName(String intentName) {
-		this.intentName = intentName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public List<SlotParams> getSlots() {
+	public List<Slot> getSlots() {
 		return slots;
 	}
 
-	public void setSlots(List<SlotParams> slots) {
+	public void setSlots(List<Slot> slots) {
 		this.slots = slots;
 	}
 
@@ -66,10 +72,16 @@ public class IntentValueParam {
 		this.samples = samples;
 	}
 
-	@Override
-	public String toString() {
-		return "IntentValueParam [intentName=" + intentName + ", slots=" + slots + ", samples=" + samples + ", promts="
-				+ promts + "]";
+	public List<Prompt> getPromts() {
+		return promts;
 	}
+
+	public void setPromts(List<Prompt> promts) {
+		this.promts = promts;
+	}
+
+	
+
+	
 
 }

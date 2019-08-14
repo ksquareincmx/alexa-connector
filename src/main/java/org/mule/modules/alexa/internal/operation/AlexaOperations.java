@@ -11,7 +11,8 @@ import java.util.Map;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.mule.modules.alexa.api.domain.AlexaRequestURL;
-import org.mule.modules.alexa.api.domain.intents.IntentValueParam;
+import org.mule.modules.alexa.api.domain.intents.Intent;
+import org.mule.modules.alexa.api.domain.intents.IntentParameter;
 import org.mule.modules.alexa.internal.connection.AlexaConnection;
 import org.mule.modules.alexa.internal.util.AlexaRequestBuilder;
 import org.mule.modules.alexa.internal.util.AlexaRequestUtility;
@@ -45,7 +46,7 @@ public class AlexaOperations {
 			@Expression(SUPPORTED) String summary, @Expression(SUPPORTED) List<String> examplePhrases,
 			@Expression(SUPPORTED) List<String> keywords, @Expression(SUPPORTED) String skillName,
 			@Expression(SUPPORTED) String description, @Expression(SUPPORTED) String endpoint,
-			@Optional @NullSafe @Expression(ExpressionSupport.NOT_SUPPORTED) @ParameterDsl(allowReferences = false) List<IntentValueParam> intents) {
+			@Optional @NullSafe @Expression(ExpressionSupport.NOT_SUPPORTED) @ParameterDsl(allowReferences = false) List<Intent> intents) {
 
 		LOGGER.debug("Access token {}", alexaConnection.getAccessToken());
 		try {

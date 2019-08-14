@@ -1,4 +1,5 @@
-package org.mule.modules.alexa.api.domain.test;
+package org.mule.modules.alexa.api.domain.existing;
+
 
 public class Reqest {
 
@@ -6,7 +7,7 @@ public class Reqest {
 	private String requestId;
 	private String timestamp;
 	private String locale;
-	private Intent intent;
+	private ExistingIntent intent;
 	public String getType() {
 		return type;
 	}
@@ -31,13 +32,13 @@ public class Reqest {
 	public void setLocale(String locale) {
 		this.locale = locale;
 	}
-	public Intent getIntent() {
+	public ExistingIntent getIntent() {
 		return intent;
 	}
-	public void setIntent(Intent intent) {
+	public void setIntent(ExistingIntent intent) {
 		this.intent = intent;
 	}
-	public Reqest(String type, String requestId, String timestamp, String locale, Intent intent) {
+	public Reqest(String type, String requestId, String timestamp, String locale, ExistingIntent intent) {
 		super();
 		this.type = type;
 		this.requestId = requestId;

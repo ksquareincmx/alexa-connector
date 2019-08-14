@@ -6,28 +6,40 @@ import java.util.List;
 import org.mule.runtime.api.meta.ExpressionSupport;
 import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.dsl.xml.ParameterDsl;
-import org.mule.runtime.extension.api.annotation.param.ExclusiveOptionals;
 import org.mule.runtime.extension.api.annotation.param.NullSafe;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 
-@ExclusiveOptionals
-public class IntentParameter {
+public class Prompt {
+
+	@Parameter
+	@Optional
+	@NullSafe
+	private String id;
 
 	@Parameter
 	@Optional
 	@NullSafe
 	@Expression(ExpressionSupport.NOT_SUPPORTED)
 	@ParameterDsl(allowReferences = false)
-	private List<Intent> intents = new LinkedList<>();
+	private List<Variation> variations = new LinkedList<>();
 
-	public List<Intent> getIntents() {
-		return intents;
+	public String getId() {
+		return id;
 	}
 
-	public void setIntents(List<Intent> intents) {
-		this.intents = intents;
+	public void setId(String id) {
+		this.id = id;
 	}
 
+	public List<Variation> getVariations() {
+		return variations;
+	}
+
+	public void setVariations(List<Variation> variations) {
+		this.variations = variations;
+	}
+	
+	
 	
 }

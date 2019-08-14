@@ -1,14 +1,14 @@
-package org.mule.modules.alexa.api.domain.test;
+package org.mule.modules.alexa.api.domain.existing;
 
 import java.util.Map;
 
-public class Intent {
+public class ExistingIntent {
 	
 	private String name;
 	
 	private Map<String, SlotName> slots;
 	
-	public Intent(){};
+	public ExistingIntent(){};
 
 	public String getName() {
 		return name;
@@ -18,7 +18,7 @@ public class Intent {
 		this.name = name;
 	}
 
-	public Intent(String name) {
+	public ExistingIntent(String name) {
 		super();
 		this.name = name;
 	}

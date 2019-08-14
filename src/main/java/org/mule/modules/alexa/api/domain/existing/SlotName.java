@@ -1,4 +1,4 @@
-package org.mule.modules.alexa.api.domain.test;
+package org.mule.modules.alexa.api.domain.existing;
 
 public class SlotName {
 

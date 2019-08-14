@@ -9,23 +9,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
-import org.json.JSONArray;
-import org.json.simple.JSONObject;
 import org.mule.modules.alexa.api.domain.create.CreateSkill;
-import org.mule.modules.alexa.api.domain.intents.IntentValueParam;
-import org.mule.modules.alexa.api.domain.intents.PromptParams;
-import org.mule.modules.alexa.api.domain.intents.SlotParams;
-import org.mule.modules.alexa.api.domain.test.Application;
-import org.mule.modules.alexa.api.domain.test.Body;
-import org.mule.modules.alexa.api.domain.test.Context;
-import org.mule.modules.alexa.api.domain.test.Intent;
-import org.mule.modules.alexa.api.domain.test.Reqest;
-import org.mule.modules.alexa.api.domain.test.Request;
-import org.mule.modules.alexa.api.domain.test.Session;
-import org.mule.modules.alexa.api.domain.test.SkillRequest;
-import org.mule.modules.alexa.api.domain.test.SlotName;
-import org.mule.modules.alexa.api.domain.test.Sstem;
-import org.mule.modules.alexa.api.domain.test.User;
+import org.mule.modules.alexa.api.domain.existing.Application;
+import org.mule.modules.alexa.api.domain.existing.Body;
+import org.mule.modules.alexa.api.domain.existing.Context;
+import org.mule.modules.alexa.api.domain.existing.ExistingIntent;
+import org.mule.modules.alexa.api.domain.existing.Reqest;
+import org.mule.modules.alexa.api.domain.existing.Request;
+import org.mule.modules.alexa.api.domain.existing.Session;
+import org.mule.modules.alexa.api.domain.existing.SkillRequest;
+import org.mule.modules.alexa.api.domain.existing.SlotName;
+import org.mule.modules.alexa.api.domain.existing.Sstem;
+import org.mule.modules.alexa.api.domain.existing.User;
+import org.mule.modules.alexa.api.domain.intents.Dialog;
+import org.mule.modules.alexa.api.domain.intents.Intent;
+import org.mule.modules.alexa.api.domain.intents.InteractionModel;
+import org.mule.modules.alexa.api.domain.intents.LanguageModel;
 import org.mule.modules.alexa.api.domain.update.ApiInfo;
 import org.mule.modules.alexa.api.domain.update.ApiInfo.CustomApi;
 import org.mule.modules.alexa.api.domain.update.Events;
@@ -85,116 +84,38 @@ public class AlexaRequestBuilder {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public String updateCreatedSkill(String newskillId, List<IntentValueParam> intents) {
+	public String updateCreatedSkill(String newskillId, List<Intent> intents) throws JsonProcessingException {
 
-		String request = null;
-
-		//mapper.writeValueAsString(intents);
-		try {
-
-			if (intents != null) {
-				JSONArray intentArray = new JSONArray();
-
-				for (IntentValueParam valueParam : intents) {
-					String intentName = valueParam.getIntentName();
-
-					JSONObject jsonObject = new JSONObject();
-					JSONObject jsonObject2 = new JSONObject();
-					JSONObject jsonObject3 = new JSONObject();
-					JSONObject jsonObject4 = new JSONObject();
-					JSONObject subdialogjsonObject = new JSONObject();
-					JSONObject promtsobject1 = new JSONObject();
-					JSONArray promtarray1 = new JSONArray();
-					JSONObject cancelIntentjsonObj = new JSONObject();
-
-					jsonObject.put("samples", valueParam.getSamples());
-
-					// creating slots array object
-					List<SlotParams> slots = valueParam.getSlots();
-
-					JSONArray jsonArray = new JSONArray();
-
-					int i = 0;
-					for (SlotParams slot : slots) {
-						JSONObject slotJsonObject = new JSONObject();
-
-						String slotName = slot.getSlotName();
-						String slotType = slot.getSlotType();
-
-						slotJsonObject.put("name", slotName);
-						slotJsonObject.put("type", slotType);
-						slotJsonObject.putIfAbsent("samples", slot.getSamples());
-
-						jsonArray.put(i, slotJsonObject);
-						i = i + 1;
-					}
-
-					// creating promt array object
-					List<PromptParams> promt = valueParam.getPromts();
-					JSONArray promtjsonArray = new JSONArray();
-					int a = 0;
-					for (PromptParams Promt : promt) {
-						JSONObject promtJsonObject = new JSONObject();
-
-						String promtType = Promt.getPromtType();
-						String promtValue = Promt.getPromtValue();
-
-						promtJsonObject.put("type", promtType);
-						promtJsonObject.put("value", promtValue);
-
-						promtjsonArray.put(a, promtJsonObject);
-						a = a + 1;
-					}
-
-					// creating dialog array object
-
-					JSONArray dialogJsonArray = new JSONArray();
-					JSONObject dialogjsonObject = new JSONObject();
-
-					dialogjsonObject.put("name", intentName);
-					dialogjsonObject.put("confirmationRequired", new Boolean(false));
-					dialogjsonObject.put("prompts", new JSONObject());
-
-					dialogJsonArray.put(dialogjsonObject);
-
-					subdialogjsonObject.put("intents", dialogJsonArray);
-					// subdialogjsonObject1.put("dialog", subdialogjsonObject);
-
-					promtsobject1.put("variations", promtjsonArray);
-					promtsobject1.put("id", "123456");
-
-					promtarray1.put(promtsobject1);
-					// promtsobject2.put("prompts", promtarray1);
-
-					jsonObject.put("slots", jsonArray);
-					jsonObject.put("name", intentName);
-					cancelIntentjsonObj.put("name", "AMAZON.CancelIntent");
-					cancelIntentjsonObj.put("samples", new JSONArray());
-					intentArray.put(cancelIntentjsonObj);
-					intentArray.put(jsonObject);
-
-					jsonObject2.put("invocationName", "my space facts");
-					jsonObject2.putIfAbsent("intents", intentArray);
-					jsonObject3.put("languageModel", jsonObject2);
-
-					jsonObject4.put("interactionModel", jsonObject3);
-					jsonObject3.put("dialog", subdialogjsonObject);
-					jsonObject3.put("prompts", promtarray1);
-
-					request = jsonObject4.toJSONString();
-
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return request;
+		LOGGER.info("updateCreatedSkill  parameters: newSkillId: {} intents : {}", newskillId,intents);
+		InteractionModel interactionModel = new InteractionModel();
+		//interactionModel.se
+		
+		// Dialog
+		Dialog dialog = new Dialog();
+		dialog.setIntents(intents);
+		
+		// languageModel 
+		LanguageModel language = new LanguageModel();
+		language.setIntents(intents);
+		
+		// Prompts
+		// TODO prompts who will send user or 
+		//intent.getIntents().stream().map(i -> i.getPromts())
+		
+		// set dialog and language model 
+		interactionModel.setDialog(dialog);
+		interactionModel.setLanguageModel(language);
+		Map<String, InteractionModel> reqObj = new HashMap<>();
+		reqObj.put("interactionModel", interactionModel);
+		String updateSkillJson = mapper.writeValueAsString(reqObj);
+		LOGGER.info("updateCreatedSkill  json ", updateSkillJson);
+		return updateSkillJson;
 	}
 
 	public String getAlexaRequestJson(String applicationID, String requestType, Map<String, String> slots,
 			String intentName) throws JsonProcessingException {
 
+		LOGGER.debug("getAlexaRequestJson params applicationID:{} requestType {} slots {} intentName:{} ", applicationID,requestType,slots,intentName);
 		Application application = new Application(applicationID);
 		User user = new User("amzn1.ask.account.12345ABCDEFGH");
 
@@ -205,7 +126,7 @@ public class AlexaRequestBuilder {
 		session.setUser(user);
 		Sstem system = new Sstem(application, user);
 		Context context = new Context(system);
-		Intent intent = new Intent();
+		ExistingIntent intent = new ExistingIntent();
 
 		prepareSlotForIntent(slots, intent);
 		intent.setName(intentName);
@@ -216,11 +137,11 @@ public class AlexaRequestBuilder {
 		SkillRequest skillRequest = new SkillRequest(body);
 		Request request = new Request("Default", skillRequest);
 		String jsonStr = mapper.writeValueAsString(request);
-		LOGGER.debug("Skill reques: {}", jsonStr);
+		LOGGER.debug("getAlexaRequestJson json  {}", jsonStr);
 		return jsonStr;
 	}
 
-	private Intent prepareSlotForIntent(Map<String, String> slots, Intent intent) {
+	private ExistingIntent prepareSlotForIntent(Map<String, String> slots, ExistingIntent intent) {
 		Map<String, SlotName> slotNames = new HashMap<>();
 
 		for (Map.Entry<String, String> slot : slots.entrySet()) {
