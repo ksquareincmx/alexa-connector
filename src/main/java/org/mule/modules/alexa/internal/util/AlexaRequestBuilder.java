@@ -1,3 +1,7 @@
+/**
+ * (c) 2003-2017 MuleSoft, Inc. The software in this package is published under the terms of the Commercial Free Software license V.1 a copy of which has been included with this distribution in the LICENSE.md file.
+ */
+
 package org.mule.modules.alexa.internal.util;
 
 import java.text.DateFormat;
@@ -32,36 +36,34 @@ import org.mule.modules.alexa.api.domain.update.Locale;
 import org.mule.modules.alexa.api.domain.update.Manifest;
 import org.mule.modules.alexa.api.domain.update.PublishInfo;
 import org.mule.modules.alexa.api.domain.update.UpdateSkill;
+import org.mule.modules.alexa.internal.error.AlexaApiErrorType;
+import org.mule.modules.alexa.internal.exceptions.AlexaApiException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class AlexaRequestBuilder {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AlexaRequestBuilder.class);
 
-	 static ObjectMapper mapper = new ObjectMapper();
+	static ObjectMapper mapper = new ObjectMapper();
 
 	public AlexaRequestBuilder() {
 		mapper.setSerializationInclusion(Include.NON_NULL);
 	}
 
-	
 	public ObjectMapper getMapper() {
 		return mapper;
 	}
-	
-	
+
 	/**
 	 * TODO
 	 */
 	public String createAlexaSkillRequestBuilder(String vendorId, String summary, List<String> examplePhrases,
-			List<String> keywords, String skillName, String description, String endpoint)
-			throws JsonProcessingException {
+			List<String> keywords, String skillName, String description, String endpoint) throws AlexaApiException{
 
 		LOGGER.debug("Method parameters are: vendorId: {} , summary: {} ,keyword: {} , skillName: {} ,endpoint: {} ",
 				vendorId, summary, keywords, skillName, endpoint);
@@ -80,8 +82,15 @@ public class AlexaRequestBuilder {
 		manifest.setApis(apiInfo);
 		manifest.setPublishingInformation(publishInfo);
 		CreateSkill createSkill = new CreateSkill(vendorId, manifest);
-		String jsonStr = mapper.writeValueAsString(createSkill);
-		LOGGER.debug("Create Alexa Skill request: {}", jsonStr);
+		String jsonStr = null;
+		try {
+			jsonStr = mapper.writeValueAsString(createSkill);
+			LOGGER.debug("Create Alexa Skill request: {}", jsonStr);
+		} catch (JsonProcessingException e) {
+			// TODO: handle exception
+			LOGGER.error("Exception while serializing json in createAlexaSkillRequestBuilder {}", e);
+			throw new AlexaApiException(e.getMessage(), AlexaApiErrorType.JSON_PARSER_EXCEPTION);
+		}
 		return jsonStr;
 	}
 
@@ -91,38 +100,35 @@ public class AlexaRequestBuilder {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public String updateCreatedSkill(String newskillId, List<Intent> intents) throws JsonProcessingException {
+	public String updateCreatedSkill(String newskillId, List<Intent> intents) throws AlexaApiException{
 
-		LOGGER.info("updateCreatedSkill  parameters: newSkillId: {} intents : {}", newskillId,intents);
+		LOGGER.info("updateCreatedSkill  parameters: newSkillId: {} intents : {}", newskillId, intents);
 		InteractionModel interactionModel = new InteractionModel();
-		//interactionModel.se
-		
-		// Dialog
 		Dialog dialog = new Dialog();
 		dialog.setIntents(intents);
-		
-		// languageModel 
 		LanguageModel language = new LanguageModel();
 		language.setIntents(intents);
-		
-		// Prompts
-		// TODO prompts who will send user or 
-		//intent.getIntents().stream().map(i -> i.getPromts())
-		
-		// set dialog and language model 
+		// set dialog and language model
 		interactionModel.setDialog(dialog);
 		interactionModel.setLanguageModel(language);
 		Map<String, InteractionModel> reqObj = new HashMap<>();
 		reqObj.put("interactionModel", interactionModel);
-		String updateSkillJson = mapper.writeValueAsString(reqObj);
-		LOGGER.info("updateCreatedSkill  json ", updateSkillJson);
+		String updateSkillJson = null;
+		try {
+			updateSkillJson = mapper.writeValueAsString(reqObj);
+			LOGGER.info("updateCreatedSkill  json ", updateSkillJson);
+		} catch (JsonProcessingException e) {
+			LOGGER.error("Exception while serializing json in updateCreatedSkill {}", e);
+			throw new AlexaApiException(e.getMessage(), AlexaApiErrorType.JSON_PARSER_EXCEPTION);
+		}
 		return updateSkillJson;
 	}
 
 	public String getAlexaRequestJson(String applicationID, String requestType, Map<String, String> slots,
-			String intentName) throws JsonProcessingException {
+			String intentName) throws AlexaApiException {
 
-		LOGGER.debug("getAlexaRequestJson params applicationID:{} requestType {} slots {} intentName:{} ", applicationID,requestType,slots,intentName);
+		LOGGER.debug("getAlexaRequestJson params applicationID:{} requestType {} slots {} intentName:{} ",
+				applicationID, requestType, slots, intentName);
 		Application application = new Application(applicationID);
 		User user = new User("amzn1.ask.account.12345ABCDEFGH");
 
@@ -143,8 +149,14 @@ public class AlexaRequestBuilder {
 		Body body = new Body("1.0", session, context, reqest);
 		SkillRequest skillRequest = new SkillRequest(body);
 		Request request = new Request("Default", skillRequest);
-		String jsonStr = mapper.writeValueAsString(request);
-		LOGGER.debug("getAlexaRequestJson json  {}", jsonStr);
+		String jsonStr = null;
+		try {
+			jsonStr = mapper.writeValueAsString(request);
+			LOGGER.debug("getAlexaRequestJson json  {}", jsonStr);
+		} catch (JsonProcessingException e) {
+			LOGGER.error("Exception while serializing json in updateCreatedSkill {}", e);
+			throw new AlexaApiException(e.getMessage(), AlexaApiErrorType.JSON_PARSER_EXCEPTION);
+		}
 		return jsonStr;
 	}
 
@@ -172,14 +184,11 @@ public class AlexaRequestBuilder {
 	}
 
 	public String createUpdateRequest(String skillId, String apiEndpoint, List<String> interfaces,
-			List<String> permission, String eventEndpoint, List<String> subscriptions) throws JsonProcessingException {
+			List<String> permission, String eventEndpoint, List<String> subscriptions)  {
 
-		// create api info and set endpoint
 		ApiInfo apiInfo = createApiInfo(apiEndpoint);
-		// setting events and subscription
 		Events events = new Events(eventEndpoint);
 		events.setSubscriptions(listToListMap(subscriptions, "eventName"));
-
 		// setting api,events,permission to manifest
 		Manifest manifest = new Manifest();
 		manifest.setApis(apiInfo);
@@ -187,8 +196,15 @@ public class AlexaRequestBuilder {
 		manifest.setPermissions(listToListMap(permission, "name"));
 		UpdateSkill skill = new UpdateSkill(manifest);
 
-		// convert java to json using jackson
-		return mapper.writeValueAsString(skill);
+		String res = null;
+		try {
+			res = mapper.writeValueAsString(skill);
+			LOGGER.debug("createUpdateRequest json  {}", res);
+		} catch (JsonProcessingException e) {
+			LOGGER.error("Exception while serializing json in createUpdateRequest {}", e);
+			throw new AlexaApiException(e.getMessage(), AlexaApiErrorType.JSON_PARSER_EXCEPTION);
+		}
+		return res;
 
 	}
 
@@ -202,21 +218,6 @@ public class AlexaRequestBuilder {
 		}
 
 		return listmap;
-	}
-	
-	
-	public static  void getNodeFromJson() {
-		try {
-			
-		String json = "{\"name1\":{\"id\":\"100\",\"test\":[{\"name\":\"yalamnada\"}],\"one\":\"roja\"}}";
-		JsonNode node =	mapper.readTree(json);
-	    JsonNode one = node.findValue("name1");//("name"));
-	    System.out.println(one);
-	
-		}catch (Exception e) {
-			e.printStackTrace();
-			// TODO: handle exception
-		}
 	}
 
 	public ApiInfo createApiInfo(String endpoint) {
@@ -241,7 +242,4 @@ public class AlexaRequestBuilder {
 		return new CustomApi(endpoint);
 	}
 
-	public static void main(String[] arg) {
-		getNodeFromJson();
-	}
 }

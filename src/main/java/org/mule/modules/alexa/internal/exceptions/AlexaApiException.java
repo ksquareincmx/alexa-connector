@@ -1,17 +1,20 @@
+/**
+ * (c) 2003-2017 MuleSoft, Inc. The software in this package is published under the terms of the Commercial Free Software license V.1 a copy of which has been included with this distribution in the LICENSE.md file.
+ */
+
 package org.mule.modules.alexa.internal.exceptions;
 
-public class AlexaApiException extends RuntimeException {
+import org.mule.runtime.extension.api.error.ErrorTypeDefinition;
+import org.mule.runtime.extension.api.exception.ModuleException;
+
+public class AlexaApiException extends ModuleException {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 3461452158138328912L;
+	private static final long serialVersionUID = 3927441353863814595L;
 
-	public AlexaApiException(String message) {
-		super(message);
-	}
-	
-	public AlexaApiException(String message,Throwable t) {
-		super(message,t);
-	}
+	public <T extends Enum<T>> AlexaApiException(String message, ErrorTypeDefinition<T> errorTypeDefinition) {
+        super(message, errorTypeDefinition);
+    }
 }
