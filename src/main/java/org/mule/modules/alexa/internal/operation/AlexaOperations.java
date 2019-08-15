@@ -27,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -37,7 +38,6 @@ public class AlexaOperations {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AlexaOperations.class);
 
-	private ObjectMapper mapper = new ObjectMapper();
 	private AlexaRequestUtility alexaRequestUtility = new AlexaRequestUtility();
 	private AlexaRequestBuilder alexaRequestBuilder = new AlexaRequestBuilder();
 
@@ -46,7 +46,7 @@ public class AlexaOperations {
 			@Expression(SUPPORTED) String summary, @Expression(SUPPORTED) List<String> examplePhrases,
 			@Expression(SUPPORTED) List<String> keywords, @Expression(SUPPORTED) String skillName,
 			@Expression(SUPPORTED) String description, @Expression(SUPPORTED) String endpoint,
-			@Optional @NullSafe @Expression(ExpressionSupport.NOT_SUPPORTED) @ParameterDsl(allowReferences = false) List<Intent> intents) {
+			@Optional @NullSafe @Expression(ExpressionSupport.NOT_SUPPORTED) @ParameterDsl(allowReferences = false) List<Intent> intents) throws Exception {
 
 		LOGGER.debug("Access token {}", alexaConnection.getAccessToken());
 		try {
@@ -56,7 +56,7 @@ public class AlexaOperations {
 					alexaConnection.getAccessToken(), alexaRequest);
 			LOGGER.debug("Create Alexa Skill Response {}", createSkillResponse);
 
-			Map<String, String> response = mapper.readValue(createSkillResponse,
+			Map<String, String> response = alexaRequestBuilder.getMapper().readValue(createSkillResponse,
 					new TypeReference<Map<String, String>>() {
 					});
 			String skillId = response.get("skillId");
@@ -68,10 +68,9 @@ public class AlexaOperations {
 
 		} catch (Exception e) {
 			LOGGER.error("Got error while Creating skill {}",e);
-			
+			throw e;
 		}
 
-		return null;
 	}
 
 	@MediaType(value = ANY, strict = false)
@@ -85,11 +84,10 @@ public class AlexaOperations {
 			@Expression(SUPPORTED) String stage, @Expression(SUPPORTED) String requestType,
 			@Expression(SUPPORTED) String intentName, @Expression(SUPPORTED) String inputString,
 			@Optional @NullSafe @Expression(ExpressionSupport.NOT_SUPPORTED) @ParameterDsl(allowReferences = false) Map<String, String> testSlots)
-			throws MalformedURLException, ProtocolException {
+			throws Exception {
 
 		LOGGER.debug("Alexa Authorization  Token: " + alexaConnection.getAccessToken());
 
-		Object obj = null;
 		try {
 			String testAlexaSkillJsonRequest = alexaRequestBuilder.getAlexaRequestJson(skillId, requestType, testSlots,
 					intentName);
@@ -97,19 +95,16 @@ public class AlexaOperations {
 					String.format(AlexaRequestURL.TEST_ALEXA_SKILL, skillId, stage), alexaConnection.getAccessToken(),
 					testAlexaSkillJsonRequest);
 
-			obj = new JSONParser().parse(response);
+			JsonNode node =	alexaRequestBuilder.getMapper().readTree(response);
+			JsonNode content =  node.findValue("content");
+			LOGGER.info("UseExistingSkill Response: {}", content);
+			return content.asText();
 		} catch (Exception e) {
 			LOGGER.error("Got error while UseExistingSkill  {}",e);
+			throw e;
 		}
 
-		JSONObject jo = (JSONObject) obj;
-		JSONObject name = (JSONObject) jo.get("result");
-		JSONObject skillExecutionInfo = (JSONObject) name.get("skillExecutionInfo");
-		JSONObject invocationResponse = (JSONObject) skillExecutionInfo.get("invocationResponse");
-		JSONObject body1 = (JSONObject) invocationResponse.get("body");
-		JSONObject responseone = (JSONObject) body1.get("response");
-		JSONObject card = (JSONObject) responseone.get("card");
-		return (String) card.get("content");
+	
 	}
 
 	

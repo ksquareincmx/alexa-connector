@@ -37,18 +37,25 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class AlexaRequestBuilder {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AlexaRequestBuilder.class);
 
-	ObjectMapper mapper = new ObjectMapper();
+	 static ObjectMapper mapper = new ObjectMapper();
 
 	public AlexaRequestBuilder() {
 		mapper.setSerializationInclusion(Include.NON_NULL);
 	}
 
+	
+	public ObjectMapper getMapper() {
+		return mapper;
+	}
+	
+	
 	/**
 	 * TODO
 	 */
@@ -196,6 +203,21 @@ public class AlexaRequestBuilder {
 
 		return listmap;
 	}
+	
+	
+	public static  void getNodeFromJson() {
+		try {
+			
+		String json = "{\"name1\":{\"id\":\"100\",\"test\":[{\"name\":\"yalamnada\"}],\"one\":\"roja\"}}";
+		JsonNode node =	mapper.readTree(json);
+	    JsonNode one = node.findValue("name1");//("name"));
+	    System.out.println(one);
+	
+		}catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		}
+	}
 
 	public ApiInfo createApiInfo(String endpoint) {
 
@@ -219,4 +241,7 @@ public class AlexaRequestBuilder {
 		return new CustomApi(endpoint);
 	}
 
+	public static void main(String[] arg) {
+		getNodeFromJson();
+	}
 }
