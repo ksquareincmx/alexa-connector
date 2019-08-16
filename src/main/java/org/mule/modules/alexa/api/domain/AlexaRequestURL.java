@@ -3,7 +3,11 @@
  */
 
 package org.mule.modules.alexa.api.domain;
-
+/**
+ * 
+ * Class used to maintain constants of module
+ *
+ */
 public interface AlexaRequestURL {
 
 	String GET_ALEXA_INFO = "https://api.amazonalexa.com/v1/skills/%s/stages/development/manifest";

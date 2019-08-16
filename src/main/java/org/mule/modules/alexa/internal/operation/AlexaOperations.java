@@ -43,6 +43,19 @@ public class AlexaOperations {
 	private AlexaRequestUtility alexaRequestUtility = new AlexaRequestUtility();
 	private AlexaRequestBuilder alexaRequestBuilder = new AlexaRequestBuilder();
 
+	/**
+	 * This method used for creating skill
+	 * @param alexaConnection
+	 * @param vendorId  
+	 * @param summary
+	 * @param examplePhrases
+	 * @param keywords
+	 * @param skillName
+	 * @param description
+	 * @param endpoint
+	 * @param intents
+	 * @return String
+	 */
 	@MediaType(value = ANY, strict = false)
 	public String createSkill(@Connection AlexaConnection alexaConnection, @Expression(SUPPORTED) String vendorId,
 			@Expression(SUPPORTED) String summary, @Expression(SUPPORTED) List<String> examplePhrases,
@@ -57,7 +70,7 @@ public class AlexaOperations {
 		String createSkillResponse = alexaRequestUtility.doPost(AlexaRequestURL.CREATE_ALEXA_SKILL,
 				alexaConnection.getAccessToken(), alexaRequest);
 		LOGGER.debug("Create Alexa Skill Response {}", createSkillResponse);
-		Map<String, String> response = null;
+		Map<String, String> response ;
 		try {
 			response = alexaRequestBuilder.getMapper().readValue(createSkillResponse,
 					new TypeReference<Map<String, String>>() {
@@ -95,7 +108,7 @@ public class AlexaOperations {
 				intentName);
 		String response = alexaRequestUtility.doPost(String.format(AlexaRequestURL.TEST_ALEXA_SKILL, skillId, stage),
 				alexaConnection.getAccessToken(), testAlexaSkillJsonRequest);
-		JsonNode node, content = null;
+		JsonNode node, content ;
 		try {
 			node = alexaRequestBuilder.getMapper().readTree(response);
 			content = node.findValue("content");
@@ -111,7 +124,7 @@ public class AlexaOperations {
 	@MediaType(value = ANY, strict = false)
 	public String DeleteSkill(@Connection AlexaConnection alexaConnection, @Expression(SUPPORTED) String skillId)
 			throws Exception {
-		System.out.println("Alexa Authorization  Token ======> " + alexaConnection.getAccessToken());
+		LOGGER.info("Alexa Authorization  Token {}", alexaConnection.getAccessToken());
 		return alexaRequestUtility.doGet(AlexaRequestURL.GET_ALEXA_INFO, alexaConnection.getAccessToken(), skillId);
 	}
 

@@ -7,12 +7,16 @@ package org.mule.modules.alexa.internal.util;
 import java.io.IOException;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.entity.EntityBuilder;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.mule.modules.alexa.internal.error.AlexaApiErrorType;
@@ -20,17 +24,33 @@ import org.mule.modules.alexa.internal.exceptions.AlexaApiException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.eventbus.DeadEvent;
+
 public class AlexaRequestUtility {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AlexaRequestUtility.class);
+	private static final int CONNECTION_REQUEST_TIMEOUT_MS = 5000;
+	private static final int CONNTECTION_TIMEOUT_MS = 5000;
+	private static final int SOCKET_TIMEOUT_MS = 5000;
 
-	public String doGet(String urlString, String basicAuth, String skillId) throws AlexaApiException{
+	/**
+	 * Return {@code String} response got form Alexa server, requires basic
+	 * authentication.
+	 * 
+	 * @param urlString
+	 * @param basicAuth
+	 * @param skillId
+	 * @return String
+	 * @throws AlexaApiException
+	 */
+	public String doGet(String urlString, String basicAuth, String skillId) throws AlexaApiException {
 
 		LOGGER.info("GET operation with params: urlString {} skillId {}", urlString, skillId);
 		CloseableHttpClient client = HttpClients.createDefault();
 
 		try {
 
+			urlString = 	String.format(urlString, skillId);
 			HttpGet get = new HttpGet(urlString);
 
 			get.setHeader("Authorization", basicAuth);
@@ -92,8 +112,10 @@ public class AlexaRequestUtility {
 			post.setHeader("Authorization", basicAuth);
 			post.setHeader("Content-Type", "application/json");
 
-			StringEntity reqEntity = new StringEntity(requestJson);
-			post.setEntity(reqEntity);
+			EntityBuilder builder = EntityBuilder.create();
+			builder.setText(requestJson);
+			builder.setContentType(ContentType.APPLICATION_JSON);
+			post.setEntity(builder.build());
 
 			CloseableHttpResponse response = client.execute(post);
 			int code = response.getStatusLine().getStatusCode();
@@ -196,6 +218,13 @@ public class AlexaRequestUtility {
 			}
 
 		}
+	}
+
+	private CloseableHttpClient createCustomClient() {
+		final RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(CONNTECTION_TIMEOUT_MS)
+				.setConnectionRequestTimeout(CONNECTION_REQUEST_TIMEOUT_MS).setSocketTimeout(SOCKET_TIMEOUT_MS).build();
+		final CloseableHttpClient httpclient = HttpClients.custom().setDefaultRequestConfig(requestConfig).build();
+		return httpclient;
 	}
 
 }
