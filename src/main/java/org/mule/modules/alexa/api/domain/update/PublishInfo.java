@@ -7,6 +7,8 @@ package org.mule.modules.alexa.api.domain.update;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class PublishInfo {
 	
 	private Map<String,Locale> locales;
@@ -57,6 +59,7 @@ public class PublishInfo {
 	public void setLocales(Map<String, Locale> locales) {
 		this.locales = locales;
 	}
+	@JsonProperty("isAvailableWorldwide")
 	public boolean isAvailableWorldwide() {
 		return isAvailableWorldwide;
 	}

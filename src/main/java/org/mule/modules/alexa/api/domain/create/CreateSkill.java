@@ -6,6 +6,8 @@ package org.mule.modules.alexa.api.domain.create;
 
 import org.mule.modules.alexa.api.domain.update.Manifest;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class CreateSkill {
 
 	private String vendorId;
@@ -19,6 +21,7 @@ public class CreateSkill {
 		this.manifest = manifest;
 	}
 
+	@JsonProperty("vendorId")
 	public String getVendorId() {
 		return vendorId;
 	}

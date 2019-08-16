@@ -25,21 +25,21 @@ public class Slot {
 	@NullSafe
 	private String type;
 	
-	@Parameter
+	/*@Parameter
 	@Optional
 	@NullSafe
 	@Expression(ExpressionSupport.NOT_SUPPORTED)
 	private List<String> samples = new LinkedList<>();
 
-	
+	*/
 
-	public List<String> getSamples() {
+	/*public List<String> getSamples() {
 		return samples;
 	}
 
 	public void setSamples(List<String> samples) {
 		this.samples = samples;
-	}
+	}*/
 
 	
 	

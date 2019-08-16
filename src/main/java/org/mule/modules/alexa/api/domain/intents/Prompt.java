@@ -4,12 +4,8 @@
 
 package org.mule.modules.alexa.api.domain.intents;
 
-import java.util.LinkedList;
 import java.util.List;
 
-import org.mule.runtime.api.meta.ExpressionSupport;
-import org.mule.runtime.extension.api.annotation.Expression;
-import org.mule.runtime.extension.api.annotation.dsl.xml.ParameterDsl;
 import org.mule.runtime.extension.api.annotation.param.NullSafe;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
@@ -22,11 +18,21 @@ public class Prompt {
 	private String id;
 
 	@Parameter
-	@Optional
 	@NullSafe
-	@Expression(ExpressionSupport.NOT_SUPPORTED)
-	@ParameterDsl(allowReferences = false)
-	private List<Variation> variations = new LinkedList<>();
+	@Optional
+	List<PromptInfo> vmap;
+	
+	private List<Variation> variations;
+
+	public List<PromptInfo> getVmap() {
+		return vmap;
+	}
+
+	public void setVmap(List<PromptInfo> vmap) {
+		
+		this.vmap = vmap;
+		
+	}
 
 	public String getId() {
 		return id;
@@ -43,7 +49,10 @@ public class Prompt {
 	public void setVariations(List<Variation> variations) {
 		this.variations = variations;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "Prompt [id=" + id + ", vmap=" + vmap + ", variations=" + variations + "]";
+	}
 	
 }

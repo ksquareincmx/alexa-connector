@@ -7,11 +7,13 @@ package org.mule.modules.alexa.internal.util;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.stream.Collectors;
 
 import org.mule.modules.alexa.api.domain.create.CreateSkill;
 import org.mule.modules.alexa.api.domain.existing.Application;
@@ -29,11 +31,15 @@ import org.mule.modules.alexa.api.domain.intents.Dialog;
 import org.mule.modules.alexa.api.domain.intents.Intent;
 import org.mule.modules.alexa.api.domain.intents.InteractionModel;
 import org.mule.modules.alexa.api.domain.intents.LanguageModel;
+import org.mule.modules.alexa.api.domain.intents.Prompt;
+import org.mule.modules.alexa.api.domain.intents.PromptInfo;
+import org.mule.modules.alexa.api.domain.intents.Variation;
 import org.mule.modules.alexa.api.domain.update.ApiInfo;
 import org.mule.modules.alexa.api.domain.update.ApiInfo.CustomApi;
 import org.mule.modules.alexa.api.domain.update.Events;
 import org.mule.modules.alexa.api.domain.update.Locale;
 import org.mule.modules.alexa.api.domain.update.Manifest;
+import org.mule.modules.alexa.api.domain.update.PrivacyComplaince;
 import org.mule.modules.alexa.api.domain.update.PublishInfo;
 import org.mule.modules.alexa.api.domain.update.UpdateSkill;
 import org.mule.modules.alexa.internal.error.AlexaApiErrorType;
@@ -53,6 +59,7 @@ public class AlexaRequestBuilder {
 
 	public AlexaRequestBuilder() {
 		mapper.setSerializationInclusion(Include.NON_NULL);
+		//mapper.s
 	}
 
 	public ObjectMapper getMapper() {
@@ -71,16 +78,25 @@ public class AlexaRequestBuilder {
 		// create locale
 		Locale locale = createLocaleInfo(skillName, summary, description, keywords, examplePhrases);
 		HashMap<String, Locale> locales = new HashMap<>();
-		locales.put("locales", locale);
+		locales.put("en-US", locale);
 		// create publish information
-		PublishInfo publishInfo = createPublishingInfo(locales, "SMART_HOME", true);
+		PublishInfo publishInfo = createPublishingInfo(locales, "SMART_HOME", false);
+		publishInfo.setTestingInstructions("1) Say 'Alexa, discover my devices' 2) Say 'Alexa, turn on sample lights'");
+		publishInfo.setDistributionCountries(Arrays.asList("US","GB"));
+		
+		
+		Locale privacyLocale = new Locale("http://www.termsofuse.sampleskill.com", "http://www.myprivacypolicy.sampleskill.com");
+		HashMap<String, Locale> localesPrivacy = new HashMap<>();
+		localesPrivacy.put("en-US", privacyLocale);
+		PrivacyComplaince privacyComplaince = new PrivacyComplaince(localesPrivacy);
 		// create apiinfo and set endpoint
 		ApiInfo apiInfo = createApiInfo(endpoint);
-
+		
 		// create manifest and set api,publish info to manifest
 		Manifest manifest = new Manifest();
 		manifest.setApis(apiInfo);
 		manifest.setPublishingInformation(publishInfo);
+		manifest.setPrivacyAndCompliance(privacyComplaince);
 		CreateSkill createSkill = new CreateSkill(vendorId, manifest);
 		String jsonStr = null;
 		try {
@@ -104,11 +120,18 @@ public class AlexaRequestBuilder {
 
 		LOGGER.info("updateCreatedSkill  parameters: newSkillId: {} intents : {}", newskillId, intents);
 		InteractionModel interactionModel = new InteractionModel();
-		Dialog dialog = new Dialog();
-		dialog.setIntents(intents);
+		
+		 List<Prompt> prompts = intents.stream().map(m -> m.getPrompts()).flatMap(m -> m.stream()).collect(Collectors.toList());
+	        interactionModel.setPrompts(prompts);
+	        
+	       
+	       prompts.forEach(p -> promtToVariation(p,p.getVmap()));//.flatMap(promt -> prompts.stream())
+		// set dialog and language model
+	       Dialog dialog = new Dialog();
+			dialog.setIntents(intents);
 		LanguageModel language = new LanguageModel();
 		language.setIntents(intents);
-		// set dialog and language model
+		LOGGER.info("Promts: {}"+prompts);
 		interactionModel.setDialog(dialog);
 		interactionModel.setLanguageModel(language);
 		Map<String, InteractionModel> reqObj = new HashMap<>();
@@ -122,6 +145,15 @@ public class AlexaRequestBuilder {
 			throw new AlexaApiException(e.getMessage(), AlexaApiErrorType.JSON_PARSER_EXCEPTION);
 		}
 		return updateSkillJson;
+	}
+	
+	public void promtToVariation(Prompt p ,List<PromptInfo> info) {
+		
+		List<Variation> variation =  info.stream().map(px -> new Variation(px.getType(), px.getValue())).collect(Collectors.toList());
+		
+		p.setVariations(variation);
+		p.setVmap(null);
+		
 	}
 
 	public String getAlexaRequestJson(String applicationID, String requestType, Map<String, String> slots,

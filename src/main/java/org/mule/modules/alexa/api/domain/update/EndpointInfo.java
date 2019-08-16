@@ -12,13 +12,13 @@ public class EndpointInfo {
 
 	public EndpointInfo(String uri) {
 		this.uri = uri;
-		this.sslCertificateType = "Trusted";
+		//this.sslCertificateType = "Trusted";
 	}
 
 	public EndpointInfo(String uri, String sslCertificateType) {
 
 		this.uri = uri;
-		this.sslCertificateType = sslCertificateType;
+		//this.sslCertificateType = sslCertificateType;
 	}
 
 	private String uri;

@@ -6,6 +6,8 @@ package org.mule.modules.alexa.api.domain.update;
 
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class PrivacyComplaince {
 
 	private boolean allowsPurchases;
@@ -31,16 +33,16 @@ public class PrivacyComplaince {
 
 	public PrivacyComplaince(final Map<String, Locale> locales) {
 		
-		this.allowsPurchases = true;
-		this.usesPersonalInfo = true;
-		this.isChildDirected = true;
+		this.allowsPurchases = false;
+		this.usesPersonalInfo = false;
+		this.isChildDirected = false;
 		this.isExportCompliant = true;
-		this.containsAds = true;
+		//this.containsAds = false;
 		this.locales = locales;
 	}
 
 
-
+	@JsonProperty("allowsPurchases")
 	public boolean isAllowsPurchases() {
 		return allowsPurchases;
 	}
@@ -49,6 +51,7 @@ public class PrivacyComplaince {
 		this.allowsPurchases = allowsPurchases;
 	}
 
+	@JsonProperty("usesPersonalInfo")
 	public boolean isUsesPersonalInfo() {
 		return usesPersonalInfo;
 	}
@@ -57,6 +60,7 @@ public class PrivacyComplaince {
 		this.usesPersonalInfo = usesPersonalInfo;
 	}
 
+	@JsonProperty("isChildDirected")
 	public boolean isChildDirected() {
 		return isChildDirected;
 	}
@@ -64,7 +68,7 @@ public class PrivacyComplaince {
 	public void setChildDirected(boolean isChildDirected) {
 		this.isChildDirected = isChildDirected;
 	}
-
+	@JsonProperty("isExportCompliant")
 	public boolean isExportCompliant() {
 		return isExportCompliant;
 	}

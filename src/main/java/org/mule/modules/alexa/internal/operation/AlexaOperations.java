@@ -69,7 +69,7 @@ public class AlexaOperations {
 				keywords, skillName, description, endpoint);
 		String createSkillResponse = alexaRequestUtility.doPost(AlexaRequestURL.CREATE_ALEXA_SKILL,
 				alexaConnection.getAccessToken(), alexaRequest);
-		LOGGER.debug("Create Alexa Skill Response {}", createSkillResponse);
+		LOGGER.info("Create Alexa Skill Response {}", createSkillResponse);
 		Map<String, String> response ;
 		try {
 			response = alexaRequestBuilder.getMapper().readValue(createSkillResponse,

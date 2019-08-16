@@ -38,7 +38,7 @@ public class ApiInfo {
 
 		public CustomApi(String endPoint) {
 
-			this.endpoint = new EndpointInfo(endPoint, "");
+			this.endpoint = new EndpointInfo(endPoint);
 
 		}
 
