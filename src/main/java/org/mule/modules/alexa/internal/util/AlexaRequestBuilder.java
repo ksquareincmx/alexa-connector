@@ -4,14 +4,17 @@
 
 package org.mule.modules.alexa.internal.util;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
 
@@ -47,9 +50,21 @@ import org.mule.modules.alexa.internal.exceptions.AlexaApiException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.annotation.ObjectIdGenerator;
+import com.fasterxml.jackson.annotation.JsonFormat.Feature;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.introspect.Annotated;
+import com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.ser.impl.WritableObjectId;
 
 public class AlexaRequestBuilder {
 
@@ -59,6 +74,7 @@ public class AlexaRequestBuilder {
 
 	public AlexaRequestBuilder() {
 		mapper.setSerializationInclusion(Include.NON_NULL);
+		mapper.configure(DeserializationFeature.FAIL_ON_UNRESOLVED_OBJECT_IDS, true);
 		//mapper.s
 	}
 
@@ -139,8 +155,12 @@ public class AlexaRequestBuilder {
 		String updateSkillJson = null;
 		try {
 			updateSkillJson = mapper.writeValueAsString(reqObj);
-			LOGGER.info("updateCreatedSkill  json ", updateSkillJson);
-		} catch (JsonProcessingException e) {
+			
+			JsonNode newNode = removeEmptyFields((ObjectNode)mapper.readTree(updateSkillJson));
+			
+			updateSkillJson =	mapper.writeValueAsString(newNode);
+			LOGGER.info("updateCreatedSkill  json {}", updateSkillJson);
+		} catch (IOException e) {
 			LOGGER.error("Exception while serializing json in updateCreatedSkill {}", e);
 			throw new AlexaApiException(e.getMessage(), AlexaApiErrorType.JSON_PARSER_EXCEPTION);
 		}
@@ -273,5 +293,66 @@ public class AlexaRequestBuilder {
 	private CustomApi createCustomApi(String endpoint) {
 		return new CustomApi(endpoint);
 	}
+	
 
+	
+	 public static ObjectNode removeEmptyFields(final ObjectNode jsonNode) {
+		 
+		// {annotations:{}}
+	        ObjectNode ret = new ObjectMapper().createObjectNode();
+	        Iterator<Entry<String, JsonNode>> iter = jsonNode.fields();
+	        while (iter.hasNext()) {
+	            Entry<String, JsonNode> entry = iter.next();
+	            String key = entry.getKey();
+	            JsonNode value = entry.getValue();
+	           
+	            if (value instanceof ObjectNode  ) {
+	                Map<String, ObjectNode> map = new HashMap<String, ObjectNode>();
+	                map.put(key, removeEmptyFields((ObjectNode)(value)));
+	                ret.setAll(map);
+	            	
+	            }
+	            else if (value instanceof ArrayNode) {
+	                ret.set(key, removeEmptyFields((ArrayNode)(value)));
+	            }
+	            else if (value.asText() != null && !value.asText().isEmpty() ) {
+	                ret.set(key, value);
+	            }
+	            boolean a = key.equals("annotations");
+	            if(a) {
+		        ret.remove("annotations");
+	            }
+	        }
+
+	       
+	        return ret;
+	    }
+	 
+	  public static ArrayNode removeEmptyFields(ArrayNode array) {
+	        ArrayNode ret = new ObjectMapper().createArrayNode();
+	        Iterator<JsonNode> iter = array.elements();
+
+	        while (iter.hasNext()) {
+	            JsonNode value = iter.next();
+	            
+
+	            if (value instanceof ArrayNode) {
+	                ret.add(removeEmptyFields((ArrayNode)(value)));
+	            }
+	            else if (value instanceof ObjectNode) {
+	            	ObjectNode nullVal = removeEmptyFields((ObjectNode)(value));
+	            	if(nullVal.toString().length() !=2) {
+	                ret.add(nullVal);
+	            	}
+	            }
+	            else if (value != null && !value.textValue().isEmpty() ){
+	                ret.add(value);
+	            }
+	        }
+
+	        return ret;
+	    }
+
+	
+	
 }

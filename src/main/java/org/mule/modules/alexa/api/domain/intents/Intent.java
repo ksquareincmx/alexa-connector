@@ -10,6 +10,7 @@ import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * (c) 2003-2017 MuleSoft, Inc. The software in this package is published under the terms of the Commercial Free Software license V.1 a copy of which has been included with this distribution in the LICENSE.md file.
@@ -27,19 +28,19 @@ public class Intent {
 
 	@Parameter
 	@Optional
-	//@NullSafe
+	@NullSafe
 	@Expression(ExpressionSupport.NOT_SUPPORTED)
 	private List<Slot> slots ;
 
-	/*@Parameter
-	@Optional
-	//@NullSafe
-	@Expression(ExpressionSupport.NOT_SUPPORTED)
-	private List<String> samples;
-*/
 	@Parameter
 	@Optional
-	//@NullSafe
+	@NullSafe
+	@Expression(ExpressionSupport.NOT_SUPPORTED)
+	private List<String> samples;
+
+	@Parameter
+	@Optional
+	@NullSafe
 	@Expression(ExpressionSupport.NOT_SUPPORTED)
 	private List<Prompt> prompts ;
 	
@@ -72,13 +73,13 @@ public class Intent {
 		this.slots = slots;
 	}
 
-	/*public List<String> getSamples() {
+	public List<String> getSamples() {
 		return samples;
 	}
 
 	public void setSamples(List<String> samples) {
 		this.samples = samples;
-	}*/
+	}
 
 	public List<Prompt> getPrompts() {
 		return prompts;
@@ -88,9 +89,6 @@ public class Intent {
 		this.prompts = prompts;
 	}
 
-	
-
-	
 
 	
 
