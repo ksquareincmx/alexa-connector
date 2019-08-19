@@ -13,13 +13,32 @@ import org.mule.runtime.extension.api.annotation.param.NullSafe;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Slot {
 
 	@Parameter
 	@Optional
 	@NullSafe
-	private String name; 
+	private String sname; 
 	
+	@JsonProperty("name")
+	public String getSname() {
+		return sname;
+	}
+
+	public void setSname(String sname) {
+		this.sname = sname;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
 	@Parameter
 	@Optional
 	@NullSafe
@@ -32,6 +51,11 @@ public class Slot {
 	private List<String> samples = new LinkedList<>();
 
 	
+
+	@Override
+	public String toString() {
+		return "Slot [name=" + sname + ", type=" + type + ", samples=" + samples + "]";
+	}
 
 	public List<String> getSamples() {
 		return samples;

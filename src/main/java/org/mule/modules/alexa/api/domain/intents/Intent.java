@@ -32,6 +32,7 @@ public class Intent {
 	@Expression(ExpressionSupport.NOT_SUPPORTED)
 	private List<Slot> slots ;
 
+
 	@Parameter
 	@Optional
 	@NullSafe
@@ -90,6 +91,11 @@ public class Intent {
 	}
 
 
+	@Override
+	public String toString() {
+		return "Intent [intentName=" + intentName + ", confirmationRequired=" + confirmationRequired + ", slots="
+				+ slots + ", samples=" + samples + ", prompts=" + prompts + "]";
+	}
 	
 
 }

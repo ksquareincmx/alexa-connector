@@ -10,6 +10,7 @@ import org.mule.runtime.extension.api.annotation.param.Parameter;
 
 public class Variation {
 
+
 	@Parameter
 	@Optional
 	@NullSafe
@@ -46,5 +47,9 @@ public class Variation {
 		this.value = value;
 	}
 	
+	@Override
+	public String toString() {
+		return "Variation [type=" + type + ", value=" + value + "]";
+	}
 	
 }
