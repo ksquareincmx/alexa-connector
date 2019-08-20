@@ -10,7 +10,6 @@ import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * (c) 2003-2017 MuleSoft, Inc. The software in this package is published under the terms of the Commercial Free Software license V.1 a copy of which has been included with this distribution in the LICENSE.md file.
@@ -18,6 +17,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ExclusiveOptionals
 public class Intent {
+
+	public Intent() {
+		super();
+	}
+
 
 	@Parameter
 	private String intentName;  
@@ -46,6 +50,28 @@ public class Intent {
 	private List<Prompt> prompts ;
 	
 	
+
+	public Intent(String intentName) {
+		super();
+		this.intentName = intentName;
+	}
+
+	public Intent(String intentName, String confirmationRequired, List<Slot> slots, List<String> samples,
+			List<Prompt> prompts) {
+		super();
+		this.intentName = intentName;
+		this.confirmationRequired = confirmationRequired;
+		this.slots = slots;
+		this.samples = samples;
+		this.prompts = prompts;
+	}
+
+	public Intent(String intentName, List<Slot> slots, List<String> samples) {
+		super();
+		this.intentName = intentName;
+		this.slots = slots;
+		this.samples = samples;
+	}
 
 	public String getConfirmationRequired() {
 		return confirmationRequired;

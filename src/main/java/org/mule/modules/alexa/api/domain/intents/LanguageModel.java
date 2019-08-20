@@ -6,21 +6,17 @@ package org.mule.modules.alexa.api.domain.intents;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public class LanguageModel {
 
-	public List<Intent> intents;
-	
+	public List<LanguageIntent> intents;
+
 	private String invocationName;
 
-	
-	
-	public List<Intent> getIntents() {
+	public List<LanguageIntent> getIntents() {
 		return intents;
 	}
 
-	public void setIntents(List<Intent> intents) {
+	public void setIntents(List<LanguageIntent> intents) {
 		this.intents = intents;
 	}
 
@@ -31,6 +27,5 @@ public class LanguageModel {
 	public void setInvocationName(String invocationName) {
 		this.invocationName = invocationName;
 	}
-	
-	
+
 }

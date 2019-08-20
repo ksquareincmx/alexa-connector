@@ -6,22 +6,28 @@ package org.mule.modules.alexa.api.domain.intents;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public class Dialog {
 
-	
-	private List<Intent> intents;
 
-	
-	
-	public List<Intent> getIntents() {
+	private List<DialogIntent> intents;
+
+	private String delegationStrategy = "ALWAYS";
+
+	public List<DialogIntent> getIntents() {
 		return intents;
 	}
+	
 
-	public void setIntents(List<Intent> intents) {
+	public void setIntents(List<DialogIntent> intents) {
 		this.intents = intents;
 	}
-	
+
+	public String getDelegationStrategy() {
+		return delegationStrategy;
+	}
+
+	public void setDelegationStrategy(String delegationStrategy) {
+		this.delegationStrategy = delegationStrategy;
+	}
 	
 }
