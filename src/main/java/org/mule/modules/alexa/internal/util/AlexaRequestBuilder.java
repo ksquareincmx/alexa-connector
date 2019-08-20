@@ -31,8 +31,11 @@ import org.mule.modules.alexa.api.domain.existing.SlotName;
 import org.mule.modules.alexa.api.domain.existing.Sstem;
 import org.mule.modules.alexa.api.domain.existing.User;
 import org.mule.modules.alexa.api.domain.intents.Dialog;
+import org.mule.modules.alexa.api.domain.intents.DialogIntent;
+import org.mule.modules.alexa.api.domain.intents.DialogSlot;
 import org.mule.modules.alexa.api.domain.intents.Intent;
 import org.mule.modules.alexa.api.domain.intents.InteractionModel;
+import org.mule.modules.alexa.api.domain.intents.LanguageIntent;
 import org.mule.modules.alexa.api.domain.intents.LanguageModel;
 import org.mule.modules.alexa.api.domain.intents.Prompt;
 import org.mule.modules.alexa.api.domain.intents.PromptInfo;
@@ -50,21 +53,12 @@ import org.mule.modules.alexa.internal.exceptions.AlexaApiException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.annotation.ObjectIdGenerator;
-import com.fasterxml.jackson.annotation.JsonFormat.Feature;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.introspect.Annotated;
-import com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.ser.impl.WritableObjectId;
 
 public class AlexaRequestBuilder {
 
@@ -74,8 +68,6 @@ public class AlexaRequestBuilder {
 
 	public AlexaRequestBuilder() {
 		mapper.setSerializationInclusion(Include.NON_NULL);
-		mapper.configure(DeserializationFeature.FAIL_ON_UNRESOLVED_OBJECT_IDS, true);
-		//mapper.s
 	}
 
 	public ObjectMapper getMapper() {
@@ -86,7 +78,7 @@ public class AlexaRequestBuilder {
 	 * TODO
 	 */
 	public String createAlexaSkillRequestBuilder(String vendorId, String summary, List<String> examplePhrases,
-			List<String> keywords, String skillName, String description, String endpoint) throws AlexaApiException{
+			List<String> keywords, String skillName, String description, String endpoint) throws AlexaApiException {
 
 		LOGGER.debug("Method parameters are: vendorId: {} , summary: {} ,keyword: {} , skillName: {} ,endpoint: {} ",
 				vendorId, summary, keywords, skillName, endpoint);
@@ -98,16 +90,16 @@ public class AlexaRequestBuilder {
 		// create publish information
 		PublishInfo publishInfo = createPublishingInfo(locales, "SMART_HOME", false);
 		publishInfo.setTestingInstructions("1) Say 'Alexa, discover my devices' 2) Say 'Alexa, turn on sample lights'");
-		publishInfo.setDistributionCountries(Arrays.asList("US","GB"));
-		
-		
-		Locale privacyLocale = new Locale("http://www.termsofuse.sampleskill.com", "http://www.myprivacypolicy.sampleskill.com");
+		publishInfo.setDistributionCountries(Arrays.asList("US", "GB"));
+
+		Locale privacyLocale = new Locale("http://www.termsofuse.sampleskill.com",
+				"http://www.myprivacypolicy.sampleskill.com");
 		HashMap<String, Locale> localesPrivacy = new HashMap<>();
 		localesPrivacy.put("en-US", privacyLocale);
 		PrivacyComplaince privacyComplaince = new PrivacyComplaince(localesPrivacy);
 		// create apiinfo and set endpoint
 		ApiInfo apiInfo = createApiInfo(endpoint);
-		
+
 		// create manifest and set api,publish info to manifest
 		Manifest manifest = new Manifest();
 		manifest.setApis(apiInfo);
@@ -132,22 +124,21 @@ public class AlexaRequestBuilder {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public String updateCreatedSkill(String newskillId, List<Intent> intents) throws AlexaApiException{
+	public String updateCreatedSkill(String newskillId, List<Intent> intents) throws AlexaApiException {
 
 		LOGGER.info("updateCreatedSkill  parameters: newSkillId: {} intents : {}", newskillId, intents);
 		InteractionModel interactionModel = new InteractionModel();
-		
-		 List<Prompt> prompts = intents.stream().map(m -> m.getPrompts()).flatMap(m -> m.stream()).collect(Collectors.toList());
-	        interactionModel.setPrompts(prompts);
-	        
-	       
-	       prompts.forEach(p -> promtToVariation(p,p.getVmap()));//.flatMap(promt -> prompts.stream())
+
+		List<Prompt> prompts = intents.stream().map(m -> m.getPrompts()).flatMap(m -> m.stream())
+				.collect(Collectors.toList());
+		interactionModel.setPrompts(prompts);
+		prompts.forEach(p -> promtToVariation(p, p.getVmap()));
 		// set dialog and language model
-	       Dialog dialog = new Dialog();
-			dialog.setIntents(intents);
+		Dialog dialog = new Dialog();
+		dialog.setIntents(mapIntnetToDialogIntent(intents));
 		LanguageModel language = new LanguageModel();
-		language.setIntents(intents);
-		LOGGER.info("Promts: {}"+prompts);
+		language.setIntents(mapIntnetToLanguageIntent(intents));
+		language.setInvocationName("my space fact");
 		interactionModel.setDialog(dialog);
 		interactionModel.setLanguageModel(language);
 		Map<String, InteractionModel> reqObj = new HashMap<>();
@@ -155,10 +146,10 @@ public class AlexaRequestBuilder {
 		String updateSkillJson = null;
 		try {
 			updateSkillJson = mapper.writeValueAsString(reqObj);
-			
-			JsonNode newNode = removeEmptyFields((ObjectNode)mapper.readTree(updateSkillJson));
-			
-			updateSkillJson =	mapper.writeValueAsString(newNode);
+
+			JsonNode newNode = removeEmptyFields((ObjectNode) mapper.readTree(updateSkillJson));
+
+			updateSkillJson = mapper.writeValueAsString(newNode);
 			LOGGER.info("updateCreatedSkill  json {}", updateSkillJson);
 		} catch (IOException e) {
 			LOGGER.error("Exception while serializing json in updateCreatedSkill {}", e);
@@ -166,14 +157,15 @@ public class AlexaRequestBuilder {
 		}
 		return updateSkillJson;
 	}
-	
-	public void promtToVariation(Prompt p ,List<PromptInfo> info) {
-		
-		List<Variation> variation =  info.stream().map(px -> new Variation(px.getType(), px.getValue())).collect(Collectors.toList());
-		
+
+	public void promtToVariation(Prompt p, List<PromptInfo> info) {
+
+		List<Variation> variation = info.stream().map(px -> new Variation(px.getType(), px.getValue()))
+				.collect(Collectors.toList());
+
 		p.setVariations(variation);
 		p.setVmap(null);
-		
+
 	}
 
 	public String getAlexaRequestJson(String applicationID, String requestType, Map<String, String> slots,
@@ -236,7 +228,7 @@ public class AlexaRequestBuilder {
 	}
 
 	public String createUpdateRequest(String skillId, String apiEndpoint, List<String> interfaces,
-			List<String> permission, String eventEndpoint, List<String> subscriptions)  {
+			List<String> permission, String eventEndpoint, List<String> subscriptions) {
 
 		ApiInfo apiInfo = createApiInfo(apiEndpoint);
 		Events events = new Events(eventEndpoint);
@@ -293,66 +285,75 @@ public class AlexaRequestBuilder {
 	private CustomApi createCustomApi(String endpoint) {
 		return new CustomApi(endpoint);
 	}
-	
 
-	
-	 public static ObjectNode removeEmptyFields(final ObjectNode jsonNode) {
-		 
+	public static ObjectNode removeEmptyFields(final ObjectNode jsonNode) {
+
 		// {annotations:{}}
-	        ObjectNode ret = new ObjectMapper().createObjectNode();
-	        Iterator<Entry<String, JsonNode>> iter = jsonNode.fields();
-	        while (iter.hasNext()) {
-	            Entry<String, JsonNode> entry = iter.next();
-	            String key = entry.getKey();
-	            JsonNode value = entry.getValue();
-	           
-	            if (value instanceof ObjectNode  ) {
-	                Map<String, ObjectNode> map = new HashMap<String, ObjectNode>();
-	                map.put(key, removeEmptyFields((ObjectNode)(value)));
-	                ret.setAll(map);
-	            	
-	            }
-	            else if (value instanceof ArrayNode) {
-	                ret.set(key, removeEmptyFields((ArrayNode)(value)));
-	            }
-	            else if (value.asText() != null && !value.asText().isEmpty() ) {
-	                ret.set(key, value);
-	            }
-	            boolean a = key.equals("annotations");
-	            if(a) {
-		        ret.remove("annotations");
-	            }
-	        }
+		ObjectNode ret = new ObjectMapper().createObjectNode();
+		Iterator<Entry<String, JsonNode>> iter = jsonNode.fields();
+		while (iter.hasNext()) {
+			Entry<String, JsonNode> entry = iter.next();
+			String key = entry.getKey();
+			JsonNode value = entry.getValue();
 
-	       
-	        return ret;
-	    }
-	 
-	  public static ArrayNode removeEmptyFields(ArrayNode array) {
-	        ArrayNode ret = new ObjectMapper().createArrayNode();
-	        Iterator<JsonNode> iter = array.elements();
+			if (value instanceof ObjectNode) {
+				Map<String, ObjectNode> map = new HashMap<String, ObjectNode>();
+				map.put(key, removeEmptyFields((ObjectNode) (value)));
+				ret.setAll(map);
 
-	        while (iter.hasNext()) {
-	            JsonNode value = iter.next();
-	            
+			} else if (value instanceof ArrayNode) {
+				ret.set(key, removeEmptyFields((ArrayNode) (value)));
+			} else if (value.asText() != null && !value.asText().isEmpty()) {
+				ret.set(key, value);
+			}
+			boolean a = key.equals("annotations");
+			if (a) {
+				ret.remove("annotations");
+			}
+		}
 
-	            if (value instanceof ArrayNode) {
-	                ret.add(removeEmptyFields((ArrayNode)(value)));
-	            }
-	            else if (value instanceof ObjectNode) {
-	            	ObjectNode nullVal = removeEmptyFields((ObjectNode)(value));
-	            	if(nullVal.toString().length() !=2) {
-	                ret.add(nullVal);
-	            	}
-	            }
-	            else if (value != null && !value.textValue().isEmpty() ){
-	                ret.add(value);
-	            }
-	        }
+		return ret;
+	}
 
-	        return ret;
-	    }
+	public static ArrayNode removeEmptyFields(ArrayNode array) {
+		ArrayNode ret = new ObjectMapper().createArrayNode();
+		Iterator<JsonNode> iter = array.elements();
 
+		while (iter.hasNext()) {
+			JsonNode value = iter.next();
+
+			if (value instanceof ArrayNode) {
+				ret.add(removeEmptyFields((ArrayNode) (value)));
+			} else if (value instanceof ObjectNode) {
+				ObjectNode nullVal = removeEmptyFields((ObjectNode) (value));
+				if (nullVal.toString().length() != 2) {
+					ret.add(nullVal);
+				}
+			} else if (value != null && !value.textValue().isEmpty()) {
+				ret.add(value);
+			}
+		}
+
+		return ret;
+	}
+
+	private List<DialogIntent> mapIntnetToDialogIntent(List<Intent> intents) {
+
+		return intents.stream().map(in -> mapIntent(in)).collect(Collectors.toList());
+
+	}
 	
-	
+	private List<LanguageIntent> mapIntnetToLanguageIntent(List<Intent> intents) {
+
+		return intents.stream().map(in -> new LanguageIntent(in.getIntentName(),in.getSlots(),in.getSamples())).collect(Collectors.toList());
+
+	}
+
+	private DialogIntent mapIntent(Intent intent) {
+		// Iterate slots and prepare Dialog slots
+				List<DialogSlot> dialogSlots = intent.getSlots().stream().map(s -> new DialogSlot(s.getSname(), s.getType()))
+						.collect(Collectors.toList());
+		return new DialogIntent(intent.getIntentName(),"false",dialogSlots,null);
+	}
+
 }

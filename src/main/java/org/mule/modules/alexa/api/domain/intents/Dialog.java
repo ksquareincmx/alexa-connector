@@ -8,15 +8,24 @@ import java.util.List;
 
 public class Dialog {
 
-	private List<Intent> intents;
+	private List<DialogIntent> intents;
 
-	public List<Intent> getIntents() {
+	private String delegationStrategy = "ALWAYS";
+
+	public List<DialogIntent> getIntents() {
 		return intents;
 	}
 
-	public void setIntents(List<Intent> intents) {
+	public void setIntents(List<DialogIntent> intents) {
 		this.intents = intents;
 	}
-	
+
+	public String getDelegationStrategy() {
+		return delegationStrategy;
+	}
+
+	public void setDelegationStrategy(String delegationStrategy) {
+		this.delegationStrategy = delegationStrategy;
+	}
 	
 }
