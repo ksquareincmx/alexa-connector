@@ -6,10 +6,15 @@ package org.mule.modules.alexa.api.domain.intents;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Dialog {
 
+	
 	private List<Intent> intents;
 
+	
+	
 	public List<Intent> getIntents() {
 		return intents;
 	}
