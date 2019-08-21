@@ -75,7 +75,16 @@ public class AlexaRequestBuilder {
 	}
 
 	/**
-	 * TODO
+	 * 
+	 * @param vendorId
+	 * @param summary
+	 * @param examplePhrases
+	 * @param keywords
+	 * @param skillName
+	 * @param description
+	 * @param endpoint
+	 * @return
+	 * @throws AlexaApiException
 	 */
 	public String createAlexaSkillRequestBuilder(String vendorId, String summary, List<String> examplePhrases,
 			List<String> keywords, String skillName, String description, String endpoint) throws AlexaApiException {
@@ -119,11 +128,11 @@ public class AlexaRequestBuilder {
 	}
 
 	/**
-	 * TODO
-	 * 
-	 * @return
+	 * This method used to prepare json schema to update the already created Skill,by given skillID and intents as parametes
+	 * @param newskillId
+	 * @param intents
+	 * @return String -- response from alexa after successfull update.
 	 */
-	@SuppressWarnings("unchecked")
 	public String updateCreatedSkill(String newskillId, List<Intent> intents) throws AlexaApiException {
 
 		LOGGER.info("updateCreatedSkill  parameters: newSkillId: {} intents : {}", newskillId, intents);
@@ -147,7 +156,7 @@ public class AlexaRequestBuilder {
 		try {
 			updateSkillJson = mapper.writeValueAsString(reqObj);
 
-			JsonNode newNode = removeEmptyFields((ObjectNode) mapper.readTree(updateSkillJson));
+			JsonNode newNode = removeExtraFields((ObjectNode) mapper.readTree(updateSkillJson));
 
 			updateSkillJson = mapper.writeValueAsString(newNode);
 			LOGGER.info("updateCreatedSkill  json {}", updateSkillJson);
@@ -158,6 +167,23 @@ public class AlexaRequestBuilder {
 		return updateSkillJson;
 	}
 
+	public String prepareSchemaForInteractionModel(InteractionModel model) {
+		Map<String, InteractionModel> reqObj = new HashMap<>();
+		reqObj.put("interactionModel", model);
+		String updateSkillJson = null;
+		try {
+			updateSkillJson = mapper.writeValueAsString(reqObj);
+
+			JsonNode newNode = removeExtraFields((ObjectNode) mapper.readTree(updateSkillJson));
+
+			updateSkillJson = mapper.writeValueAsString(newNode);
+			LOGGER.info("prepareSchemaForInteractionModel  json {}", updateSkillJson);
+		} catch (IOException e) {
+			LOGGER.error("Exception while serializing json in prepareSchemaForInteractionModel {}", e);
+			throw new AlexaApiException(e.getMessage(), AlexaApiErrorType.JSON_PARSER_EXCEPTION);
+		}
+		return updateSkillJson;
+	}
 	public void promtToVariation(Prompt p, List<PromptInfo> info) {
 
 		List<Variation> variation = info.stream().map(px -> new Variation(px.getType(), px.getValue()))
@@ -286,9 +312,9 @@ public class AlexaRequestBuilder {
 		return new CustomApi(endpoint);
 	}
 
-	public static ObjectNode removeEmptyFields(final ObjectNode jsonNode) {
+	public static ObjectNode removeExtraFields(final ObjectNode jsonNode) {
 
-		// {annotations:{}}
+		
 		ObjectNode ret = new ObjectMapper().createObjectNode();
 		Iterator<Entry<String, JsonNode>> iter = jsonNode.fields();
 		while (iter.hasNext()) {
@@ -298,14 +324,16 @@ public class AlexaRequestBuilder {
 
 			if (value instanceof ObjectNode) {
 				Map<String, ObjectNode> map = new HashMap<String, ObjectNode>();
-				map.put(key, removeEmptyFields((ObjectNode) (value)));
+				map.put(key, removeExtraFields((ObjectNode) (value)));
 				ret.setAll(map);
 
 			} else if (value instanceof ArrayNode) {
-				ret.set(key, removeEmptyFields((ArrayNode) (value)));
+				ret.set(key, removeExtraFields((ArrayNode) (value)));
 			} else if (value.asText() != null && !value.asText().isEmpty()) {
 				ret.set(key, value);
 			}
+			// TODO removed  {annotations:{}} from json we need to find why the annotations is added
+			// to json even if it is not model objects, i assume it is because of @Component annotation from mule
 			boolean a = key.equals("annotations");
 			if (a) {
 				ret.remove("annotations");
@@ -315,7 +343,7 @@ public class AlexaRequestBuilder {
 		return ret;
 	}
 
-	public static ArrayNode removeEmptyFields(ArrayNode array) {
+	public static ArrayNode removeExtraFields(ArrayNode array) {
 		ArrayNode ret = new ObjectMapper().createArrayNode();
 		Iterator<JsonNode> iter = array.elements();
 
@@ -323,9 +351,9 @@ public class AlexaRequestBuilder {
 			JsonNode value = iter.next();
 
 			if (value instanceof ArrayNode) {
-				ret.add(removeEmptyFields((ArrayNode) (value)));
+				ret.add(removeExtraFields((ArrayNode) (value)));
 			} else if (value instanceof ObjectNode) {
-				ObjectNode nullVal = removeEmptyFields((ObjectNode) (value));
+				ObjectNode nullVal = removeExtraFields((ObjectNode) (value));
 				if (nullVal.toString().length() != 2) {
 					ret.add(nullVal);
 				}

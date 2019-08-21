@@ -5,7 +5,7 @@
 package org.mule.modules.alexa.internal.error;
 
 import static java.util.Optional.ofNullable;
-import static org.mule.runtime.extension.api.error.MuleErrors.CONNECTIVITY;
+import static org.mule.runtime.extension.api.error.MuleErrors.*;
 
 import java.util.Optional;
 
@@ -36,7 +36,8 @@ public enum AlexaApiErrorType implements ErrorTypeDefinition<AlexaApiErrorType> 
     INCORRECT_CREDENTIALS(CONNECTIVITY),
     INVALID_AUTH(CONNECTIVITY),
     NO_PERMISSION(CONNECTIVITY),
-    ACCOUNT_INACTIVE(CONNECTIVITY);
+    ACCOUNT_INACTIVE(CONNECTIVITY),
+	VALIDATIONS(VALIDATION);
 
 	AlexaApiErrorType(){
 		

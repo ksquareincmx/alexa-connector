@@ -8,11 +8,14 @@ import static org.mule.runtime.api.meta.ExpressionSupport.SUPPORTED;
 import static org.mule.runtime.extension.api.annotation.param.MediaType.ANY;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.mule.modules.alexa.api.domain.AlexaRequestURL;
 import org.mule.modules.alexa.api.domain.intents.Intent;
+import org.mule.modules.alexa.api.domain.intents.InteractionModel;
 import org.mule.modules.alexa.internal.connection.AlexaConnection;
 import org.mule.modules.alexa.internal.error.AlexaApiErrorType;
 import org.mule.modules.alexa.internal.exceptions.AlexaApiException;
@@ -57,14 +60,13 @@ public class AlexaOperations {
 	 * @return String
 	 */
 	@MediaType(value = ANY, strict = false)
-	public String createSkill(@Connection AlexaConnection alexaConnection, @Expression(SUPPORTED) String vendorId,
+	public String createSkill(@Connection AlexaConnection alexaConnection,  @Expression(SUPPORTED) String vendorId,
 			@Expression(SUPPORTED) String summary, @Expression(SUPPORTED) List<String> examplePhrases,
-			@Expression(SUPPORTED) List<String> keywords, @Expression(SUPPORTED) String skillName,
-			@Expression(SUPPORTED) String description, @Expression(SUPPORTED) String endpoint,
+			@Expression(SUPPORTED) List<String> keywords,  @Expression(SUPPORTED) String skillName,
+			@Expression(SUPPORTED) String description,  @Expression(SUPPORTED) String endpoint,
 			@Optional @NullSafe @Expression(ExpressionSupport.NOT_SUPPORTED) @ParameterDsl(allowReferences = false) List<Intent> intents) {
 
 		LOGGER.debug("Access token {}", alexaConnection.getAccessToken());
-
 		String alexaRequest = alexaRequestBuilder.createAlexaSkillRequestBuilder(vendorId, summary, examplePhrases,
 				keywords, skillName, description, endpoint);
 		String createSkillResponse = alexaRequestUtility.doPost(AlexaRequestURL.CREATE_ALEXA_SKILL,
@@ -80,6 +82,9 @@ public class AlexaOperations {
 			throw new AlexaApiException(io.getMessage(), AlexaApiErrorType.JSON_PARSER_EXCEPTION);
 		}
 		String skillId = response.get("skillId");
+		if(skillId == null || Objects.isNull(skillId)) {
+			throw new AlexaApiException("SkillId not found in response "+createSkillResponse , AlexaApiErrorType.VALIDATIONS);
+		}
 		LOGGER.info("Skill ID after parsing", skillId);
 
 		String updateSkillRequest = alexaRequestBuilder.updateCreatedSkill(skillId, intents);
@@ -89,16 +94,16 @@ public class AlexaOperations {
 	}
 
 	@MediaType(value = ANY, strict = false)
-	public String getSkillInfo(@Connection AlexaConnection alexaConnection, @Expression(SUPPORTED) String skillId)
+	public String getSkillInfo(@Connection AlexaConnection alexaConnection,  @Expression(SUPPORTED) String skillId)
 			throws AlexaApiException {
 		LOGGER.debug("Alexa Authorization  Token {}", alexaConnection.getAccessToken());
 		return alexaRequestUtility.doGet(AlexaRequestURL.GET_ALEXA_INFO, alexaConnection.getAccessToken(), skillId);
 	}
 
 	@MediaType(value = ANY, strict = false)
-	public String UseExistingSkill(@Connection AlexaConnection alexaConnection, @Expression(SUPPORTED) String skillId,
-			@Expression(SUPPORTED) String stage, @Expression(SUPPORTED) String requestType,
-			@Expression(SUPPORTED) String intentName, @Expression(SUPPORTED) String inputString,
+	public String UseExistingSkill(@Connection AlexaConnection alexaConnection,  @Expression(SUPPORTED) String skillId,
+			@Expression(SUPPORTED) String stage,  @Expression(SUPPORTED) String requestType,
+			 @Expression(SUPPORTED) String intentName, @Expression(SUPPORTED) String inputString,
 			@Optional @NullSafe @Expression(ExpressionSupport.NOT_SUPPORTED) @ParameterDsl(allowReferences = false) Map<String, String> testSlots)
 			throws AlexaApiException {
 
@@ -111,7 +116,7 @@ public class AlexaOperations {
 		JsonNode node, content ;
 		try {
 			node = alexaRequestBuilder.getMapper().readTree(response);
-			content = node.findValue("content");
+			content  = node.findValue("content");
 			LOGGER.info("UseExistingSkill Response: {}", content);
 		} catch (IOException e) {
 			LOGGER.error("Exception while processing useExising skill response {}", e);
@@ -122,18 +127,18 @@ public class AlexaOperations {
 	}
 
 	@MediaType(value = ANY, strict = false)
-	public String DeleteSkill(@Connection AlexaConnection alexaConnection, @Expression(SUPPORTED) String skillId)
+	public String DeleteSkill(@Connection AlexaConnection alexaConnection,  @Expression(SUPPORTED) String skillId)
 			throws Exception {
 		LOGGER.info("Alexa Authorization  Token {}", alexaConnection.getAccessToken());
 		return alexaRequestUtility.doGet(AlexaRequestURL.GET_ALEXA_INFO, alexaConnection.getAccessToken(), skillId);
 	}
 
 	@MediaType(value = ANY, strict = false)
-	public String updateSkill(@Connection AlexaConnection alexaConnection, @Expression(SUPPORTED) String skillId,
-			String apiEndpoint, List<String> interfaces, List<String> permissions, String eventEndpoint,
+	public String updateSkill(@Connection AlexaConnection alexaConnection,  @Expression(SUPPORTED) String skillId,
+			 String apiEndpoint, List<String> interfaces, List<String> permissions, String eventEndpoint,
 			List<String> subscriptions) throws AlexaApiException {
 		LOGGER.info("Update skill method with skillId {}", skillId);
-		String result;
+		String result; 
 
 		String updateRequest = alexaRequestBuilder.createUpdateRequest(skillId, apiEndpoint, interfaces, permissions,
 				eventEndpoint, subscriptions);
@@ -142,6 +147,21 @@ public class AlexaOperations {
 
 		LOGGER.info("Update skill method response  {}", result);
 		return result;
+	}
+	
+	@MediaType(value = ANY, strict = false)
+	public  String updateInteraction(@Connection AlexaConnection alexaConnection, 
+			@Optional @Expression(SUPPORTED) InteractionModel model ,
+			@Expression(SUPPORTED) String skillId) {
+		
+		LOGGER.debug("Updating Interaction model {} , skillId {} ",model,skillId);
+		
+		String interactionSchema = 	alexaRequestBuilder.prepareSchemaForInteractionModel(model);
+		String url = String.format(AlexaRequestURL.UPDATE_INTERACTION_SCHEMA , skillId);
+		String updateRes = 	alexaRequestUtility.doPut(url, alexaConnection.getAccessToken(), interactionSchema);
+		
+		LOGGER.debug("Updating Interaction model response {}",updateRes);
+		return updateRes;
 	}
 
 	
