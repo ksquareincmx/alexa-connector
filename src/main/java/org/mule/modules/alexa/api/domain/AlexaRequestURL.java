@@ -16,6 +16,6 @@ public interface AlexaRequestURL {
 	String UPDATE_ALEXA_SKILL =  BASE_URL+"/%s/stages/development/interactionModel/locales/en-US";
 	String TEST_ALEXA_SKILL = BASE_URL+"/%s/stages/%s/invocations";
 	String UPDATE_EXISTING_SKILL = BASE_URL+"/%s/stages/development/manifest";
-	String UPDATE_INTERACTION_SCHEMA = BASE_URL+"/v1/skills/%s/stages/development/interactionModel/locales/en-US";
+	String UPDATE_INTERACTION_SCHEMA = BASE_URL+"/%s/stages/development/interactionModel/locales/en-US";
 	
 }

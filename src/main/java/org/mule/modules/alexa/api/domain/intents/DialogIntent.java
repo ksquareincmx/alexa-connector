@@ -5,17 +5,19 @@ import java.util.Map;
 
 import org.mule.runtime.api.meta.ExpressionSupport;
 import org.mule.runtime.extension.api.annotation.Expression;
-import org.mule.runtime.extension.api.annotation.param.NullSafe;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class DialogIntent extends Intent {
+public class DialogIntent {//extends Intent {
 
 	public DialogIntent() {
 		super();
 	}
+	
+	@Parameter
+	private String intentName;  
 	
 	@Parameter
 	@Optional
@@ -39,7 +41,7 @@ public class DialogIntent extends Intent {
 
 	public DialogIntent(String intentName, String confirmationRequired, List<DialogSlot> slots,
 			Map<String, String> prompts) {
-		super(intentName);
+		this.intentName = intentName;
 		this.confirmationRequired = confirmationRequired;
 		this.dialogSlots = slots;
 		this.dialogPrompts = prompts;
@@ -82,7 +84,7 @@ public class DialogIntent extends Intent {
 
 	@Override
 	public String toString() {
-		return "DialogIntent [intentName=" + super.getIntentName() + ", confirmationRequired=" + confirmationRequired
+		return "DialogIntent [intentName=" + intentName + ", confirmationRequired=" + confirmationRequired
 				+ ", delegationStrategy=" + delegationStrategy + ", slots=" + dialogSlots + ", prompts=" + dialogPrompts
 				+ "]";
 	}

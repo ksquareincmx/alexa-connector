@@ -8,7 +8,6 @@ import static org.mule.runtime.api.meta.ExpressionSupport.SUPPORTED;
 import static org.mule.runtime.extension.api.annotation.param.MediaType.ANY;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -22,6 +21,7 @@ import org.mule.modules.alexa.internal.exceptions.AlexaApiException;
 import org.mule.modules.alexa.internal.util.AlexaRequestBuilder;
 import org.mule.modules.alexa.internal.util.AlexaRequestUtility;
 import org.mule.runtime.api.meta.ExpressionSupport;
+import org.mule.runtime.extension.api.annotation.Alias;
 import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.dsl.xml.ParameterDsl;
 import org.mule.runtime.extension.api.annotation.param.Connection;
@@ -60,6 +60,7 @@ public class AlexaOperations {
 	 * @return String
 	 */
 	@MediaType(value = ANY, strict = false)
+	@Alias("createSkill")
 	public String createSkill(@Connection AlexaConnection alexaConnection,  @Expression(SUPPORTED) String vendorId,
 			@Expression(SUPPORTED) String summary, @Expression(SUPPORTED) List<String> examplePhrases,
 			@Expression(SUPPORTED) List<String> keywords,  @Expression(SUPPORTED) String skillName,
@@ -94,6 +95,7 @@ public class AlexaOperations {
 	}
 
 	@MediaType(value = ANY, strict = false)
+	@Alias("skillInfo")
 	public String getSkillInfo(@Connection AlexaConnection alexaConnection,  @Expression(SUPPORTED) String skillId)
 			throws AlexaApiException {
 		LOGGER.debug("Alexa Authorization  Token {}", alexaConnection.getAccessToken());
@@ -101,6 +103,7 @@ public class AlexaOperations {
 	}
 
 	@MediaType(value = ANY, strict = false)
+	@Alias("modifyExistingSkill")
 	public String UseExistingSkill(@Connection AlexaConnection alexaConnection,  @Expression(SUPPORTED) String skillId,
 			@Expression(SUPPORTED) String stage,  @Expression(SUPPORTED) String requestType,
 			 @Expression(SUPPORTED) String intentName, @Expression(SUPPORTED) String inputString,
@@ -127,6 +130,7 @@ public class AlexaOperations {
 	}
 
 	@MediaType(value = ANY, strict = false)
+	@Alias("deleteSkill")
 	public String DeleteSkill(@Connection AlexaConnection alexaConnection,  @Expression(SUPPORTED) String skillId)
 			throws Exception {
 		LOGGER.info("Alexa Authorization  Token {}", alexaConnection.getAccessToken());
@@ -134,6 +138,7 @@ public class AlexaOperations {
 	}
 
 	@MediaType(value = ANY, strict = false)
+	@Alias("updateSkill")
 	public String updateSkill(@Connection AlexaConnection alexaConnection,  @Expression(SUPPORTED) String skillId,
 			 String apiEndpoint, List<String> interfaces, List<String> permissions, String eventEndpoint,
 			List<String> subscriptions) throws AlexaApiException {
@@ -150,6 +155,7 @@ public class AlexaOperations {
 	}
 	
 	@MediaType(value = ANY, strict = false)
+	@Alias("updateIntents")
 	public  String updateInteraction(@Connection AlexaConnection alexaConnection, 
 			@Optional @Expression(SUPPORTED) InteractionModel model ,
 			@Expression(SUPPORTED) String skillId) {
