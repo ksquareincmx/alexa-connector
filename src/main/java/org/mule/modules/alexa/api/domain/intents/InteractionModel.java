@@ -6,10 +6,49 @@ package org.mule.modules.alexa.api.domain.intents;
 
 import java.util.List;
 
+import org.mule.runtime.api.meta.ExpressionSupport;
+import org.mule.runtime.extension.api.annotation.Expression;
+import org.mule.runtime.extension.api.annotation.param.Optional;
+import org.mule.runtime.extension.api.annotation.param.Parameter;
+
 public class InteractionModel {
 
+	
+	
+	
+	public InteractionModel() {
+		super();
+	}
+	public InteractionModel(Dialog dialog, LanguageModel languageModel, Variation variation, List<Prompt> prompts) {
+		super();
+		this.dialog = dialog;
+		this.languageModel = languageModel;
+		this.variation = variation;
+		this.prompts = prompts;
+	}
+	@Parameter
+	@Optional
+	@Expression(ExpressionSupport.SUPPORTED)
 	private Dialog dialog;
+	@Parameter
+	@Optional
+	@Expression(ExpressionSupport.SUPPORTED)
 	private LanguageModel languageModel;
+	
+	@Parameter
+	@Optional
+	@Expression(ExpressionSupport.SUPPORTED)
+	private Variation variation;
+	
+	public Variation getVariation() {
+		return variation;
+	}
+	public void setVariation(Variation variation) {
+		this.variation = variation;
+	}
+	@Parameter
+	@Optional
+	@Expression(ExpressionSupport.SUPPORTED)
 	private List<Prompt> prompts;
 	
 	public Dialog getDialog() {

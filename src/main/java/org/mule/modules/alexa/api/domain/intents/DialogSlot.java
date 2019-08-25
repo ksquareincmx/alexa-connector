@@ -3,14 +3,27 @@ package org.mule.modules.alexa.api.domain.intents;
 import java.util.Collections;
 import java.util.Map;
 
+import org.mule.runtime.api.meta.ExpressionSupport;
+import org.mule.runtime.extension.api.annotation.Expression;
+import org.mule.runtime.extension.api.annotation.param.Optional;
+import org.mule.runtime.extension.api.annotation.param.Parameter;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class DialogSlot {
 
 	@JsonProperty("name")
+	@Parameter
+	@Expression(ExpressionSupport.SUPPORTED)
 	private String sname; 
 	
+	@Optional
+	@Parameter
+	@Expression(ExpressionSupport.SUPPORTED)
 	private String type;
+	@Optional
+	@Parameter
+	@Expression(ExpressionSupport.SUPPORTED)
 	private Map<String,String> prompts = Collections.emptyMap();
 	
 	public DialogSlot() {

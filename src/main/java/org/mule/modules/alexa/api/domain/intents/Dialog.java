@@ -6,11 +6,23 @@ package org.mule.modules.alexa.api.domain.intents;
 
 import java.util.List;
 
+import org.mule.runtime.api.meta.ExpressionSupport;
+import org.mule.runtime.extension.api.annotation.Expression;
+import org.mule.runtime.extension.api.annotation.param.NullSafe;
+import org.mule.runtime.extension.api.annotation.param.Optional;
+import org.mule.runtime.extension.api.annotation.param.Parameter;
+
 public class Dialog {
 
 
+	@Parameter
+	@Optional
+	@Expression(ExpressionSupport.SUPPORTED)
 	private List<DialogIntent> intents;
 
+	@Parameter
+	@Optional
+	@Expression(ExpressionSupport.SUPPORTED)
 	private String delegationStrategy = "ALWAYS";
 
 	public List<DialogIntent> getIntents() {
