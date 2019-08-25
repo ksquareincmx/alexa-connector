@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:alexa="http://www.mulesoft.org/schema/mule/alexa"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/alexa http://www.mulesoft.org/schema/mule/alexa/current/mule-alexa.xsd
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd">
+	<configuration-properties file="automation-credentials.properties" />
+	<alexa:config name="Alexa_Config" doc:name="Alexa Config" doc:id="f1b32998-0b75-4943-b021-8eeb9adba1b7" >
+		<alexa:connection >
+			<alexa:oauth-authorization-code consumerKey="${alexa.consumerKey}" consumerSecret="${alexa.consumerSecret}" scopes="${alexa.scopes}" resourceOwnerId="${alexa.resourceOwnerId}" />
+			<alexa:oauth-callback-config listenerConfig="${alexa.listenerConfig}" callbackPath="${alexa.callbackPath}" authorizePath="${alexa.authorizePath}" externalCallbackUrl="${alexa.externalCallbackUrl}" />
+		</alexa:connection>
+	</alexa:config>
+	<flow name="updated-getskill-infoFlow" doc:id="164b5dab-ebd6-41a1-b93c-c395bcb53655" >
+		<alexa:get-skill-info doc:name="Get skill info" doc:id="7a1cacc8-1612-4a0a-ac50-f57cd11d75eb" config-ref="Alexa_Config" skillId="amzn1.ask.skill.d2c6b988-cd0f-4ffe-b786-e192218adcf7"/>
+	</flow>
+</mule>
