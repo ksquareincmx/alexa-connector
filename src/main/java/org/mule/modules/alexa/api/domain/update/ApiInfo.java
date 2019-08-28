@@ -36,9 +36,9 @@ public class ApiInfo {
 
 		EndpointInfo endpoint;
 
-		public CustomApi(String endPoint) {
+		public CustomApi(String endPoint , String type) {
 
-			this.endpoint = new EndpointInfo(endPoint);
+			this.endpoint = new EndpointInfo(endPoint, "Trusted");
 
 		}
 

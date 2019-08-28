@@ -11,10 +11,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.jar.Manifest;
 
 import org.mule.modules.alexa.api.domain.AlexaRequestURL;
 import org.mule.modules.alexa.api.domain.intents.Intent;
 import org.mule.modules.alexa.api.domain.intents.InteractionModel;
+import org.mule.modules.alexa.api.domain.update.EndpointInfo;
 import org.mule.modules.alexa.internal.connection.AlexaConnection;
 import org.mule.modules.alexa.internal.error.AlexaApiErrorType;
 import org.mule.modules.alexa.internal.exceptions.AlexaApiException;
@@ -140,7 +142,7 @@ public class AlexaOperations {
 	@MediaType(value = ANY, strict = false)
 	@Alias("updateSkill")
 	public String updateSkill(@Connection AlexaConnection alexaConnection,  @Expression(SUPPORTED) String skillId,
-			 String apiEndpoint, List<String> interfaces, List<String> permissions, String eventEndpoint,
+			 String apiEndpoint, List<String> interfaces, List<String> permissions, EndpointInfo eventEndpoint,
 			List<String> subscriptions) throws AlexaApiException {
 		LOGGER.info("Update skill method with skillId {}", skillId);
 		String result; 
@@ -171,4 +173,5 @@ public class AlexaOperations {
 	}
 
 	
+	//public void update(InteractionModel model, Manifest m)
 }

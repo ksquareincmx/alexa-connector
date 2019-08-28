@@ -5,7 +5,7 @@ import static org.hamcrest.core.Is.is;
 import org.mule.functional.junit4.MuleArtifactFunctionalTestCase;
 import org.junit.Test;
 
-/*
+/**
  public class AlexaoauthOperationsTestCase extends MuleArtifactFunctionalTestCase {
 
 	 
@@ -34,4 +34,4 @@ import org.junit.Test;
   }
 }
 
-*/
+**/

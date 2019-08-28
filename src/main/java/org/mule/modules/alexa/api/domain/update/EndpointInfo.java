@@ -4,24 +4,31 @@
 
 package org.mule.modules.alexa.api.domain.update;
 
+import org.mule.runtime.api.meta.ExpressionSupport;
+import org.mule.runtime.extension.api.annotation.Expression;
+import org.mule.runtime.extension.api.annotation.param.Optional;
+import org.mule.runtime.extension.api.annotation.param.Parameter;
+
 public class EndpointInfo {
 
 	public EndpointInfo() {
 
 	}
 
-	public EndpointInfo(String uri) {
-		this.uri = uri;
-		//this.sslCertificateType = "Trusted";
-	}
 
 	public EndpointInfo(String uri, String sslCertificateType) {
 
 		this.uri = uri;
-		//this.sslCertificateType = sslCertificateType;
+	    this.sslCertificateType = sslCertificateType;
 	}
-
+	@Parameter
+	@Optional
+	@Expression(ExpressionSupport.SUPPORTED)
 	private String uri;
+	
+	@Parameter
+	@Optional
+	@Expression(ExpressionSupport.SUPPORTED)
 	private String sslCertificateType ;
 
 	public String getUri() {

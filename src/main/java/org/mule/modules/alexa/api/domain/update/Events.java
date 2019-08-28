@@ -13,11 +13,6 @@ public class Events {
 		
 	}
 	
-	public Events(String endPoint) {
-		this.endpoint = new EndpointInfo(endPoint, "");
-	}
-	
-
 	private EndpointInfo endpoint;
 	private List<Map<String, String>> subscriptions;
 

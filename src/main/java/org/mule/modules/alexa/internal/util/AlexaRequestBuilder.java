@@ -42,6 +42,7 @@ import org.mule.modules.alexa.api.domain.intents.PromptInfo;
 import org.mule.modules.alexa.api.domain.intents.Variation;
 import org.mule.modules.alexa.api.domain.update.ApiInfo;
 import org.mule.modules.alexa.api.domain.update.ApiInfo.CustomApi;
+import org.mule.modules.alexa.api.domain.update.EndpointInfo;
 import org.mule.modules.alexa.api.domain.update.Events;
 import org.mule.modules.alexa.api.domain.update.Locale;
 import org.mule.modules.alexa.api.domain.update.Manifest;
@@ -107,7 +108,7 @@ public class AlexaRequestBuilder {
 		localesPrivacy.put("en-US", privacyLocale);
 		PrivacyComplaince privacyComplaince = new PrivacyComplaince(localesPrivacy);
 		// create apiinfo and set endpoint
-		ApiInfo apiInfo = createApiInfo(endpoint);
+		ApiInfo apiInfo = createApiInfo(endpoint, "Trusted");
 
 		// create manifest and set api,publish info to manifest
 		Manifest manifest = new Manifest();
@@ -118,8 +119,11 @@ public class AlexaRequestBuilder {
 		String jsonStr = null;
 		try {
 			jsonStr = mapper.writeValueAsString(createSkill);
+			JsonNode newNode = removeExtraFields((ObjectNode) mapper.readTree(jsonStr));
+
+			jsonStr = mapper.writeValueAsString(newNode);
 			LOGGER.debug("Create Alexa Skill request: {}", jsonStr);
-		} catch (JsonProcessingException e) {
+		} catch (IOException e) {
 			// TODO: handle exception
 			LOGGER.error("Exception while serializing json in createAlexaSkillRequestBuilder {}", e);
 			throw new AlexaApiException(e.getMessage(), AlexaApiErrorType.JSON_PARSER_EXCEPTION);
@@ -254,13 +258,16 @@ public class AlexaRequestBuilder {
 	}
 
 	public String createUpdateRequest(String skillId, String apiEndpoint, List<String> interfaces,
-			List<String> permission, String eventEndpoint, List<String> subscriptions) {
+			List<String> permission, EndpointInfo eventEndpoint, List<String> subscriptions) {
 
-		ApiInfo apiInfo = createApiInfo(apiEndpoint);
-		Events events = new Events(eventEndpoint);
+		ApiInfo apiInfo = createApiInfo(apiEndpoint, "");
+		Events events = new Events(eventEndpoint, null);
 		events.setSubscriptions(listToListMap(subscriptions, "eventName"));
 		// setting api,events,permission to manifest
+	
+		PublishInfo p = new PublishInfo(false, "Hi alexa", "HEALTH_AND_FITNESS");
 		Manifest manifest = new Manifest();
+		manifest.setPublishingInformation(p);
 		manifest.setApis(apiInfo);
 		manifest.setEvents(events);
 		manifest.setPermissions(listToListMap(permission, "name"));
@@ -269,8 +276,11 @@ public class AlexaRequestBuilder {
 		String res = null;
 		try {
 			res = mapper.writeValueAsString(skill);
+			JsonNode newNode = removeExtraFields((ObjectNode) mapper.readTree(res));
+
+			res = mapper.writeValueAsString(newNode);
 			LOGGER.debug("createUpdateRequest json  {}", res);
-		} catch (JsonProcessingException e) {
+		} catch (IOException e) {
 			LOGGER.error("Exception while serializing json in createUpdateRequest {}", e);
 			throw new AlexaApiException(e.getMessage(), AlexaApiErrorType.JSON_PARSER_EXCEPTION);
 		}
@@ -290,9 +300,9 @@ public class AlexaRequestBuilder {
 		return listmap;
 	}
 
-	public ApiInfo createApiInfo(String endpoint) {
+	public ApiInfo createApiInfo(String endpoint, String type) {
 
-		return new ApiInfo(createCustomApi(endpoint));
+		return new ApiInfo(createCustomApi(endpoint, type));
 	}
 
 	public PublishInfo createPublishingInfo(Map<String, Locale> locales, String category,
@@ -308,8 +318,8 @@ public class AlexaRequestBuilder {
 
 	}
 
-	private CustomApi createCustomApi(String endpoint) {
-		return new CustomApi(endpoint);
+	private CustomApi createCustomApi(String endpoint, String type) {
+		return new CustomApi(endpoint, type);
 	}
 
 	public static ObjectNode removeExtraFields(final ObjectNode jsonNode) {
