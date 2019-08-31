@@ -179,11 +179,12 @@ public class AlexaOperations {
 		
 		String manifestRes  =   updateManifest(alexaConnection,skillId,manifest);
 		LOGGER.debug("UpdateSkill respoonse: {}, {}",interactionRes,manifestRes);
-		if(interactionRes.equals(AlexaRequestURL.SUCCESS) &&
-				manifestRes.equals(AlexaRequestURL.SUCCESS)) {
-			return "";
+		if(interactionRes.contains(AlexaRequestURL.ACCEPTED) &&
+				manifestRes.contains(AlexaRequestURL.ACCEPTED)) {
+		return "Request Accepeted successfully ";
+		}else {
+			return "Updating the skill having problem : "+interactionRes +" , "+ manifestRes;
 		}
-		return null;
 		
 	}
 }

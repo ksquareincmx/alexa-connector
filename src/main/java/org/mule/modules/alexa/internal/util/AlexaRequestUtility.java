@@ -182,6 +182,7 @@ public class AlexaRequestUtility {
 			post.setEntity(reqEntity);
 
 			CloseableHttpResponse response = client.execute(post);
+			
 			int code = response.getStatusLine().getStatusCode();
 
 			try {
@@ -190,7 +191,9 @@ public class AlexaRequestUtility {
 				if (code >= 200 && code < 300) {
 					// for update alexa is given 202 with {} 
 					if(code == 202) {
-						return  AlexaRequestURL.SUCCESS;
+					Header[] headers =	response.getHeaders("Location");
+					String locations = processHeader(headers);
+						return  buildmessage(code,locations);
 					}
 					return resEntity != null ? EntityUtils.toString(resEntity) : null;
 				} else {
@@ -246,6 +249,19 @@ public class AlexaRequestUtility {
 		return val;
 	}
 	
+	private static String buildmessage(int code,String locationUrl) {
+		StringBuilder sb = new StringBuilder("{");
+			sb.append("\"code\":");
+			sb.append(code);
+			sb.append(",");
+			sb.append("\"message\":");
+			sb.append("\"Request accepted check the the staus with URL "+locationUrl+"\"}");
+			return sb.toString();
+	}
 	
-
+	public static void main(String[] a) {
+		String s = buildmessage(200, "hi");
+		System.out.println(s.contains("200"));
+	}
+	
 }
