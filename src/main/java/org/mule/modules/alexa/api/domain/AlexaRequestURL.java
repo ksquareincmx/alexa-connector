@@ -20,7 +20,7 @@ public interface AlexaRequestURL {
 	String UPDATE_INTERACTION_SCHEMA = BASE_URL + "/%s/stages/development/interactionModel/locales/en-US";
 
 	String TRUSTED_CERT = "Trusted";
-	String ACCEPTED = 200;
+	String ACCEPTED = "200";
 	String STATUS_HEADER = "Location";
 	String DEFAULT_LOCALE ="en-US";
 
