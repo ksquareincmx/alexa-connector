@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.mulesoft.connectors</groupId>
+	<groupId>com.mulesoft.connectors.test</groupId>
 	<artifactId>mule-alexa-extension-one</artifactId>
-	<version>1.2.11-SNAPSHOT</version>
+	<version>1.0.3-SNAPSHOT</version>
 	<packaging>mule-extension</packaging>
 	<name>Alexa Connector - Mule 4</name>
 
@@ -16,6 +15,15 @@
 	</parent>
 
 	<dependencies>
+	
+	<!-- https://mvnrepository.com/artifact/org.mule.runtime/mule-service-http-api -->
+<dependency>
+    <groupId>org.mule.runtime</groupId>
+    <artifactId>mule-service-http-api</artifactId>
+    <version>4.1.1</version>
+    <scope>provided</scope>
+</dependency>
+	
 		<!-- Change this with either Jackson or Gson implementation -->
 		<dependency>
 			<groupId>com.googlecode.json-simple</groupId>

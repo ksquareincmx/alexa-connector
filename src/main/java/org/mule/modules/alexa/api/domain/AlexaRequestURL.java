@@ -3,6 +3,7 @@
  */
 
 package org.mule.modules.alexa.api.domain;
+
 /**
  * 
  * Class used to maintain constants of module
@@ -11,11 +12,18 @@ package org.mule.modules.alexa.api.domain;
 public interface AlexaRequestURL {
 
 	String BASE_URL = "https://api.amazonalexa.com/v1/skills";
-	String GET_ALEXA_INFO = BASE_URL+"/%s/stages/development/manifest";
+	String GET_ALEXA_INFO = BASE_URL + "/%s/stages/development/manifest";
 	String CREATE_ALEXA_SKILL = BASE_URL;
-	String UPDATE_ALEXA_SKILL =  BASE_URL+"/%s/stages/development/interactionModel/locales/en-US";
-	String TEST_ALEXA_SKILL = BASE_URL+"/%s/stages/%s/invocations";
-	String UPDATE_EXISTING_SKILL = BASE_URL+"/%s/stages/development/manifest";
-	String UPDATE_INTERACTION_SCHEMA = BASE_URL+"/%s/stages/development/interactionModel/locales/en-US";
-	
+	String UPDATE_ALEXA_SKILL = BASE_URL + "/%s/stages/development/interactionModel/locales/en-US";
+	String TEST_ALEXA_SKILL = BASE_URL + "/%s/stages/%s/invocations";
+	String UPDATE_EXISTING_SKILL = BASE_URL + "/%s/stages/development/manifest";
+	String UPDATE_INTERACTION_SCHEMA = BASE_URL + "/%s/stages/development/interactionModel/locales/en-US";
+
+	String TRUSTED_CERT = "Trusted";
+	String SUCCESS = "SUCCESS";
+	String STATUS_HEADER = "Location";
+	String DEFAULT_LOCALE ="en-US";
+
+	//String SUCCESS_MSG = "{\"code\":\" %s \", \"message\":
+
 }

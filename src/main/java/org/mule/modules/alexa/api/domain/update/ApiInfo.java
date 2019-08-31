@@ -4,18 +4,20 @@
 
 package org.mule.modules.alexa.api.domain.update;
 
-import java.util.List;
-import java.util.Map;
-
+import org.mule.modules.alexa.api.domain.AlexaRequestURL;
+import org.mule.runtime.extension.api.annotation.Expression;
+import org.mule.runtime.extension.api.annotation.param.Parameter;
 
 public class ApiInfo {
 
+	@Parameter
+	@Expression
 	private CustomApi custom;
 
 	public ApiInfo() {
-		
+
 	}
-	
+
 	public ApiInfo(CustomApi custom) {
 		this.custom = custom;
 	}
@@ -28,37 +30,9 @@ public class ApiInfo {
 		this.custom = custom;
 	}
 
-	public static class CustomApi {
-
-		public CustomApi() {
-
-		}
-
-		EndpointInfo endpoint;
-
-		public CustomApi(String endPoint , String type) {
-
-			this.endpoint = new EndpointInfo(endPoint, "Trusted");
-
-		}
-
-		List<Map<String, String>> interfaces;
-
-		public EndpointInfo getEndpoint() {
-			return endpoint;
-		}
-
-		public void setEndpoint(EndpointInfo endpoint) {
-			this.endpoint = endpoint;
-		}
-
-		public List<Map<String, String>> getInterfaces() {
-			return interfaces;
-		}
-
-		public void setInterfaces(List<Map<String, String>> interfaces) {
-			this.interfaces = interfaces;
-		}
-
+	public static  ApiInfo defaultApi(String endpoint) {
+	EndpointInfo endpointInfo = 	new EndpointInfo(endpoint, AlexaRequestURL.TRUSTED_CERT);
+	return new ApiInfo(new CustomApi(endpointInfo,null));
 	}
+	
 }

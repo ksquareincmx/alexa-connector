@@ -6,22 +6,38 @@ package org.mule.modules.alexa.api.domain.update;
 
 import java.util.Map;
 
+import org.mule.runtime.extension.api.annotation.Expression;
+import org.mule.runtime.extension.api.annotation.param.Parameter;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class PrivacyComplaince {
 
+	@Parameter
+	@Expression
 	private boolean allowsPurchases;
+	@Parameter
+	@Expression
 	private boolean usesPersonalInfo;
+	@Parameter
+	@Expression
 	private boolean isChildDirected;
+	@Parameter
+	@Expression
 	private boolean isExportCompliant;
+	@Parameter
+	@Expression
 	private boolean containsAds;
+	@Parameter
+	@Expression
 	private Map<String, Locale> locales;
 	
-	
+	public PrivacyComplaince() {
+		
+	}
 
 	public PrivacyComplaince(boolean allowsPurchases, boolean usesPersonalInfo, boolean isChildDirected,
 			boolean isExportCompliant, boolean containsAds) {
-		super();
 		this.allowsPurchases = allowsPurchases;
 		this.usesPersonalInfo = usesPersonalInfo;
 		this.isChildDirected = isChildDirected;

@@ -7,13 +7,21 @@ package org.mule.modules.alexa.api.domain.update;
 import java.util.List;
 import java.util.Map;
 
+import org.mule.runtime.extension.api.annotation.Expression;
+import org.mule.runtime.extension.api.annotation.param.Optional;
+import org.mule.runtime.extension.api.annotation.param.Parameter;
+
 public class Events {
 	
 	public Events() {
 		
 	}
-	
+	@Parameter
+	@Expression
 	private EndpointInfo endpoint;
+	@Parameter
+	@Expression
+	@Optional
 	private List<Map<String, String>> subscriptions;
 
 

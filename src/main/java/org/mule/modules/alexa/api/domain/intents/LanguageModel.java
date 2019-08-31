@@ -16,7 +16,7 @@ public class LanguageModel {
 	@Parameter
 	@Optional
 	@Expression(ExpressionSupport.SUPPORTED)
-	public List<LanguageIntent> intents;
+	public List<LanguageIntent> languateIntents;
 	
 	@Parameter
 	@Optional
@@ -25,12 +25,13 @@ public class LanguageModel {
 
 	
 
-	public List<LanguageIntent> getIntents() {
-		return intents;
+	
+	public List<LanguageIntent> getLanguateIntents() {
+		return languateIntents;
 	}
 
-	public void setIntents(List<LanguageIntent> intents) {
-		this.intents = intents;
+	public void setLanguateIntents(List<LanguageIntent> languateIntents) {
+		this.languateIntents = languateIntents;
 	}
 
 	public String getInvocationName() {

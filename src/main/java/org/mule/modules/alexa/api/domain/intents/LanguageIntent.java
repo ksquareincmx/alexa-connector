@@ -10,7 +10,7 @@ import org.mule.runtime.extension.api.annotation.param.Parameter;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class LanguageIntent {//extends Intent{
+public class LanguageIntent {
 	
 	public LanguageIntent() {
 		
@@ -23,14 +23,14 @@ public class LanguageIntent {//extends Intent{
 	@Parameter
 	@Optional
 	@NullSafe
-	@Expression(ExpressionSupport.NOT_SUPPORTED)
+	@Expression(ExpressionSupport.SUPPORTED)
 	private List<Slot> slots ;
 
 
 	@Parameter
 	@Optional
 	@NullSafe
-	@Expression(ExpressionSupport.NOT_SUPPORTED)
+	@Expression(ExpressionSupport.SUPPORTED)
 	private List<String> samples;
 
 	public LanguageIntent(String name ,List<Slot> slots, List<String> samples){

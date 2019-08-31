@@ -7,17 +7,34 @@ package org.mule.modules.alexa.api.domain.update;
 import java.util.List;
 import java.util.Map;
 
+import org.mule.runtime.extension.api.annotation.Expression;
+import org.mule.runtime.extension.api.annotation.dsl.xml.ParameterDsl;
+import org.mule.runtime.extension.api.annotation.param.Optional;
+import org.mule.runtime.extension.api.annotation.param.Parameter;
+
 public class Manifest {
 
 	private String manifestVersion;
+	
+	@Parameter
+	@Expression
 	private PublishInfo publishingInformation;
 
+	@Parameter
+	@Expression
+	@Optional
 	private PrivacyComplaince privacyAndCompliance;
 
+	@Parameter
+	@Expression
 	private Events events;
 
+	@Parameter
+	@Expression
 	private ApiInfo apis;
 
+	@Parameter
+	@ParameterDsl(allowInlineDefinition=true)
 	private List<Map<String, String>> permissions;
 
 	public Manifest() {

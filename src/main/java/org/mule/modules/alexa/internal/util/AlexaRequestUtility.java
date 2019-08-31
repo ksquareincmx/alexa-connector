@@ -6,6 +6,8 @@ package org.mule.modules.alexa.internal.util;
 
 import java.io.IOException;
 
+import org.apache.http.Header;
+import org.apache.http.HeaderElement;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.EntityBuilder;
@@ -16,15 +18,13 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.mule.modules.alexa.api.domain.AlexaRequestURL;
 import org.mule.modules.alexa.internal.error.AlexaApiErrorType;
 import org.mule.modules.alexa.internal.exceptions.AlexaApiException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.eventbus.DeadEvent;
 
 public class AlexaRequestUtility {
 
@@ -32,6 +32,8 @@ public class AlexaRequestUtility {
 	private static final int CONNECTION_REQUEST_TIMEOUT_MS = 5000;
 	private static final int CONNTECTION_TIMEOUT_MS = 5000;
 	private static final int SOCKET_TIMEOUT_MS = 5000;
+	
+	
 
 	/**
 	 * Return {@code String} response got form Alexa server, requires basic
@@ -57,12 +59,15 @@ public class AlexaRequestUtility {
 			get.setHeader("Content-Type", "application/json");
 
 			CloseableHttpResponse response = client.execute(get);
+			response.getHeaders("");
 			int code = response.getStatusLine().getStatusCode();
 
 			try {
 
 				HttpEntity entity = response.getEntity();
+				//entity.ge
 				if (code >= 200 && code < 300) {
+					
 					return entity != null ? EntityUtils.toString(entity) : null;
 				} else {
 					// throwing error if we get 400 and 500
@@ -183,6 +188,10 @@ public class AlexaRequestUtility {
 
 				HttpEntity resEntity = response.getEntity();
 				if (code >= 200 && code < 300) {
+					// for update alexa is given 202 with {} 
+					if(code == 202) {
+						return  AlexaRequestURL.SUCCESS;
+					}
 					return resEntity != null ? EntityUtils.toString(resEntity) : null;
 				} else {
 					// Handle the error response error if we get 400 and 500
@@ -226,5 +235,17 @@ public class AlexaRequestUtility {
 		final CloseableHttpClient httpclient = HttpClients.custom().setDefaultRequestConfig(requestConfig).build();
 		return httpclient;
 	}
+	
+	// Alexa respone gives locationurl header to track the status of request after submission
+	private String processHeader(Header[] headers){
+		String val = null;
+		if(headers != null && headers.length > 0) {
+			HeaderElement element  = headers[0].getElements()[0];
+		val =	element.getValue();
+		}
+		return val;
+	}
+	
+	
 
 }

@@ -7,7 +7,6 @@ package org.mule.modules.alexa.internal.util;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -41,9 +40,6 @@ import org.mule.modules.alexa.api.domain.intents.Prompt;
 import org.mule.modules.alexa.api.domain.intents.PromptInfo;
 import org.mule.modules.alexa.api.domain.intents.Variation;
 import org.mule.modules.alexa.api.domain.update.ApiInfo;
-import org.mule.modules.alexa.api.domain.update.ApiInfo.CustomApi;
-import org.mule.modules.alexa.api.domain.update.EndpointInfo;
-import org.mule.modules.alexa.api.domain.update.Events;
 import org.mule.modules.alexa.api.domain.update.Locale;
 import org.mule.modules.alexa.api.domain.update.Manifest;
 import org.mule.modules.alexa.api.domain.update.PrivacyComplaince;
@@ -87,14 +83,14 @@ public class AlexaRequestBuilder {
 	 * @return
 	 * @throws AlexaApiException
 	 */
-	public String createAlexaSkillRequestBuilder(String vendorId, String summary, List<String> examplePhrases,
-			List<String> keywords, String skillName, String description, String endpoint) throws AlexaApiException {
+	public String createAlexaSkillRequestBuilder(String vendorId, String summary,
+			String skillName, String description, String endpoint) throws AlexaApiException {
 
-		LOGGER.debug("Method parameters are: vendorId: {} , summary: {} ,keyword: {} , skillName: {} ,endpoint: {} ",
-				vendorId, summary, keywords, skillName, endpoint);
+		LOGGER.debug("Method parameters are: vendorId: {} , summary: {}  , skillName: {} ,endpoint: {} ",
+				vendorId, summary, skillName, endpoint);
 
 		// create locale
-		Locale locale = createLocaleInfo(skillName, summary, description, keywords, examplePhrases);
+		Locale locale = createLocaleInfo(skillName, summary, description);
 		HashMap<String, Locale> locales = new HashMap<>();
 		locales.put("en-US", locale);
 		// create publish information
@@ -108,7 +104,7 @@ public class AlexaRequestBuilder {
 		localesPrivacy.put("en-US", privacyLocale);
 		PrivacyComplaince privacyComplaince = new PrivacyComplaince(localesPrivacy);
 		// create apiinfo and set endpoint
-		ApiInfo apiInfo = createApiInfo(endpoint, "Trusted");
+		ApiInfo apiInfo =  ApiInfo.defaultApi(endpoint);
 
 		// create manifest and set api,publish info to manifest
 		Manifest manifest = new Manifest();
@@ -150,7 +146,7 @@ public class AlexaRequestBuilder {
 		Dialog dialog = new Dialog();
 		dialog.setIntents(mapIntnetToDialogIntent(intents));
 		LanguageModel language = new LanguageModel();
-		language.setIntents(mapIntnetToLanguageIntent(intents));
+		language.setLanguateIntents(mapIntnetToLanguageIntent(intents));
 		language.setInvocationName("my space fact");
 		interactionModel.setDialog(dialog);
 		interactionModel.setLanguageModel(language);
@@ -257,20 +253,8 @@ public class AlexaRequestBuilder {
 		return nowAsISO;
 	}
 
-	public String createUpdateRequest(String skillId, String apiEndpoint, List<String> interfaces,
-			List<String> permission, EndpointInfo eventEndpoint, List<String> subscriptions) {
+	public String createUpdateRequest(String skillId, Manifest manifest) {
 
-		ApiInfo apiInfo = createApiInfo(apiEndpoint, "");
-		Events events = new Events(eventEndpoint, null);
-		events.setSubscriptions(listToListMap(subscriptions, "eventName"));
-		// setting api,events,permission to manifest
-	
-		PublishInfo p = new PublishInfo(false, "Hi alexa", "HEALTH_AND_FITNESS");
-		Manifest manifest = new Manifest();
-		manifest.setPublishingInformation(p);
-		manifest.setApis(apiInfo);
-		manifest.setEvents(events);
-		manifest.setPermissions(listToListMap(permission, "name"));
 		UpdateSkill skill = new UpdateSkill(manifest);
 
 		String res = null;
@@ -288,39 +272,23 @@ public class AlexaRequestBuilder {
 
 	}
 
-	private List<Map<String, String>> listToListMap(List<String> data, String key) {
+	
 
-		List<Map<String, String>> listmap = new ArrayList<>();
-		for (String string : data) {
-			Map<String, String> map = new HashMap<String, String>();
-			map.put(key, string);
-			listmap.add(map);
-		}
-
-		return listmap;
-	}
-
-	public ApiInfo createApiInfo(String endpoint, String type) {
-
-		return new ApiInfo(createCustomApi(endpoint, type));
-	}
+	
 
 	public PublishInfo createPublishingInfo(Map<String, Locale> locales, String category,
 			boolean isAvailableWorldwide) {
 
-		return new PublishInfo(locales, isAvailableWorldwide, category);
+		return new PublishInfo(isAvailableWorldwide, category,null,null);
 	}
 
-	private Locale createLocaleInfo(String name, String summary, String description, List<String> keywords,
-			List<String> examplePhrases) {
+	private Locale createLocaleInfo(String name, String summary, String description) {
 
-		return new Locale(name, summary, description, keywords, examplePhrases);
+		return new Locale(name, summary, description);
 
 	}
 
-	private CustomApi createCustomApi(String endpoint, String type) {
-		return new CustomApi(endpoint, type);
-	}
+	
 
 	public static ObjectNode removeExtraFields(final ObjectNode jsonNode) {
 

@@ -10,10 +10,9 @@ import org.mule.runtime.extension.api.annotation.param.Parameter;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class DialogIntent {//extends Intent {
+public class DialogIntent {
 
 	public DialogIntent() {
-		super();
 	}
 	
 	@Parameter

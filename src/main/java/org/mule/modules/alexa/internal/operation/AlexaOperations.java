@@ -11,12 +11,11 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.jar.Manifest;
 
 import org.mule.modules.alexa.api.domain.AlexaRequestURL;
 import org.mule.modules.alexa.api.domain.intents.Intent;
 import org.mule.modules.alexa.api.domain.intents.InteractionModel;
-import org.mule.modules.alexa.api.domain.update.EndpointInfo;
+import org.mule.modules.alexa.api.domain.update.Manifest;
 import org.mule.modules.alexa.internal.connection.AlexaConnection;
 import org.mule.modules.alexa.internal.error.AlexaApiErrorType;
 import org.mule.modules.alexa.internal.exceptions.AlexaApiException;
@@ -60,18 +59,16 @@ public class AlexaOperations {
 	 * @param endpoint
 	 * @param intents
 	 * @return String
-	 */
+	 */ 
 	@MediaType(value = ANY, strict = false)
 	@Alias("createSkill")
 	public String createSkill(@Connection AlexaConnection alexaConnection,  @Expression(SUPPORTED) String vendorId,
-			@Expression(SUPPORTED) String summary, @Expression(SUPPORTED) List<String> examplePhrases,
-			@Expression(SUPPORTED) List<String> keywords,  @Expression(SUPPORTED) String skillName,
+			@Expression(SUPPORTED) String summary,  @Expression(SUPPORTED) String skillName,
 			@Expression(SUPPORTED) String description,  @Expression(SUPPORTED) String endpoint,
 			@Optional @NullSafe @Expression(ExpressionSupport.NOT_SUPPORTED) @ParameterDsl(allowReferences = false) List<Intent> intents) {
 
 		LOGGER.debug("Access token {}", alexaConnection.getAccessToken());
-		String alexaRequest = alexaRequestBuilder.createAlexaSkillRequestBuilder(vendorId, summary, examplePhrases,
-				keywords, skillName, description, endpoint);
+		String alexaRequest = alexaRequestBuilder.createAlexaSkillRequestBuilder(vendorId, summary, skillName, description, endpoint);
 		String createSkillResponse = alexaRequestUtility.doPost(AlexaRequestURL.CREATE_ALEXA_SKILL,
 				alexaConnection.getAccessToken(), alexaRequest);
 		LOGGER.info("Create Alexa Skill Response {}", createSkillResponse);
@@ -140,26 +137,24 @@ public class AlexaOperations {
 	}
 
 	@MediaType(value = ANY, strict = false)
-	@Alias("updateSkill")
-	public String updateSkill(@Connection AlexaConnection alexaConnection,  @Expression(SUPPORTED) String skillId,
-			 String apiEndpoint, List<String> interfaces, List<String> permissions, EndpointInfo eventEndpoint,
-			List<String> subscriptions) throws AlexaApiException {
-		LOGGER.info("Update skill method with skillId {}", skillId);
+	@Alias("updateSkillManifest")
+	public String updateManifest(@Connection AlexaConnection alexaConnection,  @Expression(SUPPORTED) String skillId,
+			@Optional @NullSafe	@Expression Manifest manifest) throws AlexaApiException {
+		LOGGER.info("Update Manifest with skillId {}", skillId);
 		String result; 
 
-		String updateRequest = alexaRequestBuilder.createUpdateRequest(skillId, apiEndpoint, interfaces, permissions,
-				eventEndpoint, subscriptions);
+		String updateRequest = alexaRequestBuilder.createUpdateRequest(skillId, manifest);
 		String url = String.format(AlexaRequestURL.UPDATE_EXISTING_SKILL, skillId);
 		result = alexaRequestUtility.doPut(url, alexaConnection.getAccessToken(), updateRequest);
 
-		LOGGER.info("Update skill method response  {}", result);
+		LOGGER.info("Update Manifest  response  {}", result);
 		return result;
 	}
 	
 	@MediaType(value = ANY, strict = false)
-	@Alias("updateIntents")
+	@Alias("updateSkillIntents")
 	public  String updateInteraction(@Connection AlexaConnection alexaConnection, 
-			@Optional @Expression(SUPPORTED) InteractionModel model ,
+			@Optional @NullSafe @Expression(SUPPORTED) InteractionModel model ,
 			@Expression(SUPPORTED) String skillId) {
 		
 		LOGGER.debug("Updating Interaction model {} , skillId {} ",model,skillId);
@@ -168,10 +163,27 @@ public class AlexaOperations {
 		String url = String.format(AlexaRequestURL.UPDATE_INTERACTION_SCHEMA , skillId);
 		String updateRes = 	alexaRequestUtility.doPut(url, alexaConnection.getAccessToken(), interactionSchema);
 		
-		LOGGER.debug("Updating Interaction model response {}",updateRes);
+		LOGGER.debug("Update Interaction model response {}",updateRes);
 		return updateRes;
 	}
 
-	
-	//public void update(InteractionModel model, Manifest m)
+	@MediaType(value = ANY, strict = false)
+	@Alias("updateSkill")
+	public String updateSkill(@Connection AlexaConnection alexaConnection, 
+			@Expression(SUPPORTED) String skillId,
+			@Optional @NullSafe @Expression InteractionModel interactionmodel, 
+			@Optional @NullSafe @Expression Manifest manifest
+			) throws AlexaApiException{
+		
+		String interactionRes =	updateInteraction(alexaConnection,interactionmodel,skillId);
+		
+		String manifestRes  =   updateManifest(alexaConnection,skillId,manifest);
+		LOGGER.debug("UpdateSkill respoonse: {}, {}",interactionRes,manifestRes);
+		if(interactionRes.equals(AlexaRequestURL.SUCCESS) &&
+				manifestRes.equals(AlexaRequestURL.SUCCESS)) {
+			return "";
+		}
+		return null;
+		
+	}
 }
