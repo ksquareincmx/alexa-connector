@@ -5,6 +5,7 @@
 package org.mule.modules.alexa.internal.config;
 
 import org.mule.modules.alexa.internal.connection.AlexaOauthConnectionProvider;
+import org.mule.modules.alexa.internal.connection.TokenConnection;
 import org.mule.modules.alexa.internal.operation.AlexaOperations;
 import org.mule.runtime.extension.api.annotation.Operations;
 import org.mule.runtime.extension.api.annotation.connectivity.ConnectionProviders;
@@ -15,7 +16,7 @@ import org.mule.runtime.extension.api.annotation.connectivity.ConnectionProvider
  * core from the extension.
  */
 @Operations(AlexaOperations.class)
-@ConnectionProviders(AlexaOauthConnectionProvider.class)
+@ConnectionProviders({TokenConnection.class, AlexaOauthConnectionProvider.class})
 public class AlexaConfiguration {
 
 }

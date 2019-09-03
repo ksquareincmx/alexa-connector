@@ -1,5 +1,6 @@
 package org.mule.modules.alexa.automation.function;
 
+import java.util.Map;
 import java.util.Properties;
 
 import javax.inject.Inject;
@@ -8,43 +9,53 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mule.extension.alexaoauth.AlexaoauthOperationsTestCase;
 import org.mule.functional.junit4.MuleArtifactFunctionalTestCase;
+import org.mule.modules.alexa.api.domain.update.Manifest;
 import org.mule.modules.alexa.internal.connection.AlexaConnection;
 import org.mule.modules.alexa.internal.operation.AlexaOperations;
 import org.mule.modules.alexa.internal.util.AlexaRequestBuilder;
 
-/** public class AlexaGetSkillTestCase extends MuleArtifactFunctionalTestCase {
-	
- Properties AlexaProperties;
-	
-	 @Override
-	protected String getConfigFile() {
-		return "test-mule-getinfoskill.xml";
-	}
-	
-	smaple sample ;
-	
-	//AlexaConnection connection = new AlexaConnection("wghvdcjahwcdh") ;
-	
-	
-	//AlexaOperations operation = new AlexaOperations() ;
-	
-	@Before
-	public void initialSetup() throws Exception {
-		//connection  = Mockito.mock(AlexaConnection.class);
-		sample = new smaple();
-		AlexaRequestBuilder builder = Mockito.mock(AlexaRequestBuilder.class);
-		
-	}
-	
-	@Test
-	public void testAlexaSkillInfo(){
-		
-		sample.hello();
-		//operation.getSkillInfo(connection, "454512");
-		
-	} 
-	
-	
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-} **/
+import junit.framework.Assert;
+
+ public class AlexaGetSkillTestCase extends AlexaoauthOperationsTestCase {
+	
+ 
+		// private ObjectMapper mapper = new ObjectMapper();
+	  @Override
+	  protected String getConfigFile() {
+	    return "test-mule-getinfoskill.xml";
+	  }
+	  
+	  
+
+	  @Test
+	  public void executeSayHiOperation() throws Exception {
+	    String payloadValue = ((String) flowRunner("oauth-testFlow").run()
+	                                      .getMessage()
+	                                      .getPayload()
+	                                      .getValue());
+	    
+	    ObjectMapper mapper = new ObjectMapper();
+
+		Map<String, Object> jsonObject = mapper.readValue(payloadValue, Map.class);
+
+		 //result = (int) jsonObject.get("uri");
+	    
+	  Manifest manifest = mapper.readValue(payloadValue, Manifest.class);
+	    Assert.assertEquals(payloadValue.contains("https://alexaservice.us-e1.cloudhub.io/test"),true);
+	  }
+
+	 /** @Test
+	  public void executeRetrieveInfoOperation() throws Exception {
+	    String payloadValue = ((String) flowRunner("retrieveInfoFlow")
+	                                      .run()
+	                                      .getMessage()
+	                                      .getPayload()
+	                                      .getValue());
+	    assertThat(payloadValue, is("Using Configuration [configId] with Connection id [aValue:100]"));
+	  } **/
+
+} 

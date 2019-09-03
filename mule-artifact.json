@@ -1,3 +1,11 @@
 {
-  "minMuleVersion": "4.2.0"
+  "minMuleVersion": "4.2.0",
+  "classLoaderModelLoaderDescriptor": {
+    "id": "mule",
+   "attributes": {
+           "exportedPackages": [
+               "com.fasterxml.jackson.core"
+     ]
+  }
+  }
 }
