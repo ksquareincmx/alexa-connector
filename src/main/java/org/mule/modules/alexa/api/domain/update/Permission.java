@@ -14,7 +14,7 @@ public class Permission {
 	}
 
 	@Parameter
-	@Alias("Permission Name")
+	@Alias("PermissionName")
 	private String pname;
 
 	@JsonProperty("name")

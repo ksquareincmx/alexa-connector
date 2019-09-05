@@ -1,6 +1,5 @@
 package org.mule.modules.alexa.api.domain.intents;
 
-import java.util.Collections;
 import java.util.Map;
 
 import org.mule.runtime.api.meta.ExpressionSupport;
@@ -15,8 +14,8 @@ public class DialogSlot {
 	@JsonProperty("name")
 	@Parameter
 	@Expression(ExpressionSupport.SUPPORTED)
-	private String sname; 
-	
+	private String sname;
+
 	@Optional
 	@Parameter
 	@Expression(ExpressionSupport.SUPPORTED)
@@ -24,23 +23,20 @@ public class DialogSlot {
 	@Optional
 	@Parameter
 	@Expression(ExpressionSupport.SUPPORTED)
-	private Map<String,String> prompts = Collections.emptyMap();
-	
+	private Map<String, String> slotprompt;
+
 	public DialogSlot() {
-		
-	}
-	
-	
-	
-	public Map<String, String> getPrompts() {
-		return prompts;
+
 	}
 
-
-	public void setPrompts(Map<String, String> prompts) {
-		this.prompts = prompts;
+	@JsonProperty("prompts")
+	public Map<String, String> getSlotprompt() {
+		return slotprompt;
 	}
 
+	public void setSlotprompt(Map<String, String> slotprompt) {
+		this.slotprompt = slotprompt;
+	}
 
 	public DialogSlot(String sname, String type) {
 		super();
@@ -48,25 +44,20 @@ public class DialogSlot {
 		this.type = type;
 	}
 
-
 	public String getSname() {
 		return sname;
 	}
-
 
 	public void setSname(String sname) {
 		this.sname = sname;
 	}
 
-
 	public String getType() {
 		return type;
 	}
 
-
 	public void setType(String type) {
 		this.type = type;
 	}
-
 
 }

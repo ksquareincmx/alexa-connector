@@ -24,10 +24,6 @@ public class DialogIntent {
 	@Expression(ExpressionSupport.SUPPORTED)
 	private String confirmationRequired;
 
-	@Parameter
-	@Optional
-	@Expression(ExpressionSupport.SUPPORTED)
-	private String delegationStrategy;
 
 	@Parameter
 	@Optional
@@ -37,14 +33,14 @@ public class DialogIntent {
 	@Parameter
 	@Optional
 	@Expression(ExpressionSupport.SUPPORTED)
-	private Map<String, String> dialogPrompts ;//= Collections.emptyMap();
+	private Map<String, String> dialogPrompts ;
 
 	public DialogIntent(String intentName, String confirmationRequired, List<DialogSlot> slots,
-			Map<String, String> prompts) {
+			Map<String, String> dialogPrompts) {
 		this.intentName = intentName;
 		this.confirmationRequired = confirmationRequired;
 		this.dialogSlots = slots;
-		this.dialogPrompts = prompts;
+		this.dialogPrompts = dialogPrompts;
 		
 	}
 	@JsonProperty("name")
@@ -64,13 +60,7 @@ public class DialogIntent {
 		this.confirmationRequired = confirmationRequired;
 	}
 
-	public String getDelegationStrategy() {
-		return delegationStrategy;
-	}
-
-	public void setDelegationStrategy(String delegationStrategy) {
-		this.delegationStrategy = delegationStrategy;
-	}
+	
 
 	@JsonProperty("slots")
 	public List<DialogSlot> getDialogSlots() {
@@ -93,7 +83,7 @@ public class DialogIntent {
 	@Override
 	public String toString() {
 		return "DialogIntent [intentName=" + intentName + ", confirmationRequired=" + confirmationRequired
-				+ ", delegationStrategy=" + delegationStrategy + ", slots=" + dialogSlots + ", prompts=" + dialogPrompts
+				+ ", slots=" + dialogSlots + ", prompts=" + dialogPrompts
 				+ "]";
 	}
 

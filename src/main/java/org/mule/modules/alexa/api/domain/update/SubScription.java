@@ -6,7 +6,7 @@ import org.mule.runtime.extension.api.annotation.param.Parameter;
 public class SubScription {
 
 	@Parameter
-	@Alias("Event Name")
+	@Alias("EventName")
 	private String eventName ;
 
 	public String getEventName() {

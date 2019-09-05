@@ -1,12 +1,11 @@
 package org.mule.modules.alexa.api.domain.update;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.mule.modules.alexa.api.domain.AlexaRequestURL;
 import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * (c) 2003-2017 MuleSoft, Inc. The software in this package is published under the terms of the Commercial Free Software license V.1 a copy of which has been included with this distribution in the LICENSE.md file.
@@ -15,59 +14,57 @@ import org.mule.runtime.extension.api.annotation.param.Parameter;
 public class Locale {
 
 	@Parameter
-	@Expression
 	private String privacyPolicyUrl;
 	@Parameter
 	@Expression
 	private String termsOfUseUrl;
 	@Parameter
-	@Expression
-	private String name;
+	private String skillName;
 	@Parameter
-	@Expression
 	private String summary;
 	@Parameter
-	@Expression
 	private String description;
 	@Parameter
-	@Expression
 	private String smallIconUri;
+	
 	@Parameter
-	@Expression
 	private String  largeIconUri;
+	
 	@Parameter
-	@Expression
 	private List<String> keywords;
+
 	@Parameter
-	@Expression
-	private List<String>examplePhrases;
+	private List<String> examplePhrases;
 	
 	public Locale() {
-		
+		//this(privacyPolicyUrl,)
 	}
 	
+	
+
 	public Locale(String privacyPolicyUrl, String termsOfUseUrl) {
+		super();
 		this.privacyPolicyUrl = privacyPolicyUrl;
 		this.termsOfUseUrl = termsOfUseUrl;
 	}
-	
-	public Locale(String name, String summary, String description, List<String> keywords, List<String> examplePhrases) {
-		this.name = name;
-		this.summary = summary;
-		this.description = description;
-		this.keywords = keywords;
-		this.examplePhrases = examplePhrases;
-	}
-	
-	public Locale(String name, String summary, String description) {
-		this.name = name;
+
+
+
+	public Locale(String skillName, String summary, String description) {
+		super();
+		this.skillName = skillName;
 		this.summary = summary;
 		this.description = description;
 	}
 
-	public Locale(String name, String summary, String description, String smallIconUri, String largeIconUri,
-			List<String> keywords, List<String> examplePhrases) {
-		this.name = name;
+
+
+	public Locale(String privacyPolicyUrl, String termsOfUseUrl, String skillName, String summary, String description,
+			String smallIconUri, String largeIconUri, List<String> keywords, List<String> examplePhrases) {
+		super();
+		this.privacyPolicyUrl = privacyPolicyUrl;
+		this.termsOfUseUrl = termsOfUseUrl;
+		this.skillName = skillName;
 		this.summary = summary;
 		this.description = description;
 		this.smallIconUri = smallIconUri;
@@ -75,6 +72,8 @@ public class Locale {
 		this.keywords = keywords;
 		this.examplePhrases = examplePhrases;
 	}
+
+
 
 	public String getPrivacyPolicyUrl() {
 		return privacyPolicyUrl;
@@ -88,12 +87,7 @@ public class Locale {
 	public void setTermsOfUseUrl(String termsOfUseUrl) {
 		this.termsOfUseUrl = termsOfUseUrl;
 	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
+
 	public String getSummary() {
 		return summary;
 	}
@@ -131,11 +125,21 @@ public class Locale {
 	public void setExamplePhrases(List<String> examplePhrases) {
 		this.examplePhrases = examplePhrases;
 	}
-	
-	public Map<String, Locale> defalutLocale() {
-		Map<String, Locale> localeObj = new HashMap<String, Locale>();
-		localeObj.put(AlexaRequestURL.DEFAULT_LOCALE, this);
-		return localeObj;
+
+
+
+	@JsonProperty("name")
+	public String getSkillName() {
+		return skillName;
 	}
+
+
+
+	public void setSkillName(String skillName) {
+		this.skillName = skillName;
+	}
+
+
+	
 	
 }

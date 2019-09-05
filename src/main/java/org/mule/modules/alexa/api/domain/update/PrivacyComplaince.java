@@ -4,9 +4,11 @@
 
 package org.mule.modules.alexa.api.domain.update;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.mule.runtime.extension.api.annotation.Expression;
+import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -28,34 +30,35 @@ public class PrivacyComplaince {
 	@Parameter
 	@Expression
 	private boolean containsAds;
+	
 	@Parameter
-	@Expression
-	private Map<String, Locale> locales;
+	@Optional
+	private Map<String, Locale> localemap;
 	
 	public PrivacyComplaince() {
 		
 	}
 
+	
+
 	public PrivacyComplaince(boolean allowsPurchases, boolean usesPersonalInfo, boolean isChildDirected,
-			boolean isExportCompliant, boolean containsAds) {
+			boolean isExportCompliant, boolean containsAds, Map<String, Locale> localemap) {
+		super();
 		this.allowsPurchases = allowsPurchases;
 		this.usesPersonalInfo = usesPersonalInfo;
 		this.isChildDirected = isChildDirected;
 		this.isExportCompliant = isExportCompliant;
 		this.containsAds = containsAds;
+		this.localemap = localemap;
 	}
-	
-	
 
-	public PrivacyComplaince(final Map<String, Locale> locales) {
-		
-		this.allowsPurchases = false;
-		this.usesPersonalInfo = false;
-		this.isChildDirected = false;
-		this.isExportCompliant = true;
-		//this.containsAds = false;
-		this.locales = locales;
+
+
+	public PrivacyComplaince(Map<String, Locale> localesPrivacy) {
+		// TODO Auto-generated constructor stub
+		this.localemap = localesPrivacy;
 	}
+
 
 
 	@JsonProperty("allowsPurchases")
@@ -101,13 +104,19 @@ public class PrivacyComplaince {
 		this.containsAds = containsAds;
 	}
 
-	public Map<String, Locale> getLocales() {
-		return locales;
+
+	@JsonProperty("locales")
+	public Map<String, Locale> getLocalemap() {
+		return localemap;
 	}
 
-	public void setLocales(Map<String, Locale> locales) {
-		this.locales = locales;
+
+
+	public void setLocalemap(Map<String, Locale> localemap) {
+		this.localemap = localemap;
 	}
+
+	
 
 
 }
