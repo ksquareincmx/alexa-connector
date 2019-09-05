@@ -1,9 +1,9 @@
 package org.mule.modules.alexa.api.domain.update;
 
 import java.util.List;
-import java.util.Map;
 
 import org.mule.runtime.extension.api.annotation.Expression;
+import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 
 public class CustomApi {
@@ -17,10 +17,10 @@ public class CustomApi {
 	private EndpointInfo endpoint;
 
 	@Parameter
-	@Expression
-	private List<Map<String, String>> interfaces;
+	@Optional
+	private List<Interface> interfaces;
 
-	public CustomApi(EndpointInfo endpoint, List<Map<String, String>> interfaces) {
+	public CustomApi(EndpointInfo endpoint, List<Interface> interfaces) {
 
 		this.endpoint = endpoint;
 		this.interfaces = interfaces;
@@ -35,11 +35,11 @@ public class CustomApi {
 		this.endpoint = endpoint;
 	}
 
-	public List<Map<String, String>> getInterfaces() {
+	public List<Interface> getInterfaces() {
 		return interfaces;
 	}
 
-	public void setInterfaces(List<Map<String, String>> interfaces) {
+	public void setInterfaces(List<Interface> interfaces) {
 		this.interfaces = interfaces;
 	}
 

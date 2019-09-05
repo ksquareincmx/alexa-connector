@@ -101,7 +101,7 @@ public class AlexaOperations {
 		return alexaRequestUtility.doGet(AlexaRequestURL.GET_ALEXA_INFO, alexaConnection.getAccessToken(), skillId);
 	}
 
-	@MediaType(value = ANY, strict = false)
+	/*@MediaType(value = ANY, strict = false)
 	@Alias("modifyExistingSkill")
 	public String UseExistingSkill(@Connection AlexaConnection alexaConnection,  @Expression(SUPPORTED) String skillId,
 			@Expression(SUPPORTED) String stage,  @Expression(SUPPORTED) String requestType,
@@ -126,7 +126,7 @@ public class AlexaOperations {
 		}
 		return content.asText();
 
-	}
+	}*/
 
 	@MediaType(value = ANY, strict = false)
 	@Alias("deleteSkill")
