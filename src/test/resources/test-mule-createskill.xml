@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule  xmlns:slack="http://www.mulesoft.org/schema/mule/slack"
+	xmlns:alexa="http://www.mulesoft.org/schema/mule/alexa"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/alexa http://www.mulesoft.org/schema/mule/alexa/current/mule-alexa.xsd
+http://www.mulesoft.org/schema/mule/slack http://www.mulesoft.org/schema/mule/slack/current/mule-slack.xsd">
+	
+	<alexa:config name="Alexa_Config1" doc:name="Alexa Config" doc:id="91096669-d273-4393-855d-4e6a6d271e05" >
+		<alexa:token-connection token="${alexa.token}" />
+	</alexa:config>
+	<flow name="create-skill" doc:id="b42238cf-83c1-4561-ae39-a355c7c920be" >
+	<alexa:create-skill doc:name="Create skill" doc:id="acda7ebf-02c1-411e-872c-2b2dfa56bd40" config-ref="Alexa_Config1" vendorId="MPLHQBOHBVJ16" summary="This is test case create skill" skillName="TestcaseSkill" description="TestDescrition" endpoint="http://mytestcase.com">
+			<alexa:intents >
+				<alexa:intent intentName="GetTravelTime" confirmationRequired="false" >
+					<alexa:slots >
+						<alexa:slot sname="DepartingPlanet" type="AMAZON.US_FIRST_NAME" >
+							<alexa:samples >
+								<alexa:sample value=" I'm starting from {DepartingPlanet}" />
+							</alexa:samples>
+						</alexa:slot>
+					</alexa:slots>
+					<alexa:samples >
+						<alexa:sample value=" how long does it take to travel from {DepartingPlanet}" />
+					</alexa:samples>
+					<alexa:prompts >
+						<alexa:prompt id="123456" >
+							<alexa:vmap >
+								<alexa:prompt-info type="PlainText" value="Which planet do you want to start from?" />
+							</alexa:vmap>
+						</alexa:prompt>
+					</alexa:prompts>
+				</alexa:intent>
+			</alexa:intents>
+		</alexa:create-skill>
+	</flow>
+</mule>

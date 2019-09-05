@@ -4,21 +4,15 @@
 
 package org.mule.modules.alexa.api.domain.intents;
 
-import org.mule.runtime.extension.api.annotation.param.NullSafe;
-import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 
 public class Variation {
 
 
 	@Parameter
-	@Optional
-	@NullSafe
 	private String type;
 	
 	@Parameter
-	@Optional
-	@NullSafe
 	private String value;
 	
 	
@@ -26,10 +20,7 @@ public class Variation {
 		
 	}
 
-	public Variation(String type, String value) {
-		this.type = type;
-		this.value = value;
-	}
+	
 
 	public String getType() {
 		return type;

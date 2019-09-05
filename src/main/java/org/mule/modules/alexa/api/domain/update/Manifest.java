@@ -5,10 +5,8 @@
 package org.mule.modules.alexa.api.domain.update;
 
 import java.util.List;
-import java.util.Map;
 
 import org.mule.runtime.extension.api.annotation.Expression;
-import org.mule.runtime.extension.api.annotation.dsl.xml.ParameterDsl;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 
@@ -34,31 +32,13 @@ public class Manifest {
 	private ApiInfo apis;
 
 	@Parameter
-	@ParameterDsl(allowInlineDefinition=true)
-	private List<Map<String, String>> permissions;
+	private List<Permission> permissions;
 
 	public Manifest() {
 		
 	}
 	
-	public Manifest(String manifestVersion, PublishInfo publishingInformation, ApiInfo apis) {
-		super();
-		this.manifestVersion = manifestVersion;
-		this.publishingInformation = publishingInformation;
-		this.apis = apis;
-	}
-
 	
-	public Manifest(String manifestVersion, PublishInfo publishingInformation, PrivacyComplaince privacyAndCompliance,
-			Events events, ApiInfo apis, List<Map<String, String>> permissions) {
-		this.manifestVersion = manifestVersion;
-		this.publishingInformation = publishingInformation;
-		this.privacyAndCompliance = privacyAndCompliance;
-		this.events = events;
-		this.apis = apis;
-		this.permissions = permissions;
-	}
-
 
 	public String getManifestVersion() {
 		return manifestVersion;
@@ -100,13 +80,14 @@ public class Manifest {
 		this.apis = apis;
 	}
 
-	public List<Map<String, String>> getPermissions() {
+	public List<Permission> getPermissions() {
 		return permissions;
 	}
 
-	public void setPermissions(List<Map<String, String>> permissions) {
+	public void setPermissions(List<Permission> permissions) {
 		this.permissions = permissions;
 	}
 
+	
 	
 }

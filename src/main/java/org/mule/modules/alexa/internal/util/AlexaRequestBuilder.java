@@ -37,8 +37,6 @@ import org.mule.modules.alexa.api.domain.intents.InteractionModel;
 import org.mule.modules.alexa.api.domain.intents.LanguageIntent;
 import org.mule.modules.alexa.api.domain.intents.LanguageModel;
 import org.mule.modules.alexa.api.domain.intents.Prompt;
-import org.mule.modules.alexa.api.domain.intents.PromptInfo;
-import org.mule.modules.alexa.api.domain.intents.Variation;
 import org.mule.modules.alexa.api.domain.update.ApiInfo;
 import org.mule.modules.alexa.api.domain.update.Locale;
 import org.mule.modules.alexa.api.domain.update.Manifest;
@@ -141,10 +139,10 @@ public class AlexaRequestBuilder {
 		List<Prompt> prompts = intents.stream().map(m -> m.getPrompts()).flatMap(m -> m.stream())
 				.collect(Collectors.toList());
 		interactionModel.setPrompts(prompts);
-		prompts.forEach(p -> promtToVariation(p, p.getVmap()));
+		
 		// set dialog and language model
 		Dialog dialog = new Dialog();
-		dialog.setIntents(mapIntnetToDialogIntent(intents));
+		dialog.setDialogIntents(mapIntnetToDialogIntent(intents));
 		LanguageModel language = new LanguageModel();
 		language.setLanguateIntents(mapIntnetToLanguageIntent(intents));
 		language.setInvocationName("my space fact");
@@ -184,15 +182,7 @@ public class AlexaRequestBuilder {
 		}
 		return updateSkillJson;
 	}
-	public void promtToVariation(Prompt p, List<PromptInfo> info) {
 
-		List<Variation> variation = info.stream().map(px -> new Variation(px.getType(), px.getValue()))
-				.collect(Collectors.toList());
-
-		p.setVariations(variation);
-		p.setVmap(null);
-
-	}
 
 	public String getAlexaRequestJson(String applicationID, String requestType, Map<String, String> slots,
 			String intentName) throws AlexaApiException {
@@ -359,7 +349,7 @@ public class AlexaRequestBuilder {
 		// Iterate slots and prepare Dialog slots
 				List<DialogSlot> dialogSlots = intent.getSlots().stream().map(s -> new DialogSlot(s.getSname(), s.getType()))
 						.collect(Collectors.toList());
-		return new DialogIntent(intent.getIntentName(),"false",dialogSlots,null);
+		return new DialogIntent(intent.getIntentName(),intent.getConfirmationRequired(),dialogSlots,null);
 	}
 
 }

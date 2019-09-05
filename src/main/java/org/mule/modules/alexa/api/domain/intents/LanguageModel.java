@@ -11,6 +11,8 @@ import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class LanguageModel {
 
 	@Parameter
@@ -25,7 +27,7 @@ public class LanguageModel {
 
 	
 
-	
+	@JsonProperty("intents")
 	public List<LanguageIntent> getLanguateIntents() {
 		return languateIntents;
 	}

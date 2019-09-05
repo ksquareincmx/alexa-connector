@@ -6,53 +6,44 @@ package org.mule.modules.alexa.api.domain.intents;
 
 import java.util.List;
 
-import org.mule.runtime.extension.api.annotation.param.NullSafe;
-import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Prompt {
 
-	@Parameter
-	@Optional
-	@NullSafe
-	private String id;
-
-	@Parameter
-	@NullSafe
-	@Optional
-	List<PromptInfo> vmap;
+	public Prompt() {
+		// TODO Auto-generated constructor stub
+	}
 	
+	@Parameter
+	private String pid;
+
+	
+	
+	@Parameter
 	private List<Variation> variations;
 
-	public List<PromptInfo> getVmap() {
-		return vmap;
-	}
-
-	public void setVmap(List<PromptInfo> vmap) {
-		
-		this.vmap = vmap;
-		
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
+	
+	
 	public List<Variation> getVariations() {
 		return variations;
 	}
 
+	@JsonProperty("id")
+	public String getPid() {
+		return pid;
+	}
+	public void setPid(String pid) {
+		this.pid = pid;
+	}
 	public void setVariations(List<Variation> variations) {
 		this.variations = variations;
 	}
 
 	@Override
 	public String toString() {
-		return "Prompt [id=" + id + ", vmap=" + vmap + ", variations=" + variations + "]";
+		return "Prompt [id=" + pid + ", variations=" + variations + "]";
 	}
 	
 	

@@ -11,26 +11,28 @@ import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Dialog {
 
 
 	@Parameter
 	@Optional
 	@Expression(ExpressionSupport.SUPPORTED)
-	private List<DialogIntent> intents;
+	private List<DialogIntent> dialogIntents;
 
 	@Parameter
 	@Optional
 	@Expression(ExpressionSupport.SUPPORTED)
 	private String delegationStrategy = "ALWAYS";
 
-	public List<DialogIntent> getIntents() {
-		return intents;
+	@JsonProperty("intents")
+	public List<DialogIntent> getDialogIntents() {
+		return dialogIntents;
 	}
-	
 
-	public void setIntents(List<DialogIntent> intents) {
-		this.intents = intents;
+	public void setDialogIntents(List<DialogIntent> dialogIntents) {
+		this.dialogIntents = dialogIntents;
 	}
 
 	public String getDelegationStrategy() {

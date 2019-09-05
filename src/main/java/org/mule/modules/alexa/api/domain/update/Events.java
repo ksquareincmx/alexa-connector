@@ -19,13 +19,14 @@ public class Events {
 	@Parameter
 	@Expression
 	private EndpointInfo endpoint;
+
 	@Parameter
 	@Expression
 	@Optional
-	private List<Map<String, String>> subscriptions;
+	private List<SubScription> subscriptions;
 
 
-	public Events(EndpointInfo endpoint, List<Map<String, String>> subscriptions) {
+	public Events(EndpointInfo endpoint, List<SubScription> subscriptions) {
 		this.endpoint = endpoint;
 		this.subscriptions = subscriptions;
 	}
@@ -38,11 +39,11 @@ public class Events {
 		this.endpoint = endpoint;
 	}
 
-	public List<Map<String, String>> getSubscriptions() {
+	public List<SubScription> getSubscriptions() {
 		return subscriptions;
 	}
 
-	public void setSubscriptions(List<Map<String, String>> subscriptions) {
+	public void setSubscriptions(List<SubScription> subscriptions) {
 		this.subscriptions = subscriptions;
 	}
 

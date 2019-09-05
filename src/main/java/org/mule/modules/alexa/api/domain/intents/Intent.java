@@ -2,8 +2,6 @@ package org.mule.modules.alexa.api.domain.intents;
 
 import java.util.List;
 
-import org.mule.runtime.api.meta.ExpressionSupport;
-import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.param.NullSafe;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
@@ -31,28 +29,20 @@ public class Intent {
 	@Parameter
 	@Optional
 	@NullSafe
-	@Expression(ExpressionSupport.NOT_SUPPORTED)
 	private List<Slot> slots ;
 
 
 	@Parameter
 	@Optional
 	@NullSafe
-	@Expression(ExpressionSupport.NOT_SUPPORTED)
 	private List<String> samples;
 
 	@Parameter
 	@Optional
 	@NullSafe
-	@Expression(ExpressionSupport.NOT_SUPPORTED)
 	private List<Prompt> prompts ;
 	
 	
-
-	public Intent(String intentName) {
-		super();
-		this.intentName = intentName;
-	}
 
 	public Intent(String intentName, String confirmationRequired, List<Slot> slots, List<String> samples,
 			List<Prompt> prompts) {
@@ -64,11 +54,13 @@ public class Intent {
 		this.prompts = prompts;
 	}
 
-	public Intent(String intentName, List<Slot> slots, List<String> samples) {
-		super();
-		this.intentName = intentName;
-		this.slots = slots;
-		this.samples = samples;
+	@JsonProperty("prompts")
+	public List<Prompt> getPrompts() {
+		return prompts;
+	}
+
+	public void setPrompts(List<Prompt> prompts) {
+		this.prompts = prompts;
 	}
 
 	public String getConfirmationRequired() {
@@ -106,14 +98,7 @@ public class Intent {
 		this.samples = samples;
 	}
 
-	public List<Prompt> getPrompts() {
-		return prompts;
-	}
-
-	public void setPrompts(List<Prompt> prompts) {
-		this.prompts = prompts;
-	}
-
+	
 
 	@Override
 	public String toString() {

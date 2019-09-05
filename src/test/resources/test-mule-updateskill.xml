@@ -6,10 +6,10 @@
 http://www.mulesoft.org/schema/mule/alexa http://www.mulesoft.org/schema/mule/alexa/current/mule-alexa.xsd
 http://www.mulesoft.org/schema/mule/slack http://www.mulesoft.org/schema/mule/slack/current/mule-slack.xsd">
 	
-	<alexa:config name="Alexa_Config1" doc:name="Alexa Config" doc:id="91096669-d273-4393-855d-4e6a6d271e03" >
+	<alexa:config name="Alexa_Config1" doc:name="Alexa Config" doc:id="91096669-d273-4393-855d-4e6a6d271e09" >
 		<alexa:token-connection token="${alexa.token}" />
 	</alexa:config>
-	<flow name="get-skill" doc:id="b42238cf-83c1-4561-ae39-a244c7c920be" >
-		<alexa:skill-info doc:name="Skill info" doc:id="c2dfb64f-1b39-4b9b-b0cc-cb898ba74f04" config-ref="Alexa_Config1" skillId="amzn1.ask.skill.11c286e9-e0fc-4d96-8e68-816a8a16126e"/>
+	<flow name="update-skill" doc:id="b42238cf-83c1-4561-ae39-a244c7c920be8885577" >
+	
 	</flow>
 </mule>

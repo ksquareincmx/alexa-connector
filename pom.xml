@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.mulesoft.connectors.test</groupId>
 	<artifactId>mule-alexa-extension-one</artifactId>
-	<version>1.0.7-SNAPSHOT</version>
+	<version>1.0.4-SNAPSHOT</version>
 	<packaging>mule-extension</packaging>
 	<name>AlexaConnector4</name>
 
@@ -13,58 +14,28 @@
 		<version>1.2.4</version>
 		<groupId>org.mule.connectors</groupId>
 	</parent>
-	
+
 	<properties>
-        
-        <httpServiceVersion>1.1.1</httpServiceVersion>
-        <muleCoreVersion>4.1.1</muleCoreVersion>
-        <javaxWsRsApiVersion>2.1</javaxWsRsApiVersion>
-        <schedulerServiceVersion>1.1.2</schedulerServiceVersion>
-        <mule.maven.plugin.version>3.3.2</mule.maven.plugin.version>
-        
-    </properties>
-	
+
+		<httpServiceVersion>1.1.1</httpServiceVersion>
+		<muleCoreVersion>4.1.1</muleCoreVersion>
+		<javaxWsRsApiVersion>2.1</javaxWsRsApiVersion>
+		<schedulerServiceVersion>1.1.2</schedulerServiceVersion>
+		<mule.maven.plugin.version>3.3.2</mule.maven.plugin.version>
+
+	</properties>
+
 
 	<dependencies>
+
 	
-	<!-- https://mvnrepository.com/artifact/org.mule.runtime/mule-service-http-api -->
-<dependency>
-    <groupId>org.mule.runtime</groupId>
-    <artifactId>mule-service-http-api</artifactId>
-    <version>4.1.1</version>
-    <scope>provided</scope>
-</dependency>
-	
-	
-	
-		<!-- Change this with either Jackson or Gson implementation -->
-		<dependency>
-			<groupId>com.googlecode.json-simple</groupId>
-			<artifactId>json-simple</artifactId>
-			<version>1.1</version>
-		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>3.9</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.json</groupId>
-			<artifactId>json</artifactId>
-			<version>20090211</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.code.gson</groupId>
-			<artifactId>gson</artifactId>
-			<version>2.8.5</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.googlecode.json-simple</groupId>
-			<artifactId>json-simple</artifactId>
-			<version>1.1</version>
-		</dependency>
+		
 		<dependency>
 			<groupId>com.amazon.alexa</groupId>
 			<artifactId>ask-sdk</artifactId>
@@ -76,89 +47,82 @@
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
 			<version>2.9.9</version>
-			<scope>compile</scope>
+			
 		</dependency>
-   <dependency>
-    <groupId>com.fasterxml.jackson.core</groupId> 
-    <artifactId>jackson-databind</artifactId> 
-    <version>2.8.9</version>  
-    
-    </dependency>
-		
-		<!--  <dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-mapper-asl</artifactId>
-			<version>1.9.13</version>
-			<scope>test</scope>
-		</dependency> -->
-		
-		
-		<!--  <dependency>
-            <groupId>org.mule.runtime</groupId>
-            <artifactId>mule-core</artifactId>
-            <version>${muleCoreVersion}</version>
-            <scope>provided</scope>
-        </dependency> -->
-        
-        
-        <dependency>
-            <groupId>org.mule.runtime</groupId>
-            <artifactId>mule-core</artifactId>
-            <version>${muleCoreVersion}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mule.services</groupId>
-            <artifactId>mule-service-scheduler</artifactId>
-            <version>${schedulerServiceVersion}</version>
-            <classifier>mule-service</classifier>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>javax.ws.rs-api</artifactId>
-            <version>${javaxWsRsApiVersion}</version>
-        </dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.8.9</version>
 
-      <dependency>
-            <groupId>org.mule.services</groupId>
-            <artifactId>mule-service-http</artifactId>
-            <version>${httpServiceVersion}</version>
-            <classifier>mule-service</classifier>
-            <scope>provided</scope>
-        </dependency>
+		</dependency>
+
+		
+		<dependency>
+			<groupId>org.mule.runtime</groupId>
+			<artifactId>mule-core</artifactId>
+			<version>${muleCoreVersion}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mule.services</groupId>
+			<artifactId>mule-service-scheduler</artifactId>
+			<version>${schedulerServiceVersion}</version>
+			<classifier>mule-service</classifier>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.ws.rs</groupId>
+			<artifactId>javax.ws.rs-api</artifactId>
+			<version>${javaxWsRsApiVersion}</version>
+		</dependency>
+		
+	<!-- https://mvnrepository.com/artifact/org.mule.runtime/mule-service-http-api -->
+		<dependency>
+			<groupId>org.mule.runtime</groupId>
+			<artifactId>mule-service-http-api</artifactId>
+			<version>4.1.1</version>
+			<scope>provided</scope>
+		</dependency>
 
 		<dependency>
-            <groupId>org.mule.modules</groupId>
-            <artifactId>mule-oauth-module</artifactId>
-            <version>1.1.7</version>
-            <classifier>mule-plugin</classifier>
-        </dependency>
-    </dependencies>
+			<groupId>org.mule.services</groupId>
+			<artifactId>mule-service-http</artifactId>
+			<version>${httpServiceVersion}</version>
+			<classifier>mule-service</classifier>
+			<scope>provided</scope>
+		</dependency>
 
-<build>
-<plugins>
-<plugin>
-<groupId>org.mule.tools.maven</groupId>
-    <artifactId>mule-maven-plugin</artifactId>
-    <version>${mule.maven.plugin.version}</version>
-    <extensions>true</extensions>
-    <configuration>
-        <sharedLibraries>
-            <!-- other shared libraries -->
-            <sharedLibrary>
-                <groupId>com.fasterxml.jackson.core</groupId> 
-               <artifactId>jackson-databind</artifactId> 
-            </sharedLibrary>
-            <sharedLibrary>
-            <groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-core</artifactId>
-            </sharedLibrary>
-        </sharedLibraries>
-    </configuration>
-</plugin>
-</plugins>
-</build>
+		<dependency>
+			<groupId>org.mule.modules</groupId>
+			<artifactId>mule-oauth-module</artifactId>
+			<version>1.1.7</version>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.mule.tools.maven</groupId>
+				<artifactId>mule-maven-plugin</artifactId>
+				<version>${mule.maven.plugin.version}</version>
+				<extensions>true</extensions>
+				<configuration>
+					<sharedLibraries>
+						<!-- other shared libraries -->
+						<sharedLibrary>
+							<groupId>com.fasterxml.jackson.core</groupId>
+							<artifactId>jackson-databind</artifactId>
+						</sharedLibrary>
+						<sharedLibrary>
+							<groupId>com.fasterxml.jackson.core</groupId>
+							<artifactId>jackson-core</artifactId>
+						</sharedLibrary>
+					</sharedLibraries>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 	<repositories>
 		<repository>
 			<id>anypoint-exchange</id>
@@ -173,7 +137,7 @@
 			<layout>default</layout>
 		</repository>
 	</repositories>
-	
+
 	<pluginRepositories>
 		<pluginRepository>
 			<id>mulesoft-releases</id>

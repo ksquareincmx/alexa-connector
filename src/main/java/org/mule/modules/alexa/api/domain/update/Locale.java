@@ -42,6 +42,10 @@ public class Locale {
 	@Expression
 	private List<String>examplePhrases;
 	
+	public Locale() {
+		
+	}
+	
 	public Locale(String privacyPolicyUrl, String termsOfUseUrl) {
 		this.privacyPolicyUrl = privacyPolicyUrl;
 		this.termsOfUseUrl = termsOfUseUrl;

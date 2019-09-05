@@ -19,11 +19,10 @@ public class InteractionModel {
 	public InteractionModel() {
 		super();
 	}
-	public InteractionModel(Dialog dialog, LanguageModel languageModel, Variation variation, List<Prompt> prompts) {
+	public InteractionModel(Dialog dialog, LanguageModel languageModel, List<Prompt> prompts) {
 		super();
 		this.dialog = dialog;
 		this.languageModel = languageModel;
-		this.variation = variation;
 		this.prompts = prompts;
 	}
 	@Parameter
@@ -35,17 +34,7 @@ public class InteractionModel {
 	@Expression(ExpressionSupport.SUPPORTED)
 	private LanguageModel languageModel;
 	
-	@Parameter
-	@Optional
-	@Expression(ExpressionSupport.SUPPORTED)
-	private Variation variation;
 	
-	public Variation getVariation() {
-		return variation;
-	}
-	public void setVariation(Variation variation) {
-		this.variation = variation;
-	}
 	@Parameter
 	@Optional
 	@Expression(ExpressionSupport.SUPPORTED)

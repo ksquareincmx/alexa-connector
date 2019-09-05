@@ -18,6 +18,7 @@ public class DialogIntent {
 	@Parameter
 	private String intentName;  
 	
+
 	@Parameter
 	@Optional
 	@Expression(ExpressionSupport.SUPPORTED)
@@ -45,6 +46,14 @@ public class DialogIntent {
 		this.dialogSlots = slots;
 		this.dialogPrompts = prompts;
 		
+	}
+	@JsonProperty("name")
+	public String getIntentName() {
+		return intentName;
+	}
+
+	public void setIntentName(String intentName) {
+		this.intentName = intentName;
 	}
 
 	public String getConfirmationRequired() {

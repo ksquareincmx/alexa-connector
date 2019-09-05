@@ -259,9 +259,5 @@ public class AlexaRequestUtility {
 			return sb.toString();
 	}
 	
-	public static void main(String[] a) {
-		String s = buildmessage(200, "hi");
-		System.out.println(s.contains("200"));
-	}
 	
 }
