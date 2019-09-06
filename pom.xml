@@ -16,7 +16,6 @@
 	</parent>
 
 	<properties>
-
 		<httpServiceVersion>1.1.1</httpServiceVersion>
 		<muleCoreVersion>4.1.1</muleCoreVersion>
 		<javaxWsRsApiVersion>2.1</javaxWsRsApiVersion>

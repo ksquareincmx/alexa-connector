@@ -101,32 +101,7 @@ public class AlexaOperations {
 		return alexaRequestUtility.doGet(AlexaRequestURL.GET_ALEXA_INFO, alexaConnection.getAccessToken(), skillId);
 	}
 
-	/*@MediaType(value = ANY, strict = false)
-	@Alias("modifyExistingSkill")
-	public String UseExistingSkill(@Connection AlexaConnection alexaConnection,  @Expression(SUPPORTED) String skillId,
-			@Expression(SUPPORTED) String stage,  @Expression(SUPPORTED) String requestType,
-			 @Expression(SUPPORTED) String intentName, @Expression(SUPPORTED) String inputString,
-			@Optional @NullSafe @Expression(ExpressionSupport.NOT_SUPPORTED) @ParameterDsl(allowReferences = false) Map<String, String> testSlots)
-			throws AlexaApiException {
-
-		LOGGER.debug("Alexa Authorization  Token: " + alexaConnection.getAccessToken());
-
-		String testAlexaSkillJsonRequest = alexaRequestBuilder.getAlexaRequestJson(skillId, requestType, testSlots,
-				intentName);
-		String response = alexaRequestUtility.doPost(String.format(AlexaRequestURL.TEST_ALEXA_SKILL, skillId, stage),
-				alexaConnection.getAccessToken(), testAlexaSkillJsonRequest);
-		JsonNode node, content ;
-		try {
-			node = alexaRequestBuilder.getMapper().readTree(response);
-			content  = node.findValue("content");
-			LOGGER.info("UseExistingSkill Response: {}", content);
-		} catch (IOException e) {
-			LOGGER.error("Exception while processing useExising skill response {}", e);
-			throw new AlexaApiException(e.getMessage(), AlexaApiErrorType.JSON_PARSER_EXCEPTION);
-		}
-		return content.asText();
-
-	}*/
+	
 
 	@MediaType(value = ANY, strict = false)
 	@Alias("deleteSkill")
