@@ -85,7 +85,7 @@ public class AlexaOperations {
 		if(skillId == null || Objects.isNull(skillId)) {
 			throw new AlexaApiException("SkillId not found in response "+createSkillResponse , AlexaApiErrorType.VALIDATIONS);
 		}
-		LOGGER.info("Skill ID after parsing", skillId);
+		LOGGER.info("Skill ID after parsing {}", skillId);
 
 		String updateSkillRequest = alexaRequestBuilder.updateCreatedSkill(skillId, intents);
 		return alexaRequestUtility.doPut(String.format(AlexaRequestURL.UPDATE_ALEXA_SKILL, skillId),

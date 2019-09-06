@@ -4,53 +4,71 @@
 
 package org.mule.modules.alexa.api.domain.update;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class PublishInfo {
-	
-	/*@Parameter
-	@Expression
-	private Map<String,Locale> locales = new LinkedHashMap<>();
-	*/
+
 	@Parameter
 	@Expression
 	private Boolean isAvailableWorldwide;
-	
+
 	@Parameter
 	@Expression
 	private String testingInstructions;
-	
+
 	@Parameter
 	@Expression
 	private String category;
-	
+
 	@Parameter
 	@Expression
 	private List<String> distributionCountries;
 
-	public PublishInfo() {
-		
+	private Map<String, PublishLocale> localeval;
+
+	@Parameter
+	@JsonIgnore
+	private PublishLocale locale;
+
+	@JsonProperty("locales")
+	public Map<String, PublishLocale> getLocaleval() {
+		return localeval;
 	}
-	public PublishInfo(Boolean isAvailableWorldwide, String testingInstructions,
-			String category, List<String> distributionCountries) {
-		//this.locales = locales;
+
+	public void setLocaleval(Map<String, PublishLocale> localeval) {
+		Map<String, PublishLocale> locale = new HashMap<String, PublishLocale>();
+		locale.put("en-US", this.getLocale());
+		this.localeval = locale;
+	}
+
+	public PublishInfo() {
+
+	}
+
+	public PublishInfo(Boolean isAvailableWorldwide, String testingInstructions, String category,
+			List<String> distributionCountries, Map<String, PublishLocale> localeval) {
+		this.localeval = localeval;
 		this.isAvailableWorldwide = isAvailableWorldwide;
 		this.testingInstructions = testingInstructions;
 		this.category = category;
 		this.distributionCountries = distributionCountries;
 	}
 
-	/*public Map<String, Locale> getLocales() {
-		return locales;
+	public PublishLocale getLocale() {
+		return locale;
 	}
 
-	public void setLocales(Map<String, Locale> locales) {
-		this.locales = locales;
-	}*/
+	public void setLocale(PublishLocale locale) {
+		this.locale = locale;
+	}
 
 	public Boolean getIsAvailableWorldwide() {
 		return isAvailableWorldwide;
@@ -83,7 +101,5 @@ public class PublishInfo {
 	public void setDistributionCountries(List<String> distributionCountries) {
 		this.distributionCountries = distributionCountries;
 	}
-	
 
-	
 }

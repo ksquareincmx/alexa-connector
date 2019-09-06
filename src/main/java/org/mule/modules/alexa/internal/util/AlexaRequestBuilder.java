@@ -38,7 +38,7 @@ import org.mule.modules.alexa.api.domain.intents.LanguageIntent;
 import org.mule.modules.alexa.api.domain.intents.LanguageModel;
 import org.mule.modules.alexa.api.domain.intents.Prompt;
 import org.mule.modules.alexa.api.domain.update.ApiInfo;
-import org.mule.modules.alexa.api.domain.update.Locale;
+import org.mule.modules.alexa.api.domain.update.PublishLocale;
 import org.mule.modules.alexa.api.domain.update.Manifest;
 import org.mule.modules.alexa.api.domain.update.PrivacyComplaince;
 import org.mule.modules.alexa.api.domain.update.PublishInfo;
@@ -88,19 +88,18 @@ public class AlexaRequestBuilder {
 				vendorId, summary, skillName, endpoint);
 
 		// create locale
-		Locale locale = createLocaleInfo(skillName, summary, description);
-		HashMap<String, Locale> locales = new HashMap<>();
+		PublishLocale locale = createLocaleInfo(skillName, summary, description);
+		HashMap<String, PublishLocale> locales = new HashMap<>();
 		locales.put("en-US", locale);
 		// create publish information
 		PublishInfo publishInfo = createPublishingInfo(locales, "SMART_HOME", false);
 		publishInfo.setTestingInstructions("1) Say 'Alexa, discover my devices' 2) Say 'Alexa, turn on sample lights'");
 		publishInfo.setDistributionCountries(Arrays.asList("US", "GB"));
 
-		Locale privacyLocale = new Locale("http://www.termsofuse.sampleskill.com",
-				"http://www.myprivacypolicy.sampleskill.com");
-		HashMap<String, Locale> localesPrivacy = new HashMap<>();
+		PublishLocale privacyLocale = new PublishLocale(skillName,summary,description);
+		HashMap<String, PublishLocale> localesPrivacy = new HashMap<>();
 		localesPrivacy.put("en-US", privacyLocale);
-		PrivacyComplaince privacyComplaince = new PrivacyComplaince(localesPrivacy);
+		PrivacyComplaince privacyComplaince =PrivacyComplaince.defaultComplaince();
 		// create apiinfo and set endpoint
 		ApiInfo apiInfo =  ApiInfo.defaultApi(endpoint);
 
@@ -145,7 +144,7 @@ public class AlexaRequestBuilder {
 		dialog.setDialogIntents(mapIntnetToDialogIntent(intents));
 		LanguageModel language = new LanguageModel();
 		language.setLanguateIntents(mapIntnetToLanguageIntent(intents));
-		language.setInvocationName("my space fact");
+		language.setInvocationName("my test case");
 		interactionModel.setDialog(dialog);
 		interactionModel.setLanguageModel(language);
 		Map<String, InteractionModel> reqObj = new HashMap<>();
@@ -266,15 +265,15 @@ public class AlexaRequestBuilder {
 
 	
 
-	public PublishInfo createPublishingInfo(Map<String, Locale> locales, String category,
+	public PublishInfo createPublishingInfo(Map<String, PublishLocale> locales, String category,
 			boolean isAvailableWorldwide) {
 
-		return new PublishInfo(isAvailableWorldwide, category,null,null);
+		return new PublishInfo(isAvailableWorldwide, category,null,null,locales);
 	}
 
-	private Locale createLocaleInfo(String name, String summary, String description) {
+	private PublishLocale createLocaleInfo(String name, String summary, String description) {
 
-		return new Locale(name, summary, description);
+		return new PublishLocale(name, summary, description);
 
 	}
 

@@ -33,7 +33,7 @@ public class DialogIntent {
 	@Parameter
 	@Optional
 	@Expression(ExpressionSupport.SUPPORTED)
-	private Map<String, String> dialogPrompts ;
+	private Map<String, String> dialogPrompts = java.util.Collections.emptyMap();
 
 	public DialogIntent(String intentName, String confirmationRequired, List<DialogSlot> slots,
 			Map<String, String> dialogPrompts) {

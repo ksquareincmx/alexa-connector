@@ -4,11 +4,7 @@
 
 package org.mule.modules.alexa.api.domain.update;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.mule.runtime.extension.api.annotation.Expression;
-import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -31,9 +27,6 @@ public class PrivacyComplaince {
 	@Expression
 	private boolean containsAds;
 	
-	@Parameter
-	@Optional
-	private Map<String, Locale> localemap;
 	
 	public PrivacyComplaince() {
 		
@@ -42,22 +35,15 @@ public class PrivacyComplaince {
 	
 
 	public PrivacyComplaince(boolean allowsPurchases, boolean usesPersonalInfo, boolean isChildDirected,
-			boolean isExportCompliant, boolean containsAds, Map<String, Locale> localemap) {
+			boolean isExportCompliant, boolean containsAds) {
 		super();
 		this.allowsPurchases = allowsPurchases;
 		this.usesPersonalInfo = usesPersonalInfo;
 		this.isChildDirected = isChildDirected;
 		this.isExportCompliant = isExportCompliant;
 		this.containsAds = containsAds;
-		this.localemap = localemap;
 	}
 
-
-
-	public PrivacyComplaince(Map<String, Locale> localesPrivacy) {
-		// TODO Auto-generated constructor stub
-		this.localemap = localesPrivacy;
-	}
 
 
 
@@ -104,19 +90,8 @@ public class PrivacyComplaince {
 		this.containsAds = containsAds;
 	}
 
-
-	@JsonProperty("locales")
-	public Map<String, Locale> getLocalemap() {
-		return localemap;
-	}
-
-
-
-	public void setLocalemap(Map<String, Locale> localemap) {
-		this.localemap = localemap;
-	}
-
-	
-
+   public static PrivacyComplaince defaultComplaince() {
+	 return  new PrivacyComplaince(false, false, false, false, false);
+   }
 
 }
