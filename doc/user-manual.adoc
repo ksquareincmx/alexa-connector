@@ -253,6 +253,9 @@ This for the interfaces supported by a custom skill.
 === *Permissions* : String()
 An array of named permissions that the skill can use. A flash briefing skill cannot include a permissions object.
 
+For more information 
+https://developer.amazon.com/docs/smapi/skill-manifest.html#permissions
+
 === *Event endpoint* String()
 
 ==== *uri* : 
@@ -280,6 +283,227 @@ Unique identifier of skill.
 
 
 ==
+
+== *Update Skill Intents* :
+
+=== *Dialog* :
+
+
+==== *Intents* :
+List of intents that have dialog rules associated with them.
+
+===== *Intent name*: String (Required)
+Name of the intent that has dialog rules.
+
+===== *Confirmation required*: Boolean (required)
+Describes whether confirmation of the intent is required.
+
+===== *Delegation Strategy*: String (Required)
+Specifies whether the dialog for this intent should be automatically delegated to Alexa. This can be ALWAYS (auto-delegation is on for this intent) or SKILL_RESPONSE (auto-delegation is off for the intent). When this property is not present, the intent uses the skill-level delegationStrategy.
+
+===== *Dialog Slots*:
+List of slots in this intent that have dialog rules.
+
+====== *Sname*: String (Required)
+Name of the slot in the dialog intent.
+
+====== *Types*: String (Required)
+Type of the slot in the dialog intent.
+
+====== *Prompts*:
+Collection of prompts for this slot.
+
+======= *Id*: String(required)
+
+Identifier of the prompt.
+
+======= *Vmap*:
+
+
+
+ (i) *Type* : String (Required) 
+ One of: "PlainText" or "SSML"
+ 
+
+ (ii) *Value* : String (Required)
+Text that Alexa says as a prompt 
+
+
+===== *Dialog Prompts*:
+
+====== *key*: String (Required)
+Identifier of the prompt.
+
+====== *value*: String(Required)
+Text that Alexa says as a prompt.
+
+
+==== *Delegation strategy* : 
+Specifies whether dialogs in this skill should be automatically delegated to Alexa. This can be ALWAYS (auto-delegation is on for the overall skill) or SKILL_RESPONSE (auto-delegation is off for the overall skill). You can override this setting at the intent level.	 
+
+
+=== *Language Model* :
+
+==== *Language Intents* :
+
+===== *Intent Name* : String(Required)
+
+===== *Slots* :
+
+(i) *Sname*: String(Required)
+Name of the slot.
+
+(ii) *Type*: String(Required)
+Type of the slot.
+
+(iii) *Samples*: List(Optional)
+Sample utterances for the slot.
+
+===== *Samples* : List(Optional)
+Sample utterances for the intents.
+
+
+==== *Invocation Name* : String (Required)
+Invocation name of the skill. 
+
+=== *Variation* :
+
+==== *Type* : String(Required)
+One of: "PlainText" or "SSML"
+
+==== *Value* : String(Required)
+Text that Alexa says as a prompt.	
+
+
+=== *Prompt* :
+
+==== *id* : String(Required)
+Identifier of the prompt
+
+==== *Vmap*:
+
+===== *Type* : String (Required)
+One of: "PlainText" or "SSML". 
+
+===== *Value* : String (Required)
+Text that Alexa says as a prompt.
+
+== *Update Skill Manifest*
+
+=== *Skill ID*:
+
+=== *Manifest* : Object(Required)
+=== *Publishing Information* : Object(Required)
+
+==== *isAvailableWorldwide* : 
+Set to true to indicate the skill is available worldwide, and otherwise false. If false, countries must be listed for distributionCountries.
+
+==== *testingInstructions* : String
+Indicates any special instructions to test the skill, such as a test account.
+
+==== *category* :
+Indicates the filter category for the skill in the Alexa App such as NEWS or SMART_HOME.
+
+For all the available values check 
+https://developer.amazon.com/docs/smapi/skill-manifest.html#category-enum
+
+=== *privacyAndCompliance*
+
+==== *allowsPurchases* : Boolean
+true to indicate purchases can be made from this skill; otherwise,  false.
+
+==== *usesPersonalInfo* : Boolean
+
+true to indicate this skill uses customer information, otherwise false.
+
+==== *isChildDirected* : Boolean
+
+true to indicate the skill is directed at children under 13, otherwise false. To create a child-directed skill, isChildDirected must be set to true, and the publishingInformation.category must be set to one of the following: CHILDRENS_EDUCATION_AND_REFERENCE, CHILDRENS_GAMES, CHILDRENS_MUSIC_AND_AUDIO, CHILDRENS_NOVELTY_AND_HUMOR.
+
+==== *isExportCompliant* : Boolean
+
+true to indicate the skill can be exported to any country/region; otherwise, false.
+
+==== *containsAds* : Boolean
+
+true to indicate the skill contains advertising; otherwise, false.
+
+=== *locales* :
+
+==== *Key*: String(required)
+For each supported locale, include an object with the appropriate locale String. Supported values include: de-DE, en-AU, en-CA, en-GB, en-IN, en-US, es-ES, es-MX, es-US, fr-CA, fr-FR, hi-IN, it-IT, ja-JP, and pt-BR.
+
+==== *Value* : String(required)
+A full description explaining what the skill can do and any prerequisites to using it (such as additional hardware, software, or accounts). For a Flash Briefing skill, you must list the feeds for the skill.
+
+
+=== *Events* : Object
+
+==== *Endpoint*
+
+(i) Uri : String(required)
+Contains the uri field. This sets the global default endpoint for events. 
+
+(ii) sslCertificateType: String(required)
+ The SSL certificate type for the skill's HTTPS endpoint.
+
+[%Enum Values]
+|===
+|SelfSigned
+|Trusted
+|Wildcard
+|===
+
+==== *subscriptions* :
+
+Contains an array of eventName objects, each of which contains the name of a skill event. These include: SKILL_PROACTIVE_SUBSCRIPTION_CHANGED,SKILL_PERMISSION_CHANGED, and SKILL_PERMISSION_ACCEPTED.    
+
+=== *Api's*:
+
+==== *Custom* : Object
+===== *Endpoint* : Object
+
+(i) Uri: String(Required)
+Contains the uri and sslCertificateType fields. Sets the global default endpoint, which can be overridden on a region-by-region basis.
+
+(ii) sslCertificateType: String(required)
+ The SSL certificate type for the skill's HTTPS endpoint.
+
+[%Enum Values]
+|===
+|SelfSigned
+|Trusted
+|Wildcard
+|===
+
+
+===== *Interfaces* :
+Contains  supported interfaces for the skill can be choose from 
+
+[%Enum Values]
+|===
+|ALEXA_PRESENTATION_APL
+|AUDIO_PLAYER
+|CAN_FULFILL_INTENT_REQUEST
+|GADGET_CONTROLLER
+|GAME_ENGINE
+|RENDER_TEMPLATE
+VIDEO_APP
+|===
+
+=== *Permissions* : String(required)
+An array of named permissions that the skill can use. A flash briefing skill cannot include a permissions object.
+
+For more information 
+https://developer.amazon.com/docs/smapi/skill-manifest.html#permissions
+
+
+== *Delete Skill* :
+
+=== *Skill Id * : String (required)
+Unique identifier of skill.
+
+
 
 
 
