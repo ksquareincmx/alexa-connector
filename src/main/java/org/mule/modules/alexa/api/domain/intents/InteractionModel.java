@@ -11,20 +11,21 @@ import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class InteractionModel {
 
-	
-	
-	
 	public InteractionModel() {
 		super();
 	}
+
 	public InteractionModel(Dialog dialog, LanguageModel languageModel, List<Prompt> prompts) {
 		super();
 		this.dialog = dialog;
 		this.languageModel = languageModel;
 		this.prompts = prompts;
 	}
+
 	@Parameter
 	@Optional
 	@Expression(ExpressionSupport.SUPPORTED)
@@ -33,31 +34,38 @@ public class InteractionModel {
 	@Optional
 	@Expression(ExpressionSupport.SUPPORTED)
 	private LanguageModel languageModel;
-	
-	
+
 	@Parameter
 	@Optional
 	@Expression(ExpressionSupport.SUPPORTED)
+	@JsonIgnore
 	private List<Prompt> prompts;
+
+	
+	
 	
 	public Dialog getDialog() {
 		return dialog;
 	}
+
 	public void setDialog(Dialog dialog) {
 		this.dialog = dialog;
 	}
+
 	public LanguageModel getLanguageModel() {
 		return languageModel;
 	}
+
 	public void setLanguageModel(LanguageModel languageModel) {
 		this.languageModel = languageModel;
 	}
+
 	public List<Prompt> getPrompts() {
 		return prompts;
 	}
+
 	public void setPrompts(List<Prompt> prompts) {
 		this.prompts = prompts;
 	}
-	
-	
+
 }

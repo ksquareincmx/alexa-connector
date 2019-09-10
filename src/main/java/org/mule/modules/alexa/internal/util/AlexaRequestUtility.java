@@ -5,6 +5,10 @@
 package org.mule.modules.alexa.internal.util;
 
 import java.io.IOException;
+import java.net.URI;
+import java.util.Collection;
+
+import javax.inject.Inject;
 
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
@@ -23,6 +27,15 @@ import org.apache.http.util.EntityUtils;
 import org.mule.modules.alexa.api.domain.AlexaRequestURL;
 import org.mule.modules.alexa.internal.error.AlexaApiErrorType;
 import org.mule.modules.alexa.internal.exceptions.AlexaApiException;
+import org.mule.runtime.api.util.MultiMap;
+import org.mule.runtime.http.api.HttpService;
+import org.mule.runtime.http.api.client.HttpClient;
+import org.mule.runtime.http.api.client.HttpClientConfiguration;
+import org.mule.runtime.http.api.client.HttpClientFactory;
+import org.mule.runtime.http.api.client.auth.HttpAuthenticationBuilder;
+import org.mule.runtime.http.api.domain.HttpProtocol;
+import org.mule.runtime.http.api.domain.message.request.HttpRequest;
+import org.mule.runtime.http.api.domain.message.response.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,7 +62,7 @@ public class AlexaRequestUtility {
 
 		LOGGER.info("GET operation with params: urlString {} skillId {}", urlString, skillId);
 		CloseableHttpClient client = HttpClients.createDefault();
-
+		
 		try {
 
 			urlString = 	String.format(urlString, skillId);
@@ -260,4 +273,5 @@ public class AlexaRequestUtility {
 	}
 	
 	
+
 }

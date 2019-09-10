@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -37,11 +38,12 @@ import org.mule.modules.alexa.api.domain.intents.InteractionModel;
 import org.mule.modules.alexa.api.domain.intents.LanguageIntent;
 import org.mule.modules.alexa.api.domain.intents.LanguageModel;
 import org.mule.modules.alexa.api.domain.intents.Prompt;
+import org.mule.modules.alexa.api.domain.intents.Variation;
 import org.mule.modules.alexa.api.domain.update.ApiInfo;
-import org.mule.modules.alexa.api.domain.update.PublishLocale;
 import org.mule.modules.alexa.api.domain.update.Manifest;
 import org.mule.modules.alexa.api.domain.update.PrivacyComplaince;
 import org.mule.modules.alexa.api.domain.update.PublishInfo;
+import org.mule.modules.alexa.api.domain.update.PublishLocale;
 import org.mule.modules.alexa.api.domain.update.UpdateSkill;
 import org.mule.modules.alexa.internal.error.AlexaApiErrorType;
 import org.mule.modules.alexa.internal.exceptions.AlexaApiException;
@@ -81,7 +83,7 @@ public class AlexaRequestBuilder {
 	 * @return
 	 * @throws AlexaApiException
 	 */
-	public String createAlexaSkillRequestBuilder(String vendorId, String summary,
+	public String buildCreateSkillRequest(String vendorId, String summary,
 			String skillName, String description, String endpoint) throws AlexaApiException {
 
 		LOGGER.debug("Method parameters are: vendorId: {} , summary: {}  , skillName: {} ,endpoint: {} ",
@@ -130,13 +132,15 @@ public class AlexaRequestBuilder {
 	 * @param intents
 	 * @return String -- response from alexa after successfull update.
 	 */
-	public String updateCreatedSkill(String newskillId, List<Intent> intents) throws AlexaApiException {
+	public String buildUpdateSkillRequest(String newskillId, List<Intent> intents) throws AlexaApiException {
 
 		LOGGER.info("updateCreatedSkill  parameters: newSkillId: {} intents : {}", newskillId, intents);
 		InteractionModel interactionModel = new InteractionModel();
 
 		List<Prompt> prompts = intents.stream().map(m -> m.getPrompts()).flatMap(m -> m.stream())
 				.collect(Collectors.toList());
+		
+		List<Variation> variations = prompts.stream().map(m -> m.getVariations()).flatMap(v -> v.stream()).collect(Collectors.toList());
 		interactionModel.setPrompts(prompts);
 		
 		// set dialog and language model
@@ -348,7 +352,10 @@ public class AlexaRequestBuilder {
 		// Iterate slots and prepare Dialog slots
 				List<DialogSlot> dialogSlots = intent.getSlots().stream().map(s -> new DialogSlot(s.getSname(), s.getType()))
 						.collect(Collectors.toList());
-		return new DialogIntent(intent.getIntentName(),intent.getConfirmationRequired(),dialogSlots,null);
+		return new DialogIntent(intent.getIntentName(),intent.getConfirmationRequired(),dialogSlots,Collections.emptyMap());
 	}
 
+	
+	
+	
 }

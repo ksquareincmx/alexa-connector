@@ -16,9 +16,9 @@ public interface AlexaRequestURL {
 	String CREATE_ALEXA_SKILL = BASE_URL;
 	String UPDATE_ALEXA_SKILL = BASE_URL + "/%s/stages/development/interactionModel/locales/en-US";
 	String TEST_ALEXA_SKILL = BASE_URL + "/%s/stages/%s/invocations";
-	String UPDATE_EXISTING_SKILL = BASE_URL + "/%s/stages/development/manifest";
-	String UPDATE_INTERACTION_SCHEMA = BASE_URL + "/%s/stages/development/interactionModel/locales/en-US";
-
+	String UPDATE_SKILL_MANIFEST = BASE_URL + "/%s/stages/development/manifest";
+	String UPDATE_SKILL_INTERACTION_SCHEMA = BASE_URL + "/%s/stages/development/interactionModel/locales/en-US";
+	String DELETE_SKILL = BASE_URL  + "/%s/";
 	String TRUSTED_CERT = "Trusted";
 	String ACCEPTED = "200";
 	String STATUS_HEADER = "Location";
