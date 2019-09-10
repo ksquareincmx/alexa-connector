@@ -10,24 +10,24 @@ http://www.mulesoft.org/schema/mule/slack http://www.mulesoft.org/schema/mule/sl
 		<alexa:token-connection token="${alexa.token}" />
 	</alexa:config>
 	<flow name="create-skill" doc:id="b42238cf-83c1-4561-ae39-a355c7c920be" >
-	<alexa:create-skill doc:name="Create skill" doc:id="acda7ebf-02c1-411e-872c-2b2dfa56bd40" config-ref="Alexa_Config1" vendorId="MPLHQBOHBVJ16" summary="This is test case create skill" skillName="TestcaseSkill" description="TestDescrition" endpoint="http://mytestcase.com">
+	<alexa:create-skill doc:name="Create skill" doc:id="55b06574-edea-4e1b-8d8e-b901b03c511a" config-ref="Alexa_Config" vendorId="MPLHQBOHBVJ16" summary="no sumary" skillName="Tuesday Pizza" description="Eat pizza on monday" endpoint="https://mypizaa.com">
 			<alexa:intents >
-				<alexa:intent intentName="GetTravelTime" confirmationRequired="false" >
+				<alexa:intent intentName="Tuesday_not_gud" confirmationRequired="false" >
 					<alexa:slots >
-						<alexa:slot sname="DepartingPlanet" type="AMAZON.US_FIRST_NAME" >
+						<alexa:slot sname="pizza" type="Amazon.Actor">
 							<alexa:samples >
-								<alexa:sample value=" I'm starting from {DepartingPlanet}" />
+								<alexa:sample value="can i eat pizza today" />
 							</alexa:samples>
 						</alexa:slot>
 					</alexa:slots>
 					<alexa:samples >
-						<alexa:sample value=" how long does it take to travel from {DepartingPlanet}" />
+						<alexa:sample value="Yes i can eat pizza" />
 					</alexa:samples>
 					<alexa:prompts >
-						<alexa:prompt id="123456" >
-							<alexa:vmap >
-								<alexa:prompt-info type="PlainText" value="Which planet do you want to start from?" />
-							</alexa:vmap>
+						<alexa:prompt pid="88956565" >
+							<alexa:variations >
+								<alexa:variation type="PalinText" value="order pizza" />
+							</alexa:variations>
 						</alexa:prompt>
 					</alexa:prompts>
 				</alexa:intent>

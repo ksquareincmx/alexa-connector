@@ -4,11 +4,14 @@
 
 package org.mule.modules.alexa.internal.connection;
 
+import javax.inject.Inject;
+
 import org.mule.runtime.api.connection.ConnectionException;
 import org.mule.runtime.api.connection.ConnectionValidationResult;
 import org.mule.runtime.api.connection.PoolingConnectionProvider;
 import org.mule.runtime.extension.api.annotation.connectivity.oauth.AuthorizationCode;
 import org.mule.runtime.extension.api.connectivity.oauth.AuthorizationCodeState;
+import org.mule.runtime.http.api.HttpService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,6 +21,9 @@ public class AlexaOauthConnectionProvider implements PoolingConnectionProvider<A
 	private final Logger LOGGER = LoggerFactory.getLogger(AlexaOauthConnectionProvider.class);
 
 	private AuthorizationCodeState state;
+	
+	@Inject
+	HttpService httpService;
    
 	@Override
 	public AlexaConnection connect() throws ConnectionException {
@@ -25,16 +31,12 @@ public class AlexaOauthConnectionProvider implements PoolingConnectionProvider<A
 			throw new ConnectionException("Unable to get aws access token");
 		}
 
-		return new AlexaConnection(state.getAccessToken());
+		return new AlexaConnection(state.getAccessToken(),httpService);
 	}
     
 	@Override
 	public void disconnect(AlexaConnection connection) {
-		try {
-			// connection.invalidate();
-		} catch (Exception e) {
-			LOGGER.error("Error while disconnecting", e);
-		}
+		connection.disconnect();
 	}  
    
 	@Override

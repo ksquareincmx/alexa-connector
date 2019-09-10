@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:alexa="http://www.mulesoft.org/schema/mule/alexa"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/alexa http://www.mulesoft.org/schema/mule/alexa/current/mule-alexa.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<alexa:config name="Alexa_Config" doc:name="Alexa Config" doc:id="9b63eef5-a547-4359-904b-388fa9cfec11" >
+		<alexa:token-connection token="Atza|IwEBIA6VOdOpoeHONRL8oAZghHOLGOYQTzNBkgGc8b4Wm8o4Uht660eDB6BwvHc7_l8MKmUd0eD9sSmrhOVafLCjdRGCOPEmzjeusD8f4h-HU5MHTwJT_j69FoIuaFEmQN4h7zlWVbowoiL8yxkiOvDS8bB8lLCX1cZ37Rxt10hFDD_6S8EFBLpOaS5Kq__C282QXpVbEKhlbkYz-77TURbN7fGSgAofJ-8PrLzdZ5GzKJIBRiJuYQ_uBu0CLUcsCV2vW2f5gSTCj6jRMpbacVr8FEiX9BnjhBO7OxMIitMVozlhsGCVGBjiAgT0V05_xR2m7d_TM6fW8fXBsdcdRuWK67FhHzofzeBAC9xN4xUYf2RxIRPZYdxHpW8JddQSouAhS8uKfI_L-6DezloaZ8eh-704fWfJD7q7aC257ojOSMPUdoqNAH7nNLhdlLdprVSDW11_JuFNZo067Wd682_gUD--ru50KxnqYus3_fV8h09rXn2EAppP20LPPdoEjeGqYNH_pO6mqjzUHJ0fJgMeMssunt-aiA1h2amGkPdR-sB8DnQHnI9H88Dys7y9oK8kK6O33E9pZo-fOUFUzKPGYbqC0ujweLR1ECSKrrHvNSsR8w"/>
+	</alexa:config>
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="8ccfa7de-b2e9-49ca-8341-1092fa92b3f1" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	
+	<flow name="CreateSkill" doc:id="a12cd50c-4705-4c8c-8dcf-8137b60e4692" >
+		
+		<http:listener doc:name="Listener" doc:id="8188c4fb-b3be-4c78-bd73-27e7310071b2" config-ref="HTTP_Listener_config" path="/test"/>
+		<alexa:create-skill doc:name="Create skill" doc:id="01af2f4b-e4a5-4395-b029-372456ae7cfc" config-ref="Alexa_Config" vendorId="MPLHQBOHBVJ16" summary="no sumary" skillName="Tuesday Pizza" description="Eat pizza on monday" endpoint="https://mypizaa.com">
+			<alexa:intents >
+				<alexa:intent intentName="Tuesday_not_gud" confirmationRequired="false" >
+					<alexa:slots >
+						<alexa:slot sname="pizza" type="Amazon.Actor">
+							<alexa:samples >
+								<alexa:sample value="can i eat pizza today" />
+							</alexa:samples>
+						</alexa:slot>
+					</alexa:slots>
+					<alexa:samples >
+						<alexa:sample value="Yes i can eat pizza" />
+					</alexa:samples>
+					<alexa:prompts >
+						<alexa:prompt pid="88956565" >
+							<alexa:variations >
+								<alexa:variation type="PalinText" value="order pizza" />
+							</alexa:variations>
+						</alexa:prompt>
+					</alexa:prompts>
+				</alexa:intent>
+			</alexa:intents>
+		</alexa:create-skill>
+	</flow>
+	<flow name="updateIntents" doc:id="d8cda137-8c16-4f38-9b08-009e8de8e114" >
+		<http:listener doc:name="Listener" doc:id="d17ac5c9-459f-4adb-99fc-01250191701d" config-ref="HTTP_Listener_config" path="/updateIntents"/>
+		<alexa:update-skill-intents doc:name="Update skill intents" doc:id="e2bf704c-9fad-45ca-9fbf-686cb767c27f" config-ref="Alexa_Config" skillId="amzn1.ask.skill.37c9b985-b339-4fa4-bde5-e0b9610eb4ea">
+			<alexa:model >
+				<alexa:dialog >
+					<alexa:dialog-intents >
+						<alexa:dialog-intent intentName="testone" confirmationRequired="false" >
+							<alexa:dialog-slots >
+								<alexa:dialog-slot sname="orange" type="AMAZON.Actor" >
+									<alexa:slotprompts />
+								</alexa:dialog-slot>
+							</alexa:dialog-slots>
+						</alexa:dialog-intent>
+					</alexa:dialog-intents>
+				</alexa:dialog>
+				<alexa:language-model invocationName="invoked">
+					<alexa:languate-intents >
+						<alexa:language-intent intentName="testone" >
+							<alexa:slots >
+								<alexa:slot sname="orange" type="AMAZON.Actor" >
+									<alexa:samples >
+										<alexa:sample value="Orange is good to eat" />
+									</alexa:samples>
+								</alexa:slot>
+							</alexa:slots>
+							<alexa:samples >
+							<alexa:sample value="Helooo orange"/>
+							</alexa:samples>
+						</alexa:language-intent>
+					</alexa:languate-intents>
+				</alexa:language-model>
+				<alexa:prompts >
+					<alexa:prompt pid="845" >
+						<alexa:variations >
+							<alexa:variation type="PlainText" value="some dialog should open" />
+						</alexa:variations>
+					</alexa:prompt>
+				</alexa:prompts>
+			</alexa:model>
+		</alexa:update-skill-intents>
+	</flow>
+	<flow name="getSkill" doc:id="932bfa5b-460a-47cb-89e2-8fe790490c5e" >
+		<http:listener doc:name="Listener" doc:id="9ff7360f-f48e-4828-b259-1d20d06d2184" config-ref="HTTP_Listener_config" path="/getskill"/>
+		<alexa:skill-info doc:name="Skill info" doc:id="342f5db6-43d8-48c6-b397-5f5d5bf2a1a5" config-ref="Alexa_Config" skillId="amzn1.ask.skill.37c9b985-b339-4fa4-bde5-e0b9610eb4ea"/>
+	</flow>
+	<flow name="updateManifest" doc:id="f287aab5-f062-4b5b-b6de-10119e4a9ef9" >
+		<http:listener doc:name="Listener" doc:id="8aed7343-3d13-45ae-9b44-0511067e58bd" config-ref="HTTP_Listener_config" path="/updateManifest"/>
+		<alexa:update-skill-manifest doc:name="Update skill manifest" doc:id="3018e131-527a-40d7-95fc-9c6a0a63976d" config-ref="Alexa_Config" skillId="amzn1.ask.skill.37c9b985-b339-4fa4-bde5-e0b9610eb4ea">
+			<alexa:manifest>
+				<alexa:publishing-information testingInstructions="no instruction" category="HOME" >
+					<alexa:distribution-countries >
+						<alexa:distribution-country value="US" />
+						<alexa:distribution-country value="GB" />
+					</alexa:distribution-countries>
+					<alexa:locale skillName="OrderPizza" summary="It is used to order Pizza" description="Skill for order pizza" >
+						<alexa:keywords >
+							<alexa:keyword value="Order pizza for me" />
+						</alexa:keywords>
+						<alexa:example-phrases >
+							<alexa:example-phrase value="Hey can you order small pizza" />
+						</alexa:example-phrases>
+					</alexa:locale>
+				</alexa:publishing-information>
+				<alexa:privacy-and-compliance />
+				<alexa:events >
+					<alexa:endpoint uri="https://myevents.endpoint.com" sslCertificateType="Trusted" />
+					<alexa:subscriptions >
+						<alexa:sub-scription EventName="SKILL_ENABLED" />
+						<alexa:sub-scription EventName="SKILL_DISABLED" />
+					</alexa:subscriptions>
+				</alexa:events>
+				<alexa:apis >
+					<alexa:custom >
+						<alexa:endpoint uri="https://pizza.com" sslCertificateType="Trusted" />
+						<alexa:interfaces >
+							<alexa:interface type="ALEXA_PRESENTATION_APL" />
+						</alexa:interfaces>
+					</alexa:custom>
+				</alexa:apis>
+				<alexa:permissions >
+					<alexa:permission PermissionName="alexa::household:lists:write" />
+				</alexa:permissions>
+			</alexa:manifest>
+		</alexa:update-skill-manifest>
+	</flow>
+	<flow name="DeleteSkillFlow" doc:id="71bb9c61-7f36-4843-9978-5c18688ff24b" >
+		<http:listener doc:name="Listener" doc:id="b24b841d-d353-424b-8c5b-7433c9cc74d6" config-ref="HTTP_Listener_config" path="/deleteskill"/>
+		<alexa:delete-skill doc:name="Delete skill" doc:id="112c5f40-208b-4b78-a7a8-621d47671df4" config-ref="Alexa_Config" skillId="amzn1.ask.skill.37c9b985-b339-4fa4-bde5-e0b9610eb4ea"/>
+	</flow>
+	<flow name="updateSkillFlow" doc:id="ee738ad1-7a42-47c8-abb3-6010323dbb65" >
+		<alexa:update-skill doc:name="Update skill" doc:id="3ef468b0-0f24-4fbb-9bee-67e4146180c7" config-ref="Alexa_Config" skillId="amzn1.ask.skill.37c9b985-b339-4fa4-bde5-e0b9610eb4ea">
+			<alexa:interactionmodel >
+					<alexa:dialog >
+					<alexa:dialog-intents >
+						<alexa:dialog-intent intentName="testone" confirmationRequired="false" >
+							<alexa:dialog-slots >
+								<alexa:dialog-slot sname="orange" type="AMAZON.Actor" >
+									<alexa:slotprompts />
+								</alexa:dialog-slot>
+							</alexa:dialog-slots>
+						</alexa:dialog-intent>
+					</alexa:dialog-intents>
+				</alexa:dialog>
+				<alexa:language-model invocationName="invoked">
+					<alexa:languate-intents >
+						<alexa:language-intent intentName="testone" >
+							<alexa:slots >
+								<alexa:slot sname="orange" type="AMAZON.Actor" >
+									<alexa:samples >
+										<alexa:sample value="Orange is good to eat" />
+									</alexa:samples>
+								</alexa:slot>
+							</alexa:slots>
+							<alexa:samples >
+							<alexa:sample value="Helooo orange"/>
+							</alexa:samples>
+						</alexa:language-intent>
+					</alexa:languate-intents>
+				</alexa:language-model>
+				<alexa:prompts >
+					<alexa:prompt pid="845" >
+						<alexa:variations >
+							<alexa:variation type="PlainText" value="some dialog should open" />
+						</alexa:variations>
+					</alexa:prompt>
+				</alexa:prompts>
+			</alexa:interactionmodel>
+			<alexa:manifest >
+				<alexa:publishing-information testingInstructions="no instruction" category="HOME" >
+					<alexa:distribution-countries >
+						<alexa:distribution-country value="US" />
+						<alexa:distribution-country value="GB" />
+					</alexa:distribution-countries>
+					<alexa:locale skillName="OrderPizza" summary="It is used to order Pizza" description="Skill for order pizza" >
+						<alexa:keywords >
+							<alexa:keyword value="Order pizza for me" />
+						</alexa:keywords>
+						<alexa:example-phrases >
+							<alexa:example-phrase value="Hey can you order small pizza" />
+						</alexa:example-phrases>
+					</alexa:locale>
+				</alexa:publishing-information>
+				<alexa:privacy-and-compliance />
+				<alexa:events >
+					<alexa:endpoint uri="https://myevents.endpoint.com" sslCertificateType="Trusted" />
+					<alexa:subscriptions >
+						<alexa:sub-scription EventName="SKILL_ENABLED" />
+						<alexa:sub-scription EventName="SKILL_DISABLED" />
+					</alexa:subscriptions>
+				</alexa:events>
+				<alexa:apis >
+					<alexa:custom >
+						<alexa:endpoint uri="https://pizza.com" sslCertificateType="Trusted" />
+						<alexa:interfaces >
+							<alexa:interface type="ALEXA_PRESENTATION_APL" />
+						</alexa:interfaces>
+					</alexa:custom>
+				</alexa:apis>
+				<alexa:permissions >
+					<alexa:permission PermissionName="alexa::household:lists:write" />
+				</alexa:permissions>
+			</alexa:manifest>
+		</alexa:update-skill>
+	</flow>
+	
+	
+</mule>

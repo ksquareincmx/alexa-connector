@@ -19,4 +19,6 @@ import org.mule.runtime.extension.api.annotation.connectivity.ConnectionProvider
 @ConnectionProviders({TokenConnection.class, AlexaOauthConnectionProvider.class})
 public class AlexaConfiguration {
 
+	
+	
 }

@@ -10,6 +10,81 @@ http://www.mulesoft.org/schema/mule/slack http://www.mulesoft.org/schema/mule/sl
 		<alexa:token-connection token="${alexa.token}" />
 	</alexa:config>
 	<flow name="update-skill" doc:id="b42238cf-83c1-4561-ae39-a244c7c920be8885577" >
-	
+	<alexa:update-skill doc:name="Update skill" doc:id="28fbc22e-835e-418b-8610-3cbe420e2fa7" config-ref="Alexa_Config" skillId="amzn1.ask.skill.37c9b985-b339-4fa4-bde5-e0b9610eb4ea">
+			<alexa:update-skill doc:name="Update skill" doc:id="52de724a-b308-456d-b91b-071354f73d0d" config-ref="Alexa_Config" skillId="amzn1.ask.skill.37c9b985-b339-4fa4-bde5-e0b9610eb4ea">
+			<alexa:interactionmodel >
+					<alexa:dialog >
+					<alexa:dialog-intents >
+						<alexa:dialog-intent intentName="testone" confirmationRequired="false" >
+							<alexa:dialog-slots >
+								<alexa:dialog-slot sname="orange" type="AMAZON.Actor" >
+									<alexa:slotprompts />
+								</alexa:dialog-slot>
+							</alexa:dialog-slots>
+						</alexa:dialog-intent>
+					</alexa:dialog-intents>
+				</alexa:dialog>
+				<alexa:language-model invocationName="invoked">
+					<alexa:languate-intents >
+						<alexa:language-intent intentName="testone" >
+							<alexa:slots >
+								<alexa:slot sname="orange" type="AMAZON.Actor" >
+									<alexa:samples >
+										<alexa:sample value="Orange is good to eat" />
+									</alexa:samples>
+								</alexa:slot>
+							</alexa:slots>
+							<alexa:samples >
+							<alexa:sample value="Helooo orange"/>
+							</alexa:samples>
+						</alexa:language-intent>
+					</alexa:languate-intents>
+				</alexa:language-model>
+				<alexa:prompts >
+					<alexa:prompt pid="845" >
+						<alexa:variations >
+							<alexa:variation type="PlainText" value="some dialog should open" />
+						</alexa:variations>
+					</alexa:prompt>
+				</alexa:prompts>
+			</alexa:interactionmodel>
+			<alexa:manifest >
+				<alexa:publishing-information testingInstructions="no instruction" category="HOME" >
+					<alexa:distribution-countries >
+						<alexa:distribution-country value="US" />
+						<alexa:distribution-country value="GB" />
+					</alexa:distribution-countries>
+					<alexa:locale skillName="OrderPizza" summary="It is used to order Pizza" description="Skill for order pizza" >
+						<alexa:keywords >
+							<alexa:keyword value="Order pizza for me" />
+						</alexa:keywords>
+						<alexa:example-phrases >
+							<alexa:example-phrase value="Hey can you order small pizza" />
+						</alexa:example-phrases>
+					</alexa:locale>
+				</alexa:publishing-information>
+				<alexa:privacy-and-compliance />
+				<alexa:events >
+					<alexa:endpoint uri="https://myevents.endpoint.com" sslCertificateType="Trusted" />
+					<alexa:subscriptions >
+						<alexa:sub-scription EventName="SKILL_ENABLED" />
+						<alexa:sub-scription EventName="SKILL_DISABLED" />
+					</alexa:subscriptions>
+				</alexa:events>
+				<alexa:apis >
+					<alexa:custom >
+						<alexa:endpoint uri="https://pizza.com" sslCertificateType="Trusted" />
+						<alexa:interfaces >
+							<alexa:interface type="ALEXA_PRESENTATION_APL" />
+						</alexa:interfaces>
+					</alexa:custom>
+				</alexa:apis>
+				<alexa:permissions >
+					<alexa:permission PermissionName="alexa::household:lists:write" />
+				</alexa:permissions>
+			</alexa:manifest>
+		</alexa:update-skill>
+			
+		</alexa:update-skill>
 	</flow>
 </mule>

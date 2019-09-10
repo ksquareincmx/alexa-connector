@@ -5,7 +5,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.mulesoft.connectors.test</groupId>
 	<artifactId>mule-alexa-extension-one</artifactId>
-	<version>1.1.0-SNAPSHOT</version>
+
+	
+
+	<version>1.0.69-SNAPSHOT</version>
+
 	<packaging>mule-extension</packaging>
 	<name>AlexaConnector4</name>
 
@@ -27,7 +31,11 @@
 
 	<dependencies>
 
-	
+	<dependency>
+  <groupId>javax.inject</groupId>
+  <artifactId>javax.inject</artifactId>
+  <version>1</version>
+		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
