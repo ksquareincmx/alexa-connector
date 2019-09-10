@@ -1,7 +1,6 @@
 package org.mule.modules.alexa.automation.function;
 
 import org.mule.extension.alexaoauth.AlexaoauthOperationsTestCase;
-
 public class AlexaDeleteSkillTestCase extends AlexaoauthOperationsTestCase{
 
 	/*@Override

@@ -20,6 +20,6 @@ public class AlexaCreateSkillTestCase extends AlexaoauthOperationsTestCase{
                  .getPayload()
                  .getValue());
 		 Assert.assertEquals(payloadValue.contains("\"code\":202"),true);
-	}*/
+	} */
 }
 

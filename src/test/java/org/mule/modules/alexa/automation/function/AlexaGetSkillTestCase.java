@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mule.extension.alexaoauth.AlexaoauthOperationsTestCase;
+//import org.mule.extension.alexaoauth.AlexaoauthOperationsTestCase;
 import org.mule.functional.junit4.MuleArtifactFunctionalTestCase;
 import org.mule.modules.alexa.api.domain.update.Manifest;
 import org.mule.modules.alexa.internal.connection.AlexaConnection;
@@ -20,7 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.*;
 
 
- public class AlexaGetSkillTestCase extends AlexaoauthOperationsTestCase {
+public class AlexaGetSkillTestCase extends AlexaoauthOperationsTestCase {
 	
  
 	 /* @Override

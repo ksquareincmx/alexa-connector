@@ -114,18 +114,24 @@ The unique vendor ID is  Amazon customer  customer ID (CID) that is tied to your
 === *Summary* : String
 Summary description of the skill, which is shown when viewing the list of skills in the Alexa Skills Store.
 
+*Example* : "This is a testing skill"
 
 
 === *Skill Name* : String(required)
 skill name for the new created skill.
 
+*Example* : "Test Skill"
 
 === *Description* : String(required)
 A full description explaining what the skill can do and any prerequisites to using it (such as additional hardware, software, or accounts). For a Flash Briefing skill, you must list the feeds for the skill.
 
+
+
 === *Endpoint*
 
 Contains the uri field. This is service third party https endpoint.
+
+*Example* : https://alexaservice.us-e1.cloudhub.io/test
 
 === *Intents* : Object
 ==== *IntentName * : String(required)
