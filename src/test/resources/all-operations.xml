@@ -16,6 +16,7 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 		
 		<http:listener doc:name="Listener" doc:id="8188c4fb-b3be-4c78-bd73-27e7310071b2" config-ref="HTTP_Listener_config" path="/test"/>
 		<alexa:create-skill doc:name="Create skill" doc:id="01af2f4b-e4a5-4395-b029-372456ae7cfc" config-ref="Alexa_Config" vendorId="MPLHQBOHBVJ16" summary="no sumary" skillName="Tuesday Pizza" description="Eat pizza on monday" endpoint="https://mypizaa.com">
+			
 			<alexa:intents >
 				<alexa:intent intentName="Tuesday_not_gud" confirmationRequired="false" >
 					<alexa:slots >

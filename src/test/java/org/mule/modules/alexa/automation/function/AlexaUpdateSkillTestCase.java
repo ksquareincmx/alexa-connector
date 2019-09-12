@@ -1,17 +1,20 @@
 package org.mule.modules.alexa.automation.function;
 
 import org.junit.Assert;
+import org.junit.Test;
 import org.mule.extension.alexaoauth.AlexaoauthOperationsTestCase;
+import org.mule.functional.junit4.MuleArtifactFunctionalTestCase;
 
-public class AlexaUpdateSkillTestCase extends AlexaoauthOperationsTestCase{
+public class AlexaUpdateSkillTestCase extends MuleArtifactFunctionalTestCase{
 
-	/*@Override
+	@Override
 	protected String getConfigFile() {
 		// TODO Auto-generated method stub
 		return "test-mule-updateskill.xml";
 	}
 	
-	public void testUpdateSkill() {
+	@Test
+	public void testUpdateSkill() throws Exception {
 		
 		 String payloadValue = ((String) flowRunner("update-skill").run()
                  .getMessage()
@@ -20,6 +23,6 @@ public class AlexaUpdateSkillTestCase extends AlexaoauthOperationsTestCase{
 		 Assert.assertEquals(payloadValue.contains("\"code\":202"),true);
 	}
 	
-	*/
+	
 	
 }

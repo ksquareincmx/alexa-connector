@@ -5,11 +5,11 @@
 	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/alexa http://www.mulesoft.org/schema/mule/alexa/current/mule-alexa.xsd
 http://www.mulesoft.org/schema/mule/slack http://www.mulesoft.org/schema/mule/slack/current/mule-slack.xsd">
-	
-	<alexa:config name="Alexa_Config1" doc:name="Alexa Config" doc:id="91096669-d273-4393-855d-4e6a6d271e03" >
+	<configuration-properties file="automation-credentials.properties" />
+	<alexa:config name="Alexa_Config" doc:name="Alexa Config" doc:id="91096669-d273-4393-855d-4e6a6d271e03" >
 		<alexa:token-connection token="${alexa.token}" />
 	</alexa:config>
 	<flow name="get-skill" doc:id="b42238cf-83c1-4561-ae39-a244c7c920be" >
-		<alexa:skill-info doc:name="Skill info" doc:id="3c16aa8b-1c76-49c9-9229-e56b2936cc99" config-ref="Alexa_Config" skillId="amzn1.ask.skill.37c9b985-b339-4fa4-bde5-e0b9610eb4ea"/>
+		<alexa:skill-info doc:name="Skill info" doc:id="3c16aa8b-1c76-49c9-9229-e56b2936cc99" config-ref="Alexa_Config" skillId="amzn1.ask.skill.1dff96e1-ee88-4fc1-bea4-c30c2bb932e7"/>
 	</flow>
 </mule>

@@ -27,6 +27,18 @@ public class LanguageModel {
 
 	
 
+	public LanguageModel(List<LanguageIntent> languateIntents2, String invocationName2) {
+		// TODO Auto-generated constructor stub
+		
+		this.languateIntents= languateIntents2;
+		this.invocationName = invocationName2;
+	}
+	
+	public LanguageModel() {
+		// TODO Auto-generated constructor stub
+		
+	}
+
 	@JsonProperty("intents")
 	public List<LanguageIntent> getLanguateIntents() {
 		return languateIntents;

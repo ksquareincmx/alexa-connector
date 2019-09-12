@@ -130,7 +130,7 @@ public class AlexaOperations {
 	@MediaType(value = ANY, strict = false)
 	@Alias("updateSkillIntents")
 	public  String updateInteraction(@Connection AlexaConnection alexaConnection, 
-			@Optional @NullSafe @Expression(SUPPORTED) InteractionModel model ,
+			@Optional @NullSafe @Expression(SUPPORTED)  @ParameterDsl(allowReferences = false) InteractionModel model ,
 			@Expression(SUPPORTED) String skillId) {
 		
 		LOGGER.debug("Updating Interaction model {} , skillId {} ",model,skillId);

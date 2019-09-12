@@ -5,21 +5,14 @@
 	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/alexa http://www.mulesoft.org/schema/mule/alexa/current/mule-alexa.xsd
 http://www.mulesoft.org/schema/mule/slack http://www.mulesoft.org/schema/mule/slack/current/mule-slack.xsd">
-	
-	<alexa:config name="Alexa_Config1" doc:name="Alexa Config" doc:id="91096669-d273-4393-855d-4e6a6d271e05" >
+	<configuration-properties file="automation-credentials.properties" />
+	<alexa:config name="Alexa_Config" doc:name="Alexa Config" doc:id="91096669-d273-4393-855d-4e6a6d271e05" >
 		<alexa:token-connection token="${alexa.token}" />
 	</alexa:config>
 	<flow name="create-skill" doc:id="b42238cf-83c1-4561-ae39-a355c7c920be" >
-	<alexa:create-skill doc:name="Create skill" doc:id="55b06574-edea-4e1b-8d8e-b901b03c511a" config-ref="Alexa_Config" vendorId="MPLHQBOHBVJ16" summary="no sumary" skillName="Tuesday Pizza" description="Eat pizza on monday" endpoint="https://mypizaa.com">
+	<alexa:create-skill doc:name="Create skill" doc:id="55b06574-edea-4e1b-8d8e-b901b03c511a" config-ref="Alexa_Config" vendorId="MPLHQBOHBVJ16" summary="no sumary" skillName="Tuesday Afternnon Pizza" description="Eat pizza on monday" endpoint="https://mypizaa.com">
 			<alexa:intents >
 				<alexa:intent intentName="Tuesday_not_gud" confirmationRequired="false" >
-					<alexa:slots >
-						<alexa:slot sname="pizza" type="Amazon.Actor">
-							<alexa:samples >
-								<alexa:sample value="can i eat pizza today" />
-							</alexa:samples>
-						</alexa:slot>
-					</alexa:slots>
 					<alexa:samples >
 						<alexa:sample value="Yes i can eat pizza" />
 					</alexa:samples>

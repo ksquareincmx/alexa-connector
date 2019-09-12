@@ -169,11 +169,12 @@ public class AlexaRequestBuilder {
 	}
 
 	public String prepareSchemaForInteractionModel(InteractionModel model) {
+		InteractionModel m = new InteractionModel(model.getDialog(), model.getLanguageModel(), model.getPrompts());
 		Map<String, InteractionModel> reqObj = new HashMap<>();
-		reqObj.put("interactionModel", model);
+		reqObj.put("interactionModel", m);
 		String updateSkillJson = null;
 		try {
-			updateSkillJson = mapper.writeValueAsString(reqObj);
+	updateSkillJson = mapper.writeValueAsString(reqObj);
 
 			JsonNode newNode = removeExtraFields((ObjectNode) mapper.readTree(updateSkillJson));
 
@@ -185,6 +186,42 @@ public class AlexaRequestBuilder {
 		}
 		return updateSkillJson;
 	}
+	
+	
+	
+	private InteractionModel copy(InteractionModel model) {
+        // TODO Auto-generated method stub
+        
+        InteractionModel m = new InteractionModel();
+        m.setDialog(createDialog(model.getDialog()));
+        m.setLanguageModel(PreparelanguageModel(m.getLanguageModel()));
+        m.setPrompts(model.getPrompts());
+        return m;
+        
+    }
+    public LanguageModel PreparelanguageModel(LanguageModel languageModel) {
+    	System.out.println("languagemodel"+languageModel.toString());
+    	System.err.print(languageModel.toString());
+        return new LanguageModel(languageModel.getLanguateIntents(),languageModel.getInvocationName());
+    }
+    
+    private Dialog createDialog(Dialog dialog) {
+        // TODO Auto-generated method stub
+        
+        Dialog d = new Dialog();
+        d.setDelegationStrategy(dialog.getDelegationStrategy());
+        d.setDialogIntents(prepareDialogIntents(dialog.getDialogIntents()));
+        
+        return d;
+    }
+    private List<DialogIntent> prepareDialogIntents(List<DialogIntent> dialogIntents) {
+        // TODO Auto-generated method stub
+        return dialogIntents.stream().map(m -> dialogIntent(m)).collect(Collectors.toList());
+    }
+    
+    public DialogIntent dialogIntent(DialogIntent intent) {
+        return new DialogIntent(intent.getIntentName(), intent.getConfirmationRequired(), intent.getDialogSlots(), intent.getDialogPrompts());
+    }
 
 
 	public String getAlexaRequestJson(String applicationID, String requestType, Map<String, String> slots,

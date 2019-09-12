@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:alexa="http://www.mulesoft.org/schema/mule/alexa" 
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/alexa http://www.mulesoft.org/schema/mule/alexa/current/mule-alexa.xsd">
+	<configuration-properties file="automation-credentials.properties" />
+	<alexa:config name="Alexa_Config" doc:name="Alexa Config" doc:id="a1b20c0f-e314-4b93-aa65-f49df33f1fc4" >
+		<alexa:token-connection token="${alexa.token}" />
+	</alexa:config>
+	<flow name="updateskillIntent-flow" doc:id="1ff1bc2f-4891-4c79-9b2a-6ab5d873b7dd" >
+		<alexa:update-skill-intents doc:name="Update skill intents" doc:id="2ec9ba97-25a5-4c6a-8cd2-03b29bd18675" config-ref="Alexa_Config" skillId="amzn1.ask.skill.11c286e9-e0fc-4d96-8e68-816a8a16126e">
+			<alexa:model >
+				<alexa:dialog delegationStrategy="ALWAYS" >
+					<alexa:dialog-intents >
+						<alexa:dialog-intent intentName="newPlanet" confirmationRequired="false" />
+					</alexa:dialog-intents>
+				</alexa:dialog>
+				<alexa:language-model invocationName="my new fact" >
+					<alexa:languate-intents >
+						<alexa:language-intent intentName="newPlanet" >
+							<alexa:samples >
+								<alexa:sample value="this is a new planet" />
+							</alexa:samples>
+						</alexa:language-intent>
+					</alexa:languate-intents>
+				</alexa:language-model>
+				<alexa:prompts >
+					<alexa:prompt pid="123" >
+						<alexa:variations >
+							<alexa:variation type="PlainText" value="I can't answer this question about the sun" />
+						</alexa:variations>
+					</alexa:prompt>
+				</alexa:prompts>
+			</alexa:model>
+		</alexa:update-skill-intents>
+	</flow>
+</mule>

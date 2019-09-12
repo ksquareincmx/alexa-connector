@@ -8,7 +8,7 @@
 
 	
 
-	<version>1.0.69-SNAPSHOT</version>
+	<version>1.0.74-SNAPSHOT</version>
 
 	<packaging>mule-extension</packaging>
 	<name>AlexaConnector4</name>

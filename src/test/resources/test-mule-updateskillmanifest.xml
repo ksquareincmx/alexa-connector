@@ -1,39 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule  xmlns:slack="http://www.mulesoft.org/schema/mule/slack"
+<mule 
 	xmlns:alexa="http://www.mulesoft.org/schema/mule/alexa"
 	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/alexa http://www.mulesoft.org/schema/mule/alexa/current/mule-alexa.xsd
-http://www.mulesoft.org/schema/mule/slack http://www.mulesoft.org/schema/mule/slack/current/mule-slack.xsd">
+http://www.mulesoft.org/schema/mule/alexa http://www.mulesoft.org/schema/mule/alexa/current/mule-alexa.xsd">
 	<configuration-properties file="automation-credentials.properties" />
-	<alexa:config name="Alexa_Config" doc:name="Alexa Config" doc:id="91096669-d273-4393-855d-4e6a6d271e09" >
+	<alexa:config name="Alexa_Config" doc:name="Alexa Config" doc:id="a1b20c0f-e314-4b93-aa65-f49df33f1fc4" >
 		<alexa:token-connection token="${alexa.token}" />
 	</alexa:config>
-	<flow name="update-skill" doc:id="b42238cf-83c1-4561-ae39-a244c7c920be8885577" >
-	<alexa:update-skill doc:name="Update skill" doc:id="28fbc22e-835e-418b-8610-3cbe420e2fa7" config-ref="Alexa_Config" skillId="amzn1.ask.skill.37c9b985-b339-4fa4-bde5-e0b9610eb4ea">
-			<alexa:interactionmodel >
-				<alexa:dialog delegationStrategy="ALWAYS" >
-					<alexa:dialog-intents >
-						<alexa:dialog-intent intentName="newPlanet" confirmationRequired="false" />
-					</alexa:dialog-intents>
-				</alexa:dialog>
-				<alexa:language-model invocationName="my new fact" >
-					<alexa:languate-intents >
-						<alexa:language-intent intentName="newPlanet" >
-							<alexa:samples >
-								<alexa:sample value="this is a new planet" />
-							</alexa:samples>
-						</alexa:language-intent>
-					</alexa:languate-intents>
-				</alexa:language-model>
-				<alexa:prompts >
-					<alexa:prompt pid="123" >
-						<alexa:variations >
-							<alexa:variation type="PlainText" value="I can't answer this question about the sun" />
-						</alexa:variations>
-					</alexa:prompt>
-				</alexa:prompts>
-			</alexa:interactionmodel>
+	
+	
+	<flow name="to-certifyFlow1" doc:id="f7772c8b-13ff-43d1-98ee-c1b7dba1b47e" >
+		<alexa:update-skill-manifest doc:name="Update skill manifest" doc:id="7b586b41-8a2e-49fb-89a2-f0bb103fe464" config-ref="Alexa_Config" skillId="amzn1.ask.skill.11c286e9-e0fc-4d96-8e68-816a8a16126e">
 			<alexa:manifest>
 				<alexa:publishing-information testingInstructions="Say 'Alexa, hello world'" category="HEALTH_AND_FITNESS">
 					<alexa:distribution-countries >
@@ -68,7 +46,6 @@ http://www.mulesoft.org/schema/mule/slack http://www.mulesoft.org/schema/mule/sl
 					<alexa:permission PermissionName="alexa::devices:all:address:full:read" />
 				</alexa:permissions>
 			</alexa:manifest>
-		</alexa:update-skill>
-
+		</alexa:update-skill-manifest>
 	</flow>
 </mule>

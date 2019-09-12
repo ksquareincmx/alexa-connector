@@ -21,10 +21,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.*;
 
 
-public class AlexaGetSkillTestCase extends AlexaoauthOperationsTestCase {
+public class AlexaGetSkillTestCase extends  MuleArtifactFunctionalTestCase {
 	
  
-	 /* @Override
+	  @Override
 	  protected String getConfigFile() {
 	    return "test-mule-getinfoskill.xml";
 	  }
@@ -37,9 +37,9 @@ public class AlexaGetSkillTestCase extends AlexaoauthOperationsTestCase {
 	                                      .getMessage()
 	                                      .getPayload()
 	                                      .getValue());
-	    Assert.assertEquals(payloadValue.contains("https://alexaservice.us-e1.cloudhub.io/test"),true);
+	    Assert.assertEquals(payloadValue.contains("manifest"),true);
 	  }
-*/
+
 	
 
 } 

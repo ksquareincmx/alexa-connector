@@ -5,12 +5,12 @@
 	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/alexa http://www.mulesoft.org/schema/mule/alexa/current/mule-alexa.xsd
 http://www.mulesoft.org/schema/mule/slack http://www.mulesoft.org/schema/mule/slack/current/mule-slack.xsd">
-	
-	<alexa:config name="Alexa_Config1" doc:name="Alexa Config" doc:id="91096669-d273-4393-855d-4e6a6d271e01" >
+	<configuration-properties file="automation-credentials.properties" />
+	<alexa:config name="Alexa_Config" doc:name="Alexa Config" doc:id="91096669-d273-4393-855d-4e6a6d271e01" >
 		<alexa:token-connection token="${alexa.token}" />
 	</alexa:config>
 	<flow name="delete-skill" doc:id="b42238cf-83c1-4561-ae39-a244c7c920be88855" >
-		<alexa:delete-skill doc:name="Delete skill" doc:id="4faa4014-d942-4442-bd44-8ef909786f67" config-ref="Alexa_Config" skillId="amzn1.ask.skill.37c9b985-b339-4fa4-bde5-e0b9610eb4ea"/>
+		<alexa:delete-skill doc:name="Delete skill" doc:id="4faa4014-d942-4442-bd44-8ef909786f67" config-ref="Alexa_Config" skillId="amzn1.ask.skill.5f9f9d6a-d44b-4d0e-88b7-b652260489da"/>
 	
 	</flow>
 </mule>
