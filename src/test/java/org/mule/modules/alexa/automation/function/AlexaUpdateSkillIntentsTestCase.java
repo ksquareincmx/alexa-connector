@@ -3,7 +3,7 @@ package org.mule.modules.alexa.automation.function;
 import org.junit.Test;
 import org.mule.functional.junit4.MuleArtifactFunctionalTestCase;
 
-public class AlexaUpdateSkillIntentsTestCase extends MuleArtifactFunctionalTestCase {
+/** public class AlexaUpdateSkillIntentsTestCase extends MuleArtifactFunctionalTestCase {
 	
 	@Override
 	protected String getConfigFile() {
@@ -21,3 +21,4 @@ public class AlexaUpdateSkillIntentsTestCase extends MuleArtifactFunctionalTestC
 	}
 
 }
+**/

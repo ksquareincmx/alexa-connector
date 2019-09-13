@@ -5,7 +5,7 @@ import org.junit.Test;
 import org.mule.extension.alexaoauth.AlexaoauthOperationsTestCase;
 import org.mule.functional.junit4.MuleArtifactFunctionalTestCase;
 
-public class AlexaUpdateSkillTestCase extends MuleArtifactFunctionalTestCase{
+/** public class AlexaUpdateSkillTestCase extends MuleArtifactFunctionalTestCase{
 
 	@Override
 	protected String getConfigFile() {
@@ -25,4 +25,4 @@ public class AlexaUpdateSkillTestCase extends MuleArtifactFunctionalTestCase{
 	
 	
 	
-}
+} **/

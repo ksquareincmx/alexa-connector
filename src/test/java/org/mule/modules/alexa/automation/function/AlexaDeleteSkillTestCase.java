@@ -3,7 +3,7 @@ package org.mule.modules.alexa.automation.function;
 import org.junit.Test;
 import org.mule.extension.alexaoauth.AlexaoauthOperationsTestCase;
 import org.mule.functional.junit4.MuleArtifactFunctionalTestCase;
-public class AlexaDeleteSkillTestCase extends MuleArtifactFunctionalTestCase{
+/** public class AlexaDeleteSkillTestCase extends MuleArtifactFunctionalTestCase{
 
 	@Override
 	protected String getConfigFile() {
@@ -20,3 +20,4 @@ public class AlexaDeleteSkillTestCase extends MuleArtifactFunctionalTestCase{
                  .getValue());
 	}
 }
+**/

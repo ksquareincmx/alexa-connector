@@ -3,13 +3,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.mulesoft.connectors.test</groupId>
+	<groupId>2b8017cc-fb1c-47a9-81b1-3d9cba8d0a1e</groupId>
 	<artifactId>mule-alexa-extension-one</artifactId>
-
-	
-
 	<version>1.0.74-SNAPSHOT</version>
-
 	<packaging>mule-extension</packaging>
 	<name>AlexaConnector4</name>
 
@@ -31,10 +27,10 @@
 
 	<dependencies>
 
-	<dependency>
-  <groupId>javax.inject</groupId>
-  <artifactId>javax.inject</artifactId>
-  <version>1</version>
+		<dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
+			<version>1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -42,7 +38,7 @@
 			<version>3.9</version>
 		</dependency>
 
-		
+
 		<dependency>
 			<groupId>com.amazon.alexa</groupId>
 			<artifactId>ask-sdk</artifactId>
@@ -54,7 +50,7 @@
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
 			<version>2.9.9</version>
-			
+
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -63,7 +59,7 @@
 
 		</dependency>
 
-		
+
 		<dependency>
 			<groupId>org.mule.runtime</groupId>
 			<artifactId>mule-core</artifactId>
@@ -82,8 +78,8 @@
 			<artifactId>javax.ws.rs-api</artifactId>
 			<version>${javaxWsRsApiVersion}</version>
 		</dependency>
-		
-	<!-- https://mvnrepository.com/artifact/org.mule.runtime/mule-service-http-api -->
+
+		<!-- https://mvnrepository.com/artifact/org.mule.runtime/mule-service-http-api -->
 		<dependency>
 			<groupId>org.mule.runtime</groupId>
 			<artifactId>mule-service-http-api</artifactId>
@@ -144,6 +140,21 @@
 			<layout>default</layout>
 		</repository>
 	</repositories>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>Repository</id>
+			<name>Exchange Repository</name>
+			<url>https://maven.anypoint.mulesoft.com/api/v1/organizations/2b8017cc-fb1c-47a9-81b1-3d9cba8d0a1e/maven</url>
+			<layout>default</layout>
+		</snapshotRepository>
+		<repository>
+			<id>Repository</id>
+			<name>Exchange Repository</name>
+			<url>https://maven.anypoint.mulesoft.com/api/v1/organizations/2b8017cc-fb1c-47a9-81b1-3d9cba8d0a1e/maven</url>
+			<layout>default</layout>
+		</repository>
+	</distributionManagement>
 
 	<pluginRepositories>
 		<pluginRepository>

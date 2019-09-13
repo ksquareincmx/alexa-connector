@@ -21,7 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.*;
 
 
-public class AlexaGetSkillTestCase extends  MuleArtifactFunctionalTestCase {
+/** public class AlexaGetSkillTestCase extends  MuleArtifactFunctionalTestCase {
 	
  
 	  @Override
@@ -42,4 +42,4 @@ public class AlexaGetSkillTestCase extends  MuleArtifactFunctionalTestCase {
 
 	
 
-} 
+} **/
