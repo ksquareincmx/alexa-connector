@@ -61,7 +61,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class AlexaRequestBuilder {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(AlexaRequestBuilder.class);
+	private static final Logger logger = LoggerFactory.getLogger(AlexaRequestBuilder.class);
 
 	static ObjectMapper mapper = new ObjectMapper();
 
@@ -88,7 +88,7 @@ public class AlexaRequestBuilder {
 	public String buildCreateSkillRequest(String vendorId, String summary, String skillName, String description,
 			String endpoint, CategoryEnum category) throws AlexaApiException {
 
-		LOGGER.debug("Method parameters are: vendorId: {} , summary: {}  , skillName: {} ,endpoint: {} ", vendorId,
+		logger.debug("Method parameters are: vendorId: {} , summary: {}  , skillName: {} ,endpoint: {} ", vendorId,
 				summary, skillName, endpoint);
 
 		// create locale
@@ -116,10 +116,10 @@ public class AlexaRequestBuilder {
 			JsonNode newNode = removeExtraFields((ObjectNode) mapper.readTree(jsonStr));
 
 			jsonStr = mapper.writeValueAsString(newNode);
-			LOGGER.info("Create Alexa Skill request: {}", jsonStr);
+			logger.info("Create Alexa Skill request: {}", jsonStr);
 		} catch (IOException e) {
 			// TODO: handle exception
-			LOGGER.error("Exception while serializing json in createAlexaSkillRequestBuilder {}", e);
+			logger.error("Exception while serializing json in createAlexaSkillRequestBuilder {}", e);
 			throw new AlexaApiException(e.getMessage(), AlexaApiErrorType.JSON_PARSER_EXCEPTION);
 		}
 		return jsonStr;
@@ -135,7 +135,7 @@ public class AlexaRequestBuilder {
 	 */
 	public String buildUpdateSkillRequest(String newskillId, List<Intent> intents) throws AlexaApiException {
 
-		LOGGER.info("updateCreatedSkill  parameters: newSkillId: {} intents : {}", newskillId, intents);
+		logger.info("updateCreatedSkill  parameters: newSkillId: {} intents : {}", newskillId, intents);
 		InteractionModel interactionModel = new InteractionModel();
 
 		List<Prompt> prompts = intents.stream().map(m -> m.getPrompts()).flatMap(m -> m.stream())
@@ -162,9 +162,9 @@ public class AlexaRequestBuilder {
 			JsonNode newNode = removeExtraFields((ObjectNode) mapper.readTree(updateSkillJson));
 
 			updateSkillJson = mapper.writeValueAsString(newNode);
-			LOGGER.info("updateCreatedSkill  json {}", updateSkillJson);
+			logger.info("updateCreatedSkill  json {}", updateSkillJson);
 		} catch (IOException e) {
-			LOGGER.error("Exception while serializing json in updateCreatedSkill {}", e);
+			logger.error("Exception while serializing json in updateCreatedSkill {}", e);
 			throw new AlexaApiException(e.getMessage(), AlexaApiErrorType.JSON_PARSER_EXCEPTION);
 		}
 		return updateSkillJson;
@@ -183,9 +183,9 @@ public class AlexaRequestBuilder {
 
 			updateSkillJson = mapper.writeValueAsString(newNode);
 			System.out.println("createInteractionUpdateRequest:" + updateSkillJson);
-			LOGGER.info("createInteractionUpdateRequest  json {}", updateSkillJson);
+			logger.info("createInteractionUpdateRequest  json {}", updateSkillJson);
 		} catch (IOException e) {
-			LOGGER.error("Exception while serializing json in prepareSchemaForInteractionModel {}", e);
+			logger.error("Exception while serializing json in prepareSchemaForInteractionModel {}", e);
 			throw new AlexaApiException(e.getMessage(), AlexaApiErrorType.JSON_PARSER_EXCEPTION);
 		}
 		return updateSkillJson;
@@ -208,7 +208,7 @@ public class AlexaRequestBuilder {
 			if (Objects.isNull(fieldNode) && key.equals("SkillId")) {
 				// when skillId sure we get message as key
 				String res = rootNode.asText();
-				LOGGER.error("Creation of skill having problem  {} ", res);
+				logger.error("Creation of skill having problem  {} ", res);
 				throw new AlexaApiException(res, AlexaApiErrorType.VALIDATIONS);
 			}
 			if(key.equals("message") && Objects.nonNull(fieldNode)) {
@@ -218,6 +218,7 @@ public class AlexaRequestBuilder {
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
+			logger.error("Error while looking for key in json: ",e);
 			throw new AlexaApiException(e.getMessage(), AlexaApiErrorType.JSON_PARSER_EXCEPTION);
 		}
 		return value;
@@ -226,7 +227,7 @@ public class AlexaRequestBuilder {
 	public String getAlexaRequestJson(String applicationID, String requestType, Map<String, String> slots,
 			String intentName) throws AlexaApiException {
 
-		LOGGER.debug("getAlexaRequestJson params applicationID:{} requestType {} slots {} intentName:{} ",
+		logger.debug("getAlexaRequestJson params applicationID:{} requestType {} slots {} intentName:{} ",
 				applicationID, requestType, slots, intentName);
 		Application application = new Application(applicationID);
 		User user = new User("amzn1.ask.account.12345ABCDEFGH");
@@ -251,9 +252,9 @@ public class AlexaRequestBuilder {
 		String jsonStr = null;
 		try {
 			jsonStr = mapper.writeValueAsString(request);
-			LOGGER.debug("getAlexaRequestJson json  {}", jsonStr);
+			logger.debug("getAlexaRequestJson json  {}", jsonStr);
 		} catch (JsonProcessingException e) {
-			LOGGER.error("Exception while serializing json in updateCreatedSkill {}", e);
+			logger.error("Exception while serializing json in updateCreatedSkill {}", e);
 			throw new AlexaApiException(e.getMessage(), AlexaApiErrorType.JSON_PARSER_EXCEPTION);
 		}
 		return jsonStr;
@@ -294,9 +295,9 @@ public class AlexaRequestBuilder {
 
 			res = mapper.writeValueAsString(newNode);
 			System.out.println("createManifestUpdateRequest:" + res);
-			LOGGER.debug("createManifestUpdateRequest json  {}", res);
+			logger.debug("createManifestUpdateRequest json  {}", res);
 		} catch (IOException e) {
-			LOGGER.error("Exception while serializing json in createUpdateRequest {}", e);
+			logger.error("Exception while serializing json in createUpdateRequest {}", e);
 			throw new AlexaApiException(e.getMessage(), AlexaApiErrorType.JSON_PARSER_EXCEPTION);
 		}
 		return res;

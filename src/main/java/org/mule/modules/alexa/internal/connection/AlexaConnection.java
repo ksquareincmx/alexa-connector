@@ -6,6 +6,7 @@ package org.mule.modules.alexa.internal.connection;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.concurrent.TimeoutException;
 
 import org.mule.modules.alexa.internal.error.AlexaApiErrorType;
@@ -95,7 +96,7 @@ public class AlexaConnection {
 			return null;
 		case PUT:
 		case POST:
-			return new ByteArrayHttpEntity(content.getBytes());
+			return new ByteArrayHttpEntity(content.getBytes(Charset.defaultCharset()));
 
 		default:
 			return new ByteArrayHttpEntity(content.getBytes());

@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
 
 public class AlexaOperations {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(AlexaOperations.class);
+	private static final Logger logger = LoggerFactory.getLogger(AlexaOperations.class);
 
 	private AlexaRequestBuilder requestBuilder = new AlexaRequestBuilder();
 
@@ -64,20 +64,20 @@ public class AlexaOperations {
 			@Optional @NullSafe @Expression(ExpressionSupport.NOT_SUPPORTED) @ParameterDsl(allowReferences = false) List<Intent> intents)
 			throws AlexaApiException {
 
-		LOGGER.debug("Access token {}", alexaConnection.getAccessToken());
+		logger.debug("Access token {}", alexaConnection.getAccessToken());
 		String alexaRequest = requestBuilder.buildCreateSkillRequest(vendorId, summary, skillName, description,
 				endpoint,category);
 
 		String createSkillResponse = alexaConnection.sendRequest(HttpConstants.Method.POST,
 				AlexaRequestURL.CREATE_ALEXA_SKILL, alexaRequest);
 
-		LOGGER.info("Create Alexa Skill Response {}", createSkillResponse);
+		logger.info("Create Alexa Skill Response {}", createSkillResponse);
 		String skillId = requestBuilder.readValueForKey(createSkillResponse, "skillId");
 		if (skillId == null || Objects.isNull(skillId)) {
 			throw new AlexaApiException("Error while creation of Alexa Skill: " + createSkillResponse,
 					AlexaApiErrorType.VALIDATIONS);
 		}
-		LOGGER.info("Alexa SkillId {}", skillId);
+		logger.info("Alexa SkillId {}", skillId);
 
 		String updateSkillRequest = requestBuilder.buildUpdateSkillRequest(skillId, intents);
 		String updateUrl = String.format(AlexaRequestURL.UPDATE_ALEXA_SKILL, skillId);
@@ -96,7 +96,7 @@ public class AlexaOperations {
 	@Alias("skillInfo")
 	public String getSkillInfo(@Connection AlexaConnection alexaConnection, @Expression(SUPPORTED) String skillId)
 			throws AlexaApiException {
-		LOGGER.debug("Alexa Authorization  Token {}", alexaConnection.getAccessToken());
+		logger.debug("Alexa Authorization  Token {}", alexaConnection.getAccessToken());
 		String url = String.format(AlexaRequestURL.GET_ALEXA_INFO, skillId);
 		return alexaConnection.sendRequest(HttpConstants.Method.GET, url, null);
 	}
@@ -105,7 +105,7 @@ public class AlexaOperations {
 	@Alias("deleteSkill")
 	public String deleteSkill(@Connection AlexaConnection alexaConnection, @Expression(SUPPORTED) String skillId)
 			throws Exception {
-		LOGGER.info("Alexa Authorization  Token {}", alexaConnection.getAccessToken());
+		logger.info("Alexa Authorization  Token {}", alexaConnection.getAccessToken());
 		String deleteUrl = String.format(AlexaRequestURL.DELETE_SKILL, skillId);
 		return alexaConnection.sendRequest(HttpConstants.Method.DELETE, deleteUrl, null);
 	}
@@ -114,13 +114,13 @@ public class AlexaOperations {
 	@Alias("updateSkillManifest")
 	public String updateManifest(@Connection AlexaConnection alexaConnection, @Expression(SUPPORTED) String skillId,
 			@Optional @NullSafe @Expression Manifest manifest) throws AlexaApiException {
-		LOGGER.info("Update Manifest with skillId {}", skillId);
+		logger.info("Update Manifest with skillId {}", skillId);
 		String result;
 
 		String updateRequest = requestBuilder.createManifestUpdateRequest(skillId, manifest);
 		String url = String.format(AlexaRequestURL.UPDATE_SKILL_MANIFEST, skillId);
 		result = alexaConnection.sendRequest(HttpConstants.Method.PUT, url, updateRequest);
-		LOGGER.info("Update Manifest  response  {}", result);
+		logger.info("Update Manifest  response  {}", result);
 		return result;
 	}
 
@@ -130,12 +130,12 @@ public class AlexaOperations {
 			@Optional @NullSafe @Expression(SUPPORTED) @ParameterDsl(allowReferences = false) InteractionModel model,
 			@Expression(SUPPORTED) String skillId) {
 
-		LOGGER.debug("Updating Interaction model {} , skillId {} ", model, skillId);
+		logger.debug("Updating Interaction model {} , skillId {} ", model, skillId);
 
 		String interactionSchema = requestBuilder.createInteractionUpdateRequest(model);
 		String url = String.format(AlexaRequestURL.UPDATE_SKILL_INTERACTION_SCHEMA, skillId);
 		String updateRes = alexaConnection.sendRequest(HttpConstants.Method.PUT, url, interactionSchema);
-		LOGGER.debug("Update Interaction model response {}", updateRes);
+		logger.debug("Update Interaction model response {}", updateRes);
 		return updateRes;
 	}
 
@@ -148,7 +148,7 @@ public class AlexaOperations {
 		String interactionRes = updateInteraction(alexaConnection, model, skillId);
 
 		String manifestRes = updateManifest(alexaConnection, skillId, manifest);
-		LOGGER.debug("UpdateSkill respoonse: {}, {}", interactionRes, manifestRes);
+		logger.debug("UpdateSkill respoonse: {}, {}", interactionRes, manifestRes);
 		if (interactionRes.equals(AlexaRequestURL.ACCEPTED) && manifestRes.equals(AlexaRequestURL.ACCEPTED)) {
 			return "Update Skill Request Accepeted successfully ";
 		} else {

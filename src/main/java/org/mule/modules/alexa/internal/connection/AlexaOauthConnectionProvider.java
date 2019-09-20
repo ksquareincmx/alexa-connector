@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 @AuthorizationCode(authorizationUrl = "https://www.amazon.com/ap/oa", accessTokenUrl = "https://api.amazon.com/auth/o2/token")
 public class AlexaOauthConnectionProvider implements PoolingConnectionProvider<AlexaConnection> {
 
-	private final Logger LOGGER = LoggerFactory.getLogger(AlexaOauthConnectionProvider.class);
+	private static final Logger logger = LoggerFactory.getLogger(AlexaOauthConnectionProvider.class);
 
 	private AuthorizationCodeState state;
 	
@@ -30,7 +30,7 @@ public class AlexaOauthConnectionProvider implements PoolingConnectionProvider<A
 		if (state.getAccessToken() == null) {
 			throw new ConnectionException("Unable to get aws access token");
 		}
-		LOGGER.debug("Auth Token state:"+state.getState());
+		logger.debug("Auth Token state:"+state.getState());
 		return new AlexaConnection(state.getAccessToken(),httpService);
 	}
     
