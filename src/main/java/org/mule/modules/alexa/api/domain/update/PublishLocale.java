@@ -89,5 +89,15 @@ public class PublishLocale {
 	public void setSkillName(String skillName) {
 		this.skillName = skillName;
 	}
+	public static PublishLocale defaultPublishLocale(PublishLocale plocale) {
+		return new PublishLocale(plocale.getSkillName(), plocale.getSummary(), 
+				plocale.getDescription(),plocale.getKeywords(),plocale.getExamplePhrases());
+	}
 
+	@Override
+	public String toString() {
+		return "PublishLocale [skillName=" + skillName + ", summary=" + summary + ", description=" + description
+				+ ", keywords=" + keywords + ", examplePhrases=" + examplePhrases + "]";
+	}
+	
 }

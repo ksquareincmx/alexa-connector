@@ -4,8 +4,9 @@
 
 package org.mule.modules.alexa.api.domain.update;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.param.Optional;
@@ -23,7 +24,7 @@ public class Events {
 	@Parameter
 	@Expression
 	@Optional
-	private List<SubScription> subscriptions;
+	private List<SubScription> subscriptions = new ArrayList<SubScription>();
 
 
 	public Events(EndpointInfo endpoint, List<SubScription> subscriptions) {
@@ -47,4 +48,8 @@ public class Events {
 		this.subscriptions = subscriptions;
 	}
 
+	public static Events defaultEvents(Events events) {
+		List<SubScription> sub = events.getSubscriptions().stream().map(m -> SubScription.defaultSub(m)).collect(Collectors.toList());
+		return new Events(EndpointInfo.defaultEndPointInfo(events.getEndpoint()), sub);
+	}
 }

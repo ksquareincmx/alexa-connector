@@ -5,6 +5,7 @@
 package org.mule.modules.alexa.api.domain.intents;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.mule.runtime.api.meta.ExpressionSupport;
 import org.mule.runtime.extension.api.annotation.Expression;
@@ -56,4 +57,13 @@ public class LanguageModel {
 		this.invocationName = invocationName;
 	}
 
+	
+	public static LanguageModel defaultLanguageModel(LanguageModel languageModel) {
+		// TODO Auto-generated constructor stub
+		
+		return new LanguageModel(languageModel.getLanguateIntents().stream().map(li -> LanguageIntent.defaultLanguageIntent(li)).collect(Collectors.toList()),
+				languageModel.getInvocationName());
+	}
+	
+	
 }

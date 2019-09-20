@@ -17,6 +17,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Slot {
 
+	public Slot() {
+		
+	}
+	
+	public Slot(String sname, String type, List<String> samples) {
+		super();
+		this.sname = sname;
+		this.type = type;
+		this.samples = samples;
+	}
+
 	@Parameter
 	@Optional
 	@NullSafe
@@ -60,13 +71,15 @@ public class Slot {
 	public List<String> getSamples() {
 		return samples;
 	}
+	
 
 	public void setSamples(List<String> samples) {
 		this.samples = samples;
 	}
+	public static Slot defaultSlot(Slot slot) {
 
-	
-	
+	return new Slot(slot.getSname(), slot.getType(),null);
+	}
 
 	
 

@@ -16,12 +16,6 @@ public class PrivacyLocale {
 	@Expression
 	private String termsOfUseUrl;
 	
-	@Parameter
-	private String smallIconUri;
-	
-	@Parameter
-	private String  largeIconUri;
-	
 	
 	
 	public PrivacyLocale() {
@@ -31,12 +25,10 @@ public class PrivacyLocale {
 	
 
 
-	public PrivacyLocale(String privacyPolicyUrl, String termsOfUseUrl, String smallIconUri, String largeIconUri) {
+	public PrivacyLocale(String privacyPolicyUrl, String termsOfUseUrl) {
 		super();
 		this.privacyPolicyUrl = privacyPolicyUrl;
 		this.termsOfUseUrl = termsOfUseUrl;
-		this.smallIconUri = smallIconUri;
-		this.largeIconUri = largeIconUri;
 	}
 
 
@@ -56,20 +48,15 @@ public class PrivacyLocale {
 	}
 
 	
-	public String getSmallIconUri() {
-		return smallIconUri;
-	}
-	public void setSmallIconUri(String smallIconUri) {
-		this.smallIconUri = smallIconUri;
-	}
-	public String getLargeIconUri() {
-		return largeIconUri;
-	}
-	public void setLargeIconUri(String largeIconUri) {
-		this.largeIconUri = largeIconUri;
-	}
 	
 	
+	
+	public static PrivacyLocale defaultPrivacyLocale(PrivacyLocale pricacyLocale) {
+		
+		return new PrivacyLocale(pricacyLocale.getPrivacyPolicyUrl(), 
+				pricacyLocale.getTermsOfUseUrl());
+	}
+
 
 	
 	

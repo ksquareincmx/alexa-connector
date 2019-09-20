@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.mule.modules.alexa.api.domain.data.CategoryEnum;
+import org.mule.runtime.api.meta.ExpressionSupport;
 import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 
@@ -25,14 +27,14 @@ public class PublishInfo {
 	private String testingInstructions;
 
 	@Parameter
-	@Expression
-	private String category;
+	@Expression(ExpressionSupport.NOT_SUPPORTED)
+	private CategoryEnum category;
 
 	@Parameter
 	@Expression
 	private List<String> distributionCountries;
 
-	private Map<String, PublishLocale> localeval;
+	private Map<String, PublishLocale> localeval = new HashMap<>();
 
 	@Parameter
 	@JsonIgnore
@@ -44,17 +46,25 @@ public class PublishInfo {
 	}
 
 	public void setLocaleval(Map<String, PublishLocale> localeval) {
-		Map<String, PublishLocale> locale = new HashMap<String, PublishLocale>();
-		locale.put("en-US", this.getLocale());
-		this.localeval = locale;
+		
+		this.localeval = localeval;
 	}
 
 	public PublishInfo() {
 
 	}
 
-	public PublishInfo(Boolean isAvailableWorldwide, String testingInstructions, String category,
-			List<String> distributionCountries, Map<String, PublishLocale> localeval) {
+	public PublishInfo(Boolean isAvailableWorldwide,  CategoryEnum category,
+			List<String> distributionCountries, PublishLocale locale) {
+		this.locale = locale;
+		this.isAvailableWorldwide = isAvailableWorldwide;
+		this.category = category;
+		this.distributionCountries = distributionCountries;
+		localeval.put("en-US", getLocale());
+	}
+	
+	public PublishInfo(Boolean isAvailableWorldwide, String testingInstructions, CategoryEnum category,
+			List<String> distributionCountries, Map<String,PublishLocale> localeval) {
 		this.localeval = localeval;
 		this.isAvailableWorldwide = isAvailableWorldwide;
 		this.testingInstructions = testingInstructions;
@@ -86,11 +96,15 @@ public class PublishInfo {
 		this.testingInstructions = testingInstructions;
 	}
 
-	public String getCategory() {
+	
+
+	
+
+	public CategoryEnum getCategory() {
 		return category;
 	}
 
-	public void setCategory(String category) {
+	public void setCategory(CategoryEnum category) {
 		this.category = category;
 	}
 
@@ -101,5 +115,10 @@ public class PublishInfo {
 	public void setDistributionCountries(List<String> distributionCountries) {
 		this.distributionCountries = distributionCountries;
 	}
-
+	public static PublishInfo defaultPublishInfo(PublishInfo info) {
+		Map<String, PublishLocale> locale = new HashMap<String, PublishLocale>();
+		locale.put("en-US", PublishLocale.defaultPublishLocale(info.getLocale()));
+		return new PublishInfo(info.getIsAvailableWorldwide(), 
+				info.getTestingInstructions(), info.getCategory(), info.getDistributionCountries(),locale );
+	}
 }

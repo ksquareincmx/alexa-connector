@@ -30,7 +30,7 @@ public class AlexaOauthConnectionProvider implements PoolingConnectionProvider<A
 		if (state.getAccessToken() == null) {
 			throw new ConnectionException("Unable to get aws access token");
 		}
-
+		LOGGER.debug("Auth Token state:"+state.getState());
 		return new AlexaConnection(state.getAccessToken(),httpService);
 	}
     

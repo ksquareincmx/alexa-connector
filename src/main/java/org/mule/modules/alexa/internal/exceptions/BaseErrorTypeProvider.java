@@ -16,6 +16,7 @@ public abstract class BaseErrorTypeProvider implements ErrorTypeProvider {
 
 	public abstract void addErrors(Set<ErrorTypeDefinition> errors);
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public final Set<ErrorTypeDefinition> getErrorTypes() {
 		HashSet<ErrorTypeDefinition> errors = new HashSet<>();

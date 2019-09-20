@@ -1,6 +1,8 @@
 package org.mule.modules.alexa.api.domain.intents;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.mule.runtime.api.meta.ExpressionSupport;
 import org.mule.runtime.extension.api.annotation.Expression;
@@ -17,6 +19,7 @@ public class LanguageIntent {
 	}
 	
 
+
 	@Parameter
 	private String intentName;  
 	
@@ -24,14 +27,14 @@ public class LanguageIntent {
 	@Optional
 	@NullSafe
 	@Expression(ExpressionSupport.SUPPORTED)
-	private List<Slot> slots ;
+	private List<Slot> slots = new ArrayList<Slot>();
 
 
 	@Parameter
 	@Optional
 	@NullSafe
 	@Expression(ExpressionSupport.SUPPORTED)
-	private List<String> samples;
+	private List<String> samples = new ArrayList<>();
 
 	public LanguageIntent(String name ,List<Slot> slots, List<String> samples){
 		this.intentName = name;
@@ -65,6 +68,15 @@ public class LanguageIntent {
 		this.samples = samples;
 	}
 	
-	
+	public static LanguageIntent defaultLanguageIntent(LanguageIntent languageIntent){
+		return new LanguageIntent(languageIntent.getIntentName(), 
+				languageIntent.getSlots().stream().map(s -> Slot.defaultSlot(s)).collect(Collectors.toList()), 
+				languageIntent.getSamples());
+	}
 
+	public static LanguageIntent defaultLanguageIntent(Intent languageIntent){
+		return new LanguageIntent(languageIntent.getIntentName(), 
+				languageIntent.getSlots().stream().map(s -> Slot.defaultSlot(s)).collect(Collectors.toList()), 
+				languageIntent.getSamples());
+	}
 }

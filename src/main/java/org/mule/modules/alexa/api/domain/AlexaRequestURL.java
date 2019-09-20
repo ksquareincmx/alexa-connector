@@ -20,7 +20,7 @@ public interface AlexaRequestURL {
 	String UPDATE_SKILL_INTERACTION_SCHEMA = BASE_URL + "/%s/stages/development/interactionModel/locales/en-US";
 	String DELETE_SKILL = BASE_URL  + "/%s/";
 	String TRUSTED_CERT = "Trusted";
-	String ACCEPTED = "200";
+	String ACCEPTED = "{}";
 	String STATUS_HEADER = "Location";
 	String DEFAULT_LOCALE ="en-US";
 

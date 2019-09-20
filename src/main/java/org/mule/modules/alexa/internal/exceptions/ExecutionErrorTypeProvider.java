@@ -14,7 +14,7 @@ import java.util.Set;
 public class ExecutionErrorTypeProvider extends BaseErrorTypeProvider {
 
 	@Override
-	public void addErrors(Set<ErrorTypeDefinition> errors) {
+	public void addErrors(@SuppressWarnings("rawtypes") Set<ErrorTypeDefinition> errors) {
 		errors.add(AlexaApiErrorType.EXECUTION);
 	}
 }

@@ -22,6 +22,13 @@ public class Variation {
 
 	
 
+	public Variation(String type2, String value2) {
+		this.type = type2;
+		this.value = value2;
+	}
+
+
+
 	public String getType() {
 		return type;
 	}
@@ -43,4 +50,7 @@ public class Variation {
 		return "Variation [type=" + type + ", value=" + value + "]";
 	}
 	
+	public static Variation defaultVariation(Variation variation) {
+		return new Variation(variation.getType(),variation.getValue());
+	}
 }

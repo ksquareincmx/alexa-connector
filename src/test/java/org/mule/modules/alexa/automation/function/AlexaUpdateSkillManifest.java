@@ -3,7 +3,7 @@ package org.mule.modules.alexa.automation.function;
 import org.junit.Test;
 import org.mule.functional.junit4.MuleArtifactFunctionalTestCase;
 
-/** public class AlexaUpdateSkillManifest  extends MuleArtifactFunctionalTestCase{
+ public class AlexaUpdateSkillManifest  extends MuleArtifactFunctionalTestCase{
 	
 	
 	@Override
@@ -12,13 +12,16 @@ import org.mule.functional.junit4.MuleArtifactFunctionalTestCase;
 		return "test-mule-updateskillmanifest.xml";
 	}
 	
+	
 	@Test
 	public void testUpdateSkillManifest() throws Exception{
 		
-		 String payloadValue = ((String) flowRunner("to-certifyFlow1").run()
+		 String payloadValue = ((String) flowRunner("update-skill-manifest").run()
                  .getMessage()
                  .getPayload()
                  .getValue());
+		 System.out.println(payloadValue);
+		 
 	}
 
-} **/
+} 

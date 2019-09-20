@@ -4,7 +4,9 @@
 
 package org.mule.modules.alexa.api.domain.update;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.param.Optional;
@@ -13,13 +15,11 @@ import org.mule.runtime.extension.api.annotation.param.Parameter;
 public class Manifest {
 
 	private String manifestVersion;
-	
+
 	@Parameter
-	@Expression
 	private PublishInfo publishingInformation;
 
 	@Parameter
-	@Expression
 	@Optional
 	private PrivacyComplaince privacyAndCompliance;
 
@@ -28,17 +28,25 @@ public class Manifest {
 	private Events events;
 
 	@Parameter
-	@Expression
 	private ApiInfo apis;
 
 	@Parameter
-	private List<Permission> permissions;
+	private List<Permission> permissions = new ArrayList<Permission>();
 
 	public Manifest() {
-		
+		super();
 	}
-	
-	
+
+	public Manifest(String manifestVersion, PublishInfo publishingInformation, PrivacyComplaince privacyAndCompliance,
+			Events events, ApiInfo apis, List<Permission> permissions) {
+		super();
+		this.manifestVersion = manifestVersion;
+		this.publishingInformation = publishingInformation;
+		this.privacyAndCompliance = privacyAndCompliance;
+		this.events = events;
+		this.apis = apis;
+		this.permissions = permissions;
+	}
 
 	public String getManifestVersion() {
 		return manifestVersion;
@@ -88,6 +96,22 @@ public class Manifest {
 		this.permissions = permissions;
 	}
 
-	
-	
+	public static Manifest defaultManifest(Manifest manifest) {
+
+		// TODO: Because of CGLIB invoking by mule need to recreate the structure//
+		// manually, bug
+		// PublishInfo
+		PublishInfo publishInfo = PublishInfo.defaultPublishInfo(manifest.getPublishingInformation());
+		// PrivacyComplaince
+		PrivacyComplaince complaince = PrivacyComplaince.defaultComplaince(manifest.getPrivacyAndCompliance());
+		// Events
+		Events events = Events.defaultEvents(manifest.getEvents());
+		// ApiInfo
+		ApiInfo apiInfo = ApiInfo.defaultApi(manifest.getApis());
+		// Build Manifest
+		List<Permission> permissions = manifest.getPermissions().stream().map(p -> Permission.defaultPermision(p))
+				.collect(Collectors.toList());
+		return new Manifest(manifest.getManifestVersion(), publishInfo, complaince, events, apiInfo, permissions);
+	}
+
 }

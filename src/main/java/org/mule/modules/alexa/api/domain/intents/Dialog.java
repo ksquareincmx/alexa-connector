@@ -5,6 +5,7 @@
 package org.mule.modules.alexa.api.domain.intents;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.mule.runtime.api.meta.ExpressionSupport;
 import org.mule.runtime.extension.api.annotation.Expression;
@@ -15,10 +16,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Dialog {
 
+	public Dialog() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public Dialog(List<DialogIntent> dialogIntents, String delegationStrategy) {
+		super();
+		this.dialogIntents = dialogIntents;
+		this.delegationStrategy = delegationStrategy;
+	}
 
 	@Parameter
 	@Optional
-	@Expression(ExpressionSupport.SUPPORTED)
 	private List<DialogIntent> dialogIntents;
 
 	@Parameter
@@ -42,5 +51,11 @@ public class Dialog {
 	public void setDelegationStrategy(String delegationStrategy) {
 		this.delegationStrategy = delegationStrategy;
 	}
-	
+
+	public static Dialog defaultDialog(Dialog dialog) {
+		List<DialogIntent> dintents = dialog.getDialogIntents().stream().map(di -> DialogIntent.defaultDialogIntent(di))
+				.collect(Collectors.toList());
+		return new Dialog(dintents, dialog.delegationStrategy);
+	}
+
 }

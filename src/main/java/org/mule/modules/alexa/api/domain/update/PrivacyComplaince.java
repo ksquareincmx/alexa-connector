@@ -4,9 +4,13 @@
 
 package org.mule.modules.alexa.api.domain.update;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class PrivacyComplaince {
@@ -27,12 +31,15 @@ public class PrivacyComplaince {
 	@Expression
 	private boolean containsAds;
 	
-	
-	public PrivacyComplaince() {
-		
-	}
+	@Parameter
+	@JsonIgnore
+	private PrivacyLocale plocale;
 
-	
+	private Map<String, PrivacyLocale> priLocalemap = new HashMap<>();
+
+	public PrivacyComplaince() {
+
+	}
 
 	public PrivacyComplaince(boolean allowsPurchases, boolean usesPersonalInfo, boolean isChildDirected,
 			boolean isExportCompliant, boolean containsAds) {
@@ -42,14 +49,34 @@ public class PrivacyComplaince {
 		this.isChildDirected = isChildDirected;
 		this.isExportCompliant = isExportCompliant;
 		this.containsAds = containsAds;
+		priLocalemap.put("en-US", getPlocale());
+	}
+	
+	public PrivacyComplaince(boolean allowsPurchases, boolean usesPersonalInfo, boolean isChildDirected,
+			boolean isExportCompliant, boolean containsAds,Map<String, PrivacyLocale> priLocalemap) {
+		super();
+		this.priLocalemap = priLocalemap;
+		this.allowsPurchases = allowsPurchases;
+		this.usesPersonalInfo = usesPersonalInfo;
+		this.isChildDirected = isChildDirected;
+		this.isExportCompliant = isExportCompliant;
+		this.containsAds = containsAds;
 	}
 
-
-
+	
 
 	@JsonProperty("allowsPurchases")
 	public boolean isAllowsPurchases() {
 		return allowsPurchases;
+	}
+
+	@JsonProperty("locales")
+	public Map<String, PrivacyLocale> getPriLocalemap() {
+		return priLocalemap;
+	}
+
+	public void setPriLocalemap(Map<String, PrivacyLocale> priLocalemap) {
+		this.priLocalemap = priLocalemap;
 	}
 
 	public void setAllowsPurchases(boolean allowsPurchases) {
@@ -73,6 +100,7 @@ public class PrivacyComplaince {
 	public void setChildDirected(boolean isChildDirected) {
 		this.isChildDirected = isChildDirected;
 	}
+
 	@JsonProperty("isExportCompliant")
 	public boolean isExportCompliant() {
 		return isExportCompliant;
@@ -90,8 +118,25 @@ public class PrivacyComplaince {
 		this.containsAds = containsAds;
 	}
 
-   public static PrivacyComplaince defaultComplaince() {
-	 return  new PrivacyComplaince(false, false, false, false, false);
-   }
+	public PrivacyLocale getPlocale() {
+		return plocale;
+	}
+
+	public void setPlocale(PrivacyLocale plocale) {
+		this.plocale = plocale;
+	}
+
+	public static PrivacyComplaince defaultComplaince(Map<String,PrivacyLocale> privacyLocale) {
+		return new PrivacyComplaince(false, false, false, false, false,privacyLocale);
+	}
+	
+	public static PrivacyComplaince defaultComplaince(PrivacyComplaince complaince) {
+		Map<String,PrivacyLocale> locales = new HashMap<String, PrivacyLocale>();
+		locales.put("en-US", PrivacyLocale.defaultPrivacyLocale(complaince.getPlocale()));
+		return new PrivacyComplaince(false, false, false, false, false,locales);
+	}
+	
+	
+	
 
 }

@@ -35,4 +35,8 @@ public class ApiInfo {
 	return new ApiInfo(new CustomApi(endpointInfo,null));
 	}
 	
+	public static  ApiInfo defaultApi(ApiInfo apiInfo) {
+		return new ApiInfo(CustomApi.defaultCustomApi(apiInfo.getCustom()));
+		}
+	
 }

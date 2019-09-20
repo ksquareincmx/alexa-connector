@@ -10,57 +10,72 @@ http://www.mulesoft.org/schema/mule/slack http://www.mulesoft.org/schema/mule/sl
 		<alexa:token-connection token="${alexa.token}" />
 	</alexa:config>
 	<flow name="update-skill" doc:id="b42238cf-83c1-4561-ae39-a244c7c920be8885577" >
-	<alexa:update-skill doc:name="Update skill" doc:id="28fbc22e-835e-418b-8610-3cbe420e2fa7" config-ref="Alexa_Config" skillId="amzn1.ask.skill.37c9b985-b339-4fa4-bde5-e0b9610eb4ea">
-			<alexa:interactionmodel >
+	<alexa:update-skill doc:name="Update skill" doc:id="28fbc22e-835e-418b-8610-3cbe420e2fa7" config-ref="Alexa_Config" skillId="amzn1.ask.skill.6cf373f4-7852-479b-849c-cb2b6224491b">
+			<alexa:model >
 				<alexa:dialog delegationStrategy="ALWAYS" >
 					<alexa:dialog-intents >
-						<alexa:dialog-intent intentName="newPlanet" confirmationRequired="false" />
+						<alexa:dialog-intent intentName="Test_Activity" confirmationRequired="false" >
+							<alexa:dialog-slots >
+								<alexa:dialog-slot sname="MyActivity" type="AMAZON.US_FIRST_NAME" />
+							</alexa:dialog-slots>
+						</alexa:dialog-intent>
 					</alexa:dialog-intents>
 				</alexa:dialog>
-				<alexa:language-model invocationName="my new fact" >
+				<alexa:language-model invocationName="my friday test" >
 					<alexa:languate-intents >
-						<alexa:language-intent intentName="newPlanet" >
+						<alexa:language-intent intentName="Test_Activity" >
+							<alexa:slots >
+								<alexa:slot sname="MyActivity" type="AMAZON.US_FIRST_NAME" >
+									<alexa:samples >
+										<alexa:sample value="how was today" />
+									</alexa:samples>
+								</alexa:slot>
+							</alexa:slots>
 							<alexa:samples >
-								<alexa:sample value="this is a new planet" />
+							<alexa:sample value="How is weather today"></alexa:sample>
 							</alexa:samples>
 						</alexa:language-intent>
+						<alexa:language-intent intentName="AMAZON.StopIntent" >
+							
+						</alexa:language-intent>
+						<alexa:language-intent intentName="AMAZON.HelpIntent" >
+							
+						</alexa:language-intent>
+						<alexa:language-intent intentName="AMAZON.CancelIntent" >
+							
+						</alexa:language-intent>	
 					</alexa:languate-intents>
 				</alexa:language-model>
-				<alexa:prompts >
-					<alexa:prompt pid="123" >
-						<alexa:variations >
-							<alexa:variation type="PlainText" value="I can't answer this question about the sun" />
-						</alexa:variations>
-					</alexa:prompt>
-				</alexa:prompts>
-			</alexa:interactionmodel>
-			<alexa:manifest>
-				<alexa:publishing-information testingInstructions="Say 'Alexa, hello world'" category="HEALTH_AND_FITNESS">
+			</alexa:model>
+			<alexa:manifest >
+				<alexa:publishing-information testingInstructions="No instruction" category="SMART_HOME" >
 					<alexa:distribution-countries >
 						<alexa:distribution-country value="US" />
 					</alexa:distribution-countries>
-					<alexa:locale skillName="updating skill name" summary="to updat eskill name" description="hjbwehbw" >
+					<alexa:locale skillName="Test_update_2" summary="Test Updating Evening" description="Update should be done" >
 						<alexa:keywords >
-							<alexa:keyword value="Descriptive_Phrase_1" />
-							<alexa:keyword value="Descriptive_Phrase_2" />
+							<alexa:keyword value="hey afternoon" />
 						</alexa:keywords>
 						<alexa:example-phrases >
-							<alexa:example-phrase value="Alexa, open sample custom skill." />
+							<alexa:example-phrase value="Hi, hello" />
 						</alexa:example-phrases>
 					</alexa:locale>
 				</alexa:publishing-information>
-				<alexa:privacy-and-compliance />
+				<alexa:privacy-and-compliance >
+					<alexa:plocale privacyPolicyUrl="https://mytesturl.com" termsOfUseUrl="https://myprivacyurl.com" />
+				</alexa:privacy-and-compliance>
 				<alexa:events >
-					<alexa:endpoint uri="https://smallUri.com" sslCertificateType="Trusted" />
+					<alexa:endpoint uri="https://www.ksquareinc.com/" sslCertificateType="Trusted" />
 					<alexa:subscriptions >
+						<alexa:sub-scription EventName="SKILL_DISABLED" />
 						<alexa:sub-scription EventName="SKILL_ENABLED" />
 					</alexa:subscriptions>
 				</alexa:events>
 				<alexa:apis >
 					<alexa:custom >
-						<alexa:endpoint uri="https://largeUri.com" sslCertificateType="Trusted" />
+						<alexa:endpoint uri="https://www.ksquareinc.com/" sslCertificateType="Trusted" />
 						<alexa:interfaces >
-							<alexa:interface type="ALEXA_PRESENTATION_APL" />
+							<alexa:interface type="CAN_FULFILL_INTENT_REQUEST" />
 						</alexa:interfaces>
 					</alexa:custom>
 				</alexa:apis>

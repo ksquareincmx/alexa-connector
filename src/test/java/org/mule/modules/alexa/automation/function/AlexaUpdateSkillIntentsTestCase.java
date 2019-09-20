@@ -3,7 +3,7 @@ package org.mule.modules.alexa.automation.function;
 import org.junit.Test;
 import org.mule.functional.junit4.MuleArtifactFunctionalTestCase;
 
-/** public class AlexaUpdateSkillIntentsTestCase extends MuleArtifactFunctionalTestCase {
+public class AlexaUpdateSkillIntentsTestCase extends MuleArtifactFunctionalTestCase {
 	
 	@Override
 	protected String getConfigFile() {
@@ -14,11 +14,10 @@ import org.mule.functional.junit4.MuleArtifactFunctionalTestCase;
 	@Test
 	public void testUpdateSkillIntent() throws Exception{
 		
-		 String payloadValue = ((String) flowRunner("updateskillIntent-flow").run()
+		 String payloadValue = ((String) flowRunner("update-skill-intents").run()
                  .getMessage()
                  .getPayload()
                  .getValue());
 	}
 
 }
-**/

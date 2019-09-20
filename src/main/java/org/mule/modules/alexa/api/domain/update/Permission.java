@@ -13,6 +13,9 @@ public class Permission {
 		super();
 	}
 
+	public Permission(String pname) {
+		this.pname = pname;
+	}
 	@Parameter
 	@Alias("PermissionName")
 	private String pname;
@@ -26,7 +29,9 @@ public class Permission {
 		this.pname = pname;
 	}
 
-	
+	public static Permission defaultPermision(Permission per) {
+		return new Permission(per.getPname());
+	}
 	
 	
 }

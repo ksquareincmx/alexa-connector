@@ -9,36 +9,37 @@ http://www.mulesoft.org/schema/mule/alexa http://www.mulesoft.org/schema/mule/al
 		<alexa:token-connection token="${alexa.token}" />
 	</alexa:config>
 	
-	
-	<flow name="to-certifyFlow1" doc:id="f7772c8b-13ff-43d1-98ee-c1b7dba1b47e" >
-		<alexa:update-skill-manifest doc:name="Update skill manifest" doc:id="7b586b41-8a2e-49fb-89a2-f0bb103fe464" config-ref="Alexa_Config" skillId="amzn1.ask.skill.11c286e9-e0fc-4d96-8e68-816a8a16126e">
-			<alexa:manifest>
-				<alexa:publishing-information testingInstructions="Say 'Alexa, hello world'" category="HEALTH_AND_FITNESS">
+	<flow name="update-skill-manifest" doc:id="f7772c8b-13ff-43d1-98ee-c1b7dba1b47e" >
+		<alexa:update-skill-manifest doc:name="Update skill manifest" doc:id="69300be7-8cea-4945-b89d-c99d0f402a08" config-ref="Alexa_Config" skillId="amzn1.ask.skill.50bd0d61-9feb-4926-ad89-1280aef320ce">
+			<alexa:manifest >
+				<alexa:publishing-information testingInstructions="No instruction" category="SMART_HOME" >
 					<alexa:distribution-countries >
 						<alexa:distribution-country value="US" />
 					</alexa:distribution-countries>
-					<alexa:locale skillName="updating skill name" summary="to updat eskill name" description="hjbwehbw" >
+					<alexa:locale skillName="Test_update_2" summary="Test Updating Evening" description="Update should be done" >
 						<alexa:keywords >
-							<alexa:keyword value="Descriptive_Phrase_1" />
-							<alexa:keyword value="Descriptive_Phrase_2" />
+							<alexa:keyword value="hey afternoon" />
 						</alexa:keywords>
 						<alexa:example-phrases >
-							<alexa:example-phrase value="Alexa, open sample custom skill." />
+							<alexa:example-phrase value="Hi, hello" />
 						</alexa:example-phrases>
 					</alexa:locale>
 				</alexa:publishing-information>
-				<alexa:privacy-and-compliance />
+				<alexa:privacy-and-compliance >
+					<alexa:plocale privacyPolicyUrl="https://mytesturl.com" termsOfUseUrl="https://myprivacyurl.com" />
+				</alexa:privacy-and-compliance>
 				<alexa:events >
-					<alexa:endpoint uri="https://smallUri.com" sslCertificateType="Trusted" />
+					<alexa:endpoint uri="https://www.ksquareinc.com/" sslCertificateType="Trusted" />
 					<alexa:subscriptions >
+						<alexa:sub-scription EventName="SKILL_DISABLED" />
 						<alexa:sub-scription EventName="SKILL_ENABLED" />
 					</alexa:subscriptions>
 				</alexa:events>
 				<alexa:apis >
 					<alexa:custom >
-						<alexa:endpoint uri="https://largeUri.com" sslCertificateType="Trusted" />
+						<alexa:endpoint uri="https://www.ksquareinc.com/" sslCertificateType="Trusted" />
 						<alexa:interfaces >
-							<alexa:interface type="ALEXA_PRESENTATION_APL" />
+							<alexa:interface type="CAN_FULFILL_INTENT_REQUEST" />
 						</alexa:interfaces>
 					</alexa:custom>
 				</alexa:apis>

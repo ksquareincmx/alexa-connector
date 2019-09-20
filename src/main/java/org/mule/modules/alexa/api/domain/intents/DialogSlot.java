@@ -11,6 +11,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class DialogSlot {
 
+	
+	
+	public DialogSlot(String sname, String type, Map<String, String> slotprompt) {
+		super();
+		this.sname = sname;
+		this.type = type;
+		this.slotprompt = slotprompt;
+	}
+
 	@JsonProperty("name")
 	@Parameter
 	@Expression(ExpressionSupport.SUPPORTED)
@@ -59,5 +68,7 @@ public class DialogSlot {
 	public void setType(String type) {
 		this.type = type;
 	}
-
+	public static DialogSlot defaultDialogSlot(DialogSlot dialogSlot) {
+		return new DialogSlot(dialogSlot.getSname(), dialogSlot.getType(), dialogSlot.getSlotprompt());
+	}
 }

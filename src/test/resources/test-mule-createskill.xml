@@ -1,28 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule  xmlns:slack="http://www.mulesoft.org/schema/mule/slack"
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	 xmlns:slack="http://www.mulesoft.org/schema/mule/slack"
 	xmlns:alexa="http://www.mulesoft.org/schema/mule/alexa"
-	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/alexa http://www.mulesoft.org/schema/mule/alexa/current/mule-alexa.xsd
 http://www.mulesoft.org/schema/mule/slack http://www.mulesoft.org/schema/mule/slack/current/mule-slack.xsd">
 	<configuration-properties file="automation-credentials.properties" />
 	<alexa:config name="Alexa_Config" doc:name="Alexa Config" doc:id="91096669-d273-4393-855d-4e6a6d271e05" >
 		<alexa:token-connection token="${alexa.token}" />
 	</alexa:config>
-	<flow name="create-skill" doc:id="b42238cf-83c1-4561-ae39-a355c7c920be" >
-	<alexa:create-skill doc:name="Create skill" doc:id="55b06574-edea-4e1b-8d8e-b901b03c511a" config-ref="Alexa_Config" vendorId="MPLHQBOHBVJ16" summary="no sumary" skillName="Tuesday Afternnon Pizza" description="Eat pizza on monday" endpoint="https://mypizaa.com">
+	<flow name="create-skill" doc:id="c6863a22-7159-4f40-b31f-efe7e62498b8" >
+		<alexa:create-skill doc:name="Create skill" doc:id="bd4a6349-d817-46f4-8ac3-f714fd3efef3" config-ref="Alexa_Config" vendorId="MPLHQBOHBVJ16" summary="after cat enum skill" skillName="TestCase_2" description="This is for  test" endpoint="https://myendpoint.com" category="SPORTS_NEWS">
 			<alexa:intents >
-				<alexa:intent intentName="Tuesday_not_gud" confirmationRequired="false" >
+				<alexa:intent intentName="myTestCase" confirmationRequired="false" >
+					<alexa:slots >
+						<alexa:slot sname="TestExe" type="AMAZON.US_FIRST_NAME" />
+					</alexa:slots>
 					<alexa:samples >
-						<alexa:sample value="Yes i can eat pizza" />
+						<alexa:sample value="This is for test case execution" />
 					</alexa:samples>
-					<alexa:prompts >
-						<alexa:prompt pid="88956565" >
-							<alexa:variations >
-								<alexa:variation type="PalinText" value="order pizza" />
-							</alexa:variations>
-						</alexa:prompt>
-					</alexa:prompts>
 				</alexa:intent>
 			</alexa:intents>
 		</alexa:create-skill>

@@ -64,7 +64,7 @@ public class AlexaConnection {
 					null);
 
 			result = parseResponse(response);
-			LOGGER.info("RESPONSE FROM ALEXA --- > {} " , result);
+			LOGGER.info("Response from Alexa Server: {} " , result);
 		} catch (IOException e) {
 			// TODO: handle exception
 			LOGGER.error("Got Error  {} while consuming api response in  operation {} and uri {}", e, method, uri);
@@ -109,9 +109,7 @@ public class AlexaConnection {
 		InputStream in = entity.getContent();
 		String res = IOUtils.toString(in);
 		//TODO Here we get {}(empty bracket from alexa), so returning result as below
-		/*if (status == 202) {
-			res = "Request accepted successfully";
-		}*/
+		
 		LOGGER.debug("Response from ALexa: {} status code {}", res, status);
 
 		return res;

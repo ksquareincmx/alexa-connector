@@ -1,6 +1,7 @@
 package org.mule.modules.alexa.api.domain.update;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.param.Optional;
@@ -43,4 +44,11 @@ public class CustomApi {
 		this.interfaces = interfaces;
 	}
 
+	public static CustomApi defaultCustomApi(CustomApi custom) {
+
+		List<Interface> interfaces = custom.getInterfaces().stream().map(m -> Interface.defaultInterface(m))
+				.collect(Collectors.toList());
+		return new CustomApi(EndpointInfo.defaultEndPointInfo(custom.getEndpoint()), interfaces);
+
+	}
 }

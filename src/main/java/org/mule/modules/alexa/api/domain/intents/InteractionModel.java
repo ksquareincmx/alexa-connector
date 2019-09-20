@@ -4,7 +4,9 @@
 
 package org.mule.modules.alexa.api.domain.intents;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.mule.runtime.api.meta.ExpressionSupport;
 import org.mule.runtime.extension.api.annotation.Expression;
@@ -39,11 +41,8 @@ public class InteractionModel {
 	@Optional
 	@Expression(ExpressionSupport.SUPPORTED)
 	@JsonIgnore
-	private List<Prompt> prompts;
+	private List<Prompt> prompts = new ArrayList<Prompt>();
 
-	
-	
-	
 	public Dialog getDialog() {
 		return dialog;
 	}
@@ -66,6 +65,16 @@ public class InteractionModel {
 
 	public void setPrompts(List<Prompt> prompts) {
 		this.prompts = prompts;
+	}
+
+	public static InteractionModel defaultInteractionModel(InteractionModel im) {
+		// dialog
+		Dialog d = Dialog.defaultDialog(im.getDialog());
+		// language Model
+		LanguageModel lm = LanguageModel.defaultLanguageModel(im.getLanguageModel());
+		// Prompts
+		List<Prompt> pms = im.getPrompts().stream().map(p -> Prompt.defaultPrompt(p)).collect(Collectors.toList());
+		return new InteractionModel(d, lm, pms);
 	}
 
 }

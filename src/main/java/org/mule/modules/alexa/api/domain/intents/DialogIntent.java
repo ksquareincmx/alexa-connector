@@ -1,7 +1,9 @@
 package org.mule.modules.alexa.api.domain.intents;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.mule.runtime.api.meta.ExpressionSupport;
 import org.mule.runtime.extension.api.annotation.Expression;
@@ -28,7 +30,7 @@ public class DialogIntent {
 	@Parameter
 	@Optional
 	@Expression(ExpressionSupport.SUPPORTED)
-	private List<DialogSlot> dialogSlots;
+	private List<DialogSlot> dialogSlots = new ArrayList<DialogSlot>();
 
 	@Parameter
 	@Optional
@@ -87,4 +89,11 @@ public class DialogIntent {
 				+ "]";
 	}
 
+	public static DialogIntent defaultDialogIntent(DialogIntent dialogIntnet) {
+		//slots
+		List<DialogSlot> dslots=	dialogIntnet.getDialogSlots().stream().map(dslot -> DialogSlot.defaultDialogSlot(dslot)).collect(Collectors.toList());
+		return new DialogIntent(dialogIntnet.getIntentName(), 
+				dialogIntnet.getConfirmationRequired(), dslots, dialogIntnet.getDialogPrompts()); 
+		
+	}
 }

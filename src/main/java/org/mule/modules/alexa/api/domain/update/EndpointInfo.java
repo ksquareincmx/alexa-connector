@@ -46,5 +46,9 @@ public class EndpointInfo {
 	public void setSslCertificateType(String sslCertificateType) {
 		this.sslCertificateType = sslCertificateType;
 	}
+	public static EndpointInfo defaultEndPointInfo(EndpointInfo endInfo) {
 
+		return new EndpointInfo(endInfo.getUri(), endInfo.getSslCertificateType());
+	}
+	
 }

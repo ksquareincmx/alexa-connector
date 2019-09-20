@@ -10,6 +10,6 @@ http://www.mulesoft.org/schema/mule/slack http://www.mulesoft.org/schema/mule/sl
 		<alexa:token-connection token="${alexa.token}" />
 	</alexa:config>
 	<flow name="get-skill" doc:id="b42238cf-83c1-4561-ae39-a244c7c920be" >
-		<alexa:skill-info doc:name="Skill info" doc:id="3c16aa8b-1c76-49c9-9229-e56b2936cc99" config-ref="Alexa_Config" skillId="amzn1.ask.skill.1dff96e1-ee88-4fc1-bea4-c30c2bb932e7"/>
+		<alexa:skill-info doc:name="Skill info" doc:id="3c16aa8b-1c76-49c9-9229-e56b2936cc99" config-ref="Alexa_Config" skillId="amzn1.ask.skill.50bd0d61-9feb-4926-ad89-1280aef320ce"/>
 	</flow>
 </mule>

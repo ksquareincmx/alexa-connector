@@ -5,6 +5,7 @@
 package org.mule.modules.alexa.api.domain.intents;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 
@@ -16,6 +17,16 @@ public class Prompt {
 		// TODO Auto-generated constructor stub
 	}
 	
+	
+	
+	public Prompt(String pid, List<Variation> variations) {
+		super();
+		this.pid = pid;
+		this.variations = variations;
+	}
+
+
+
 	@Parameter
 	private String pid;
 
@@ -47,7 +58,10 @@ public class Prompt {
 	}
 	
 	
-	
+	public static Prompt defaultPrompt(Prompt prompt) {
+		return new Prompt(prompt.getPid(),
+				prompt.getVariations().stream().map(v -> Variation.defaultVariation(v)).collect(Collectors.toList()));
+	}
 	
 	
 }
