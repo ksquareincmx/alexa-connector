@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
  * real connection with anything here c:).
  */
 public class AlexaConnection {
-	private static final Logger LOGGER = LoggerFactory.getLogger(AlexaRequestBuilder.class);
+	private static final Logger logger = LoggerFactory.getLogger(AlexaRequestBuilder.class);
 
 	private String accessToken;
 
@@ -50,7 +50,7 @@ public class AlexaConnection {
 	}
 
 	public String sendRequest(HttpConstants.Method method, String uri, String content) {
-		LOGGER.info("Sending request to Alexa with uri {} , method {}", method, uri);
+		logger.info("Sending request to Alexa with uri {} , method {}", method, uri);
 		String result;
 		try {
 			HttpRequestBuilder builder = HttpRequest.builder();
@@ -65,13 +65,13 @@ public class AlexaConnection {
 					null);
 
 			result = parseResponse(response);
-			LOGGER.info("Response from Alexa Server: {} " , result);
+			logger.info("Response from Alexa Server: {} " , result);
 		} catch (IOException e) {
 			// TODO: handle exception
-			LOGGER.error("Got Error  {} while consuming api response in  operation {} and uri {}", e, method, uri);
+			logger.error("Got Error  {} while consuming api response in  operation {} and uri {}", e, method, uri);
 			throw new AlexaApiException(e.getMessage(), AlexaApiErrorType.EXECUTION);
 		} catch (TimeoutException e) {
-			LOGGER.error("Got Error  {} while consuming api response in  operation {} and uri {}", e, method, uri);
+			logger.error("Got Error  {} while consuming api response in  operation {} and uri {}", e, method, uri);
 			throw new AlexaApiException(e.getMessage(), AlexaApiErrorType.CONNECTION_EXCEPTION);
 		}
 		return result;
@@ -99,7 +99,7 @@ public class AlexaConnection {
 			return new ByteArrayHttpEntity(content.getBytes(Charset.defaultCharset()));
 
 		default:
-			return new ByteArrayHttpEntity(content.getBytes());
+			return new ByteArrayHttpEntity(content.getBytes(Charset.defaultCharset()));
 		}
 	}
 
@@ -111,7 +111,7 @@ public class AlexaConnection {
 		String res = IOUtils.toString(in);
 		//TODO Here we get {}(empty bracket from alexa), so returning result as below
 		
-		LOGGER.debug("Response from ALexa: {} status code {}", res, status);
+		logger.debug("Response from ALexa: {} status code {}", res, status);
 
 		return res;
 	}
