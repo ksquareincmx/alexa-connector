@@ -60,7 +60,8 @@ public class AlexaOperations {
 	@Alias("createSkill")
 	public String createSkill(@Connection AlexaConnection alexaConnection, @Expression(SUPPORTED) String vendorId,
 			@Expression(SUPPORTED) String summary, @Expression(SUPPORTED) String skillName,
-			@Expression(SUPPORTED) String description, @Expression(SUPPORTED) String endpoint,@Expression(ExpressionSupport.NOT_SUPPORTED)CategoryEnum category,
+			@Expression(SUPPORTED) String description, @Expression(SUPPORTED) String endpoint,
+			@Expression(ExpressionSupport.NOT_SUPPORTED)CategoryEnum category,@Expression(SUPPORTED) String invocationName,
 			@Optional @NullSafe @Expression(ExpressionSupport.NOT_SUPPORTED) @ParameterDsl(allowReferences = false) List<Intent> intents)
 			throws AlexaApiException {
 
@@ -79,7 +80,7 @@ public class AlexaOperations {
 		}
 		logger.info("Alexa SkillId {}", skillId);
 
-		String updateSkillRequest = requestBuilder.buildUpdateSkillRequest(skillId, intents);
+		String updateSkillRequest = requestBuilder.buildUpdateSkillRequest(skillId,invocationName, intents);
 		String updateUrl = String.format(AlexaRequestURL.UPDATE_ALEXA_SKILL, skillId);
 		String updateRes = alexaConnection.sendRequest(HttpConstants.Method.PUT, updateUrl, updateSkillRequest);
 		String errorMsg = requestBuilder.readValueForKey(updateRes, "message");
@@ -90,7 +91,13 @@ public class AlexaOperations {
 
 	}
 
-	
+	/**
+	 * This method return skill information for the given skillId.
+	 * @param alexaConnection
+	 * @param skillId
+	 * @return json string of skill
+	 * @throws AlexaApiException
+	 */
 
 	@MediaType(value = ANY, strict = false)
 	@Alias("skillInfo")
@@ -101,6 +108,13 @@ public class AlexaOperations {
 		return alexaConnection.sendRequest(HttpConstants.Method.GET, url, null);
 	}
 
+	/**
+	 * This method deletes the skill for the given skillId
+	 * @param alexaConnection
+	 * @param skillId
+	 * @return empty {@code : {}}
+	 * @throws Exception
+	 */
 	@MediaType(value = ANY, strict = false)
 	@Alias("deleteSkill")
 	public String deleteSkill(@Connection AlexaConnection alexaConnection, @Expression(SUPPORTED) String skillId)
@@ -110,6 +124,16 @@ public class AlexaOperations {
 		return alexaConnection.sendRequest(HttpConstants.Method.DELETE, deleteUrl, null);
 	}
 
+	/**
+	 * This method updates the Manifest schema of skill, refer the manifest schema of Alexa skill for more information {@link https://developer.amazon.com/docs/smapi/skill-manifest.html }
+	 * @param alexaConnection
+	 * @param skillId
+	 *     Skill of existing skill
+	 * @param manifest
+	 *   	Manifest model
+	 * @return empty json object
+	 * @throws AlexaApiException
+	 */
 	@MediaType(value = ANY, strict = false)
 	@Alias("updateSkillManifest")
 	public String updateManifest(@Connection AlexaConnection alexaConnection, @Expression(SUPPORTED) String skillId,
@@ -124,6 +148,13 @@ public class AlexaOperations {
 		return result;
 	}
 
+	/**
+	 * 
+	 * @param alexaConnection
+	 * @param model
+	 * @param skillId
+	 * @return
+	 */
 	@MediaType(value = ANY, strict = false)
 	@Alias("updateSkillIntents")
 	public String updateInteraction(@Connection AlexaConnection alexaConnection,
@@ -139,6 +170,18 @@ public class AlexaOperations {
 		return updateRes;
 	}
 
+	/**
+	 * This method updates both Manifest and Interaction schema of existing skill.
+	 * Refer links for Manifest and Interactions schema {@link https://developer.amazon.com/docs/smapi/skill-manifest.html} {@link https://developer.amazon.com/docs/smapi/interaction-model-schema.html}
+	 * @param alexaConnection
+	 * @param skillId
+	 * @param model
+	 * @param manifest
+	 * @return String 
+	 *   Update Skill Request Accepeted successfully for success.
+	 *   Updating  skill having problem with Error message from Alexa server.
+	 * @throws AlexaApiException
+	 */
 	@MediaType(value = ANY, strict = false)
 	@Alias("updateSkill")
 	public String updateSkill(@Connection AlexaConnection alexaConnection, @Expression(SUPPORTED) String skillId,

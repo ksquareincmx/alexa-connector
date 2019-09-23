@@ -1,3 +1,4 @@
+
 package org.mule.modules.alexa.api.domain.update;
 
 import org.mule.runtime.extension.api.annotation.Expression;

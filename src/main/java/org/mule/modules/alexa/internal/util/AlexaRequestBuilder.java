@@ -133,7 +133,7 @@ public class AlexaRequestBuilder {
 	 * @param intents
 	 * @return String -- response from alexa after successfull update.
 	 */
-	public String buildUpdateSkillRequest(String newskillId, List<Intent> intents) throws AlexaApiException {
+	public String buildUpdateSkillRequest(String newskillId,String invocationName, List<Intent> intents) throws AlexaApiException {
 
 		logger.info("updateCreatedSkill  parameters: newSkillId: {} intents : {}", newskillId, intents);
 		InteractionModel interactionModel = new InteractionModel();
@@ -148,7 +148,7 @@ public class AlexaRequestBuilder {
 		dialog.setDialogIntents(mapIntnetToDialogIntent(intents));
 		LanguageModel language = new LanguageModel();
 		language.setLanguateIntents(mapIntnetToLanguageIntent(intents));
-		language.setInvocationName("my test case");
+		language.setInvocationName(invocationName);
 		
 		interactionModel.setDialog(dialog);
 		interactionModel.setLanguageModel(language);
