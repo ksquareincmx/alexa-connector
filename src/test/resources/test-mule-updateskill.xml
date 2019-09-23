@@ -10,7 +10,7 @@ http://www.mulesoft.org/schema/mule/slack http://www.mulesoft.org/schema/mule/sl
 		<alexa:token-connection token="${alexa.token}" />
 	</alexa:config>
 	<flow name="update-skill" doc:id="b42238cf-83c1-4561-ae39-a244c7c920be8885577" >
-	<alexa:update-skill doc:name="Update skill" doc:id="28fbc22e-835e-418b-8610-3cbe420e2fa7" config-ref="Alexa_Config" skillId="amzn1.ask.skill.6cf373f4-7852-479b-849c-cb2b6224491b">
+	<alexa:update-skill doc:name="Update skill" doc:id="28fbc22e-835e-418b-8610-3cbe420e2fa7" config-ref="Alexa_Config" skillId="amzn1.ask.skill.d6010e1f-412b-4240-b206-3acaf9edfd25">
 			<alexa:model >
 				<alexa:dialog delegationStrategy="ALWAYS" >
 					<alexa:dialog-intents >

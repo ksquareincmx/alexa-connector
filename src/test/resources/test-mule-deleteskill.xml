@@ -10,7 +10,7 @@ http://www.mulesoft.org/schema/mule/slack http://www.mulesoft.org/schema/mule/sl
 		<alexa:token-connection token="${alexa.token}" />
 	</alexa:config>
 	<flow name="delete-skill" doc:id="b42238cf-83c1-4561-ae39-a244c7c920be88855" >
-		<alexa:delete-skill doc:name="Delete skill" doc:id="4faa4014-d942-4442-bd44-8ef909786f67" config-ref="Alexa_Config" skillId="amzn1.ask.skill.424fba8c-03c0-407c-8025-286aa0298310"/>
+		<alexa:delete-skill doc:name="Delete skill" doc:id="4faa4014-d942-4442-bd44-8ef909786f67" config-ref="Alexa_Config" skillId="amzn1.ask.skill.c83904b5-b5fd-489c-adf1-800e912e509d"/>
 	
 	</flow>
 </mule>

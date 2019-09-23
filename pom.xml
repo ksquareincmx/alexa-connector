@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>2b8017cc-fb1c-47a9-81b1-3d9cba8d0a1e</groupId>
 	<artifactId>mule-alexa-extension-one</artifactId>
-	<version>1.0.75-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>mule-extension</packaging>
 	<name>AlexaConnector4</name>
 
