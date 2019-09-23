@@ -237,8 +237,7 @@ Add the required fields from dialog
 === *Manifest schema model*
 Add the required fields from Dialog
 
-=== 
-For more information 
+==== For more information 
 https://developer.amazon.com/docs/smapi/skill-manifest.html#permissions
 https://developer.amazon.com/docs/smapi/interaction-model-schema.html
 
@@ -336,16 +335,13 @@ http://www.mulesoft.org/schema/mule/slack http://www.mulesoft.org/schema/mule/sl
 
 ----
 
-== *Skill Info* : 
+=== *Skill Info* : 
 
 === *Skill Id * : String (required)
 Unique identifier of skill.
 
 
-
-==
-
-== *Update Skill Intents* :
+=== *Update Skill Intents* :
 
 === *Dialog* :
 
@@ -513,6 +509,7 @@ http://www.mulesoft.org/schema/mule/alexa http://www.mulesoft.org/schema/mule/al
 === *Skill ID*:
 
 === *Manifest* : Object(Required)
+
 === *Publishing Information* : Object(Required)
 
 ==== *isAvailableWorldwide* : 
@@ -618,7 +615,7 @@ For more information
 https://developer.amazon.com/docs/smapi/skill-manifest.html#permissions
 
 [source,code]
----
+----
 <?xml version="1.0" encoding="UTF-8"?>
 
 <mule 
@@ -672,9 +669,9 @@ http://www.mulesoft.org/schema/mule/alexa http://www.mulesoft.org/schema/mule/al
 	</flow>
 </mule>
 
----
+----
 
-== *Delete Skill* :
+=== *Delete Skill* :
 
 === *Skill Id * : String (required)
 Unique identifier of skill.
