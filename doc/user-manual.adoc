@@ -88,7 +88,7 @@ Save configuration. Your configuration should look like:
 	</alexa:config>
 ```
 +
-image::./images/Google-Aanalytics_Config.png[]
+image::./images/Alexa_Oauth1_1.png , ./images/Alexa_Oauth1_2.png , ./images/Alexa_Oauth_token.png
 +
 +
 . To get authorize  user should flow *pre-mandatory* steps as follows:
@@ -106,23 +106,23 @@ create skill operation is responsible for creating a new alexa skill .
 
 Input Parameters for generate report:
 
-=== *Vendor ID* : String(required)
+==== *Vendor ID* : String(required)
 The unique vendor ID is  Amazon customer  customer ID (CID) that is tied to your Developer Console account can be found after creating an alexa developer account.  can be found at "https://developer.amazon.com/settings/console/mycid?".
 
 *Example*: MPHXXXXXXX
 
-=== *Summary* : String
+==== *Summary* : String
 Summary description of the skill, which is shown when viewing the list of skills in the Alexa Skills Store.
 
 *Example* : "This is a testing skill"
 
 
-=== *Skill Name* : String(required)
+==== *Skill Name* : String(required)
 skill name for the new created skill.
 
 *Example* : "Test Skill"
 
-=== *Description* : String(required)
+==== *Description* : String(required)
 A full description explaining what the skill can do and any prerequisites to using it (such as additional hardware, software, or accounts). For a Flash Briefing skill, you must list the feeds for the skill.
 
 
@@ -134,12 +134,15 @@ Contains the uri field. This is service third party https endpoint.
 *Example* : https://alexaservice.us-e1.cloudhub.io/test
 
 === *Category*
- Category of the the skill, select from the dropdown list.
+
+ Category of the the skill, select from the drop-down list.
+ 
 === *invocationName*
+
  Invocation name of the skill, it can't start with capital letter and can't have word alexa in the name.
  
 === *Intents* : Object
-==== *IntentName * : String(required)
+==== *IntentName* : String(required)
 Name of the intent that has dialog rules.
 
 ==== *Confirmation Required* : Boolean(optional)
@@ -158,7 +161,7 @@ Name of the slot in the dialog intent.
 Type of the slot in the dialog intent.
 
 
-=== *Dialog Prompts* : String(required)
+==== *Dialog Prompts* : String(required)
 ==== *key*: String(required)
 Identifier of the prompt
 
@@ -169,29 +172,39 @@ Text that Alexa says as a prompt.
 == Use Case: Studio
 
 === Create a Keyspace
-. Create a new *Mule Project* in Anypoint Studio and fill in the Google Analytics  *credentials* in `src/main/resources/mule-app.properties`.
+. Create a new *Mule Project* in Anypoint Studio and add alexa token property  in `src/main/resources/mule-app.properties` file .
 
 +
-image::./images/test_flow.png[]
+image::./images/GetSkill_Flow.png
 +
 
-[source,code,linenums]
+. For this connector to work we have to pass OAuth connection as conf-ref to every operation, conf-ref can be in two ways First we can declare as global element and refering in operation
+  second one we can directly pass token to operation
+  
+[source,code]
 ----
-config.jsonPath= <JSON_PATH>
-config.application_name=<APPLICATION_NAME>
+	<alexa:config name="Alexa_Config" doc:name="Alexa Config" doc:id="a084b9bc-6a69-42e5-b411-9de3862582b5" >
+		<alexa:connection >
+			<alexa:oauth-authorization-code consumerKey="amzn1.application-oa2-client.af20a19a331f41b5b8fb9f320f2b329b" consumerSecret="e1d3b29401bb60857ed020ed5617ce7e6d04269cf341f6579805e4c7a2ff7e09" scopes="alexa::ask:skills:readwrite alexa::ask:skills:test alexa::ask:models:read alexa::ask:models:readwrite" resourceOwnerId="#[vars.ownerId]" />
+			<alexa:oauth-callback-config listenerConfig="HTTP_Listener_config" callbackPath="/callback" authorizePath="/authorize" externalCallbackUrl="http://localhost:8081/callback" />
+		</alexa:connection>
+	</alexa:config>
+	
+	<alexa:config name="Alexa_Config" doc:name="Alexa Config" doc:id="91096669-d273-4393-855d-4e6a6d271e05" >
+		<alexa:token-connection token="${alexa.token}" />
+	</alexa:config>
+	
 ----
 
 . Drag an *HTTP* connector onto the canvas and leave the default values for Host and Port and set the path to `/test`.
 
-. In the general tab fill the required query parameters by using valid Google Analytics ID , start-date, end-date and build Metrics Query.
-
-. In the Advance tab you can use optional query parameters such as sorting, filter, dimensions , segments to get more precise data.
+. In the general tab fill the required query parameters for the operation to run successful.
 
 . Run the app. In a browser, use the following URL 
 
 `http://localhost:8081/test`
 
-== Use Case: XML
+== Use Case: XML which uses only token
 
 
 [source,code]
@@ -228,13 +241,13 @@ http://www.mulesoft.org/schema/mule/slack http://www.mulesoft.org/schema/mule/sl
 ----
 
 == *Update Skill*
-=== *Skill 	ID* : String(required)
+==== *Skill 	ID* : String(required)
 Unique identifier of skill.
 
-=== *Interaction model*
+==== *Interaction model*
 Add the required fields from dialog
 
-=== *Manifest schema model*
+==== *Manifest schema model*
 Add the required fields from Dialog
 
 ==== For more information 
@@ -337,13 +350,13 @@ http://www.mulesoft.org/schema/mule/slack http://www.mulesoft.org/schema/mule/sl
 
 === *Skill Info* : 
 
-=== *Skill Id * : String (required)
+==== *Skill Id* : String (required)
 Unique identifier of skill.
 
 
 === *Update Skill Intents* :
 
-=== *Dialog* :
+==== *Dialog* :
 
 
 ==== *Intents* :
@@ -370,11 +383,11 @@ Type of the slot in the dialog intent.
 ====== *Prompts*:
 Collection of prompts for this slot.
 
-======= *Id*: String(required)
+====== *Id*: String(required)
 
 Identifier of the prompt.
 
-======= *variations*:
+====== *variations*:
 
 variation data of the prompts
 
@@ -673,7 +686,7 @@ http://www.mulesoft.org/schema/mule/alexa http://www.mulesoft.org/schema/mule/al
 
 === *Delete Skill* :
 
-=== *Skill Id * : String (required)
+=== *Skill Id* : String (required)
 Unique identifier of skill.
 
 

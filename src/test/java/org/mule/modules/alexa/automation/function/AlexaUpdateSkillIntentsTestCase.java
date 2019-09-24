@@ -3,6 +3,7 @@
  */
 package org.mule.modules.alexa.automation.function;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.mule.functional.junit4.MuleArtifactFunctionalTestCase;
 
@@ -21,6 +22,7 @@ public class AlexaUpdateSkillIntentsTestCase extends MuleArtifactFunctionalTestC
                  .getMessage()
                  .getPayload()
                  .getValue());
+		 Assert.assertEquals("{}", payloadValue);
 	}
 
 }

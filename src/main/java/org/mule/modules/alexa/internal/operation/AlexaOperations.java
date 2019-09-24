@@ -149,7 +149,7 @@ public class AlexaOperations {
 	}
 
 	/**
-	 * 
+	 * This is used to update interaction model schema of the Alexa skill.
 	 * @param alexaConnection
 	 * @param model
 	 * @param skillId

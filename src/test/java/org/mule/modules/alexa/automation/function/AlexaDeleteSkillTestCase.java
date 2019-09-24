@@ -3,6 +3,8 @@
  */
 package org.mule.modules.alexa.automation.function;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
 import org.mule.functional.junit4.MuleArtifactFunctionalTestCase;
 public class AlexaDeleteSkillTestCase extends MuleArtifactFunctionalTestCase{
@@ -20,5 +22,6 @@ public class AlexaDeleteSkillTestCase extends MuleArtifactFunctionalTestCase{
                  .getMessage()
                  .getPayload()
                  .getValue());
+		 assertEquals("", payloadValue);
 	}
 }

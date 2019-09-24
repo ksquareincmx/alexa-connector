@@ -1,19 +1,22 @@
-# Alexaoauth Extension
+Amazon-alexa Extension
+===============
 
-Add description ...
-
-
-...
+This connector is use full for interacting with Alexa API to create,Update the existing and Delete the Alexa skills.
 
 
-...
+
+## Features supported by this connector
+
+- Create Skill
+- Update SKill
+- Getting Skill Information
+- Deleting Skill
+
 
 
 Add this dependency to your application pom.xml
 
-```
 <groupId>alexa</groupId>
 <artifactId>mule-basic-extension</artifactId>
-<version>1.0.0-SNAPSHOT</version>
+<version>1.0.0</version>
 <classifier>mule-plugin</classifier>
-```

@@ -15,7 +15,7 @@ public class AlexaGetSkillTestCase extends MuleArtifactFunctionalTestCase {
 	}
 
 	@Test
-	public void executeSayHiOperation() throws Exception {
+	public void testAexaGetSkillInfo() throws Exception {
 		String payloadValue = ((String) flowRunner("get-skill").run().getMessage().getPayload().getValue());
 		Assert.assertEquals(payloadValue.contains("manifest"), true);
 	}

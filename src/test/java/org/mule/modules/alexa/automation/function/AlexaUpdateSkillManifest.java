@@ -3,6 +3,7 @@
  */
 package org.mule.modules.alexa.automation.function;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.mule.functional.junit4.MuleArtifactFunctionalTestCase;
 
@@ -23,7 +24,7 @@ import org.mule.functional.junit4.MuleArtifactFunctionalTestCase;
                  .getMessage()
                  .getPayload()
                  .getValue());
-		 System.out.println(payloadValue);
+		 Assert.assertEquals("{}", payloadValue);
 		 
 	}
 
