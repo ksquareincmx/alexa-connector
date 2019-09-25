@@ -1,0 +1,40 @@
+= Amazon Alexa Connector Release Notes
+:keywords: Alexaconnectot
+
+The Anypoint Alexa connector provides the capability to connect a Mule App to create,update,delete and get skill information. 
+
+== Alexa Connector 1.0.0
+
+Alexa connector is available on Mule 4.0.
+
+
+[%header%autowidth]
+|===
+|Application/Service |Version
+|Mule Runtime	     |  4.x
+|Java	             |  1.8 and later
+|===
+
+
+==== Key Features
+
+The Alexa connector supports the following capabilities:
+
+It used mule OAuth module to communicate with Alexa API.
+* It supports creation of Alexa skill
+* It supports Updating the Existing skill 
+* It supports deleting the existing skill
+* We can get Skill information which 
+
+
+
+Add this dependency to your application pom.xml
+```
+
+            <groupId>com.mulesoft.connectors</groupId>
+            <artifactId>mule-alexa-connector</artifactId>
+            <version>1.0.0</version>
+            <classifier>mule-plugin</classifier>
+
+```
+

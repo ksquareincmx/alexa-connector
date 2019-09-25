@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="d0d066ba-b827-4171-ac71-4eb8b045dada" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<alexa:config name="Alexa_Config" doc:name="Alexa Config" doc:id="fabe2c17-9f98-4ed7-93da-684802f39110" >
+		<alexa:connection >
+			<alexa:oauth-authorization-code consumerKey="amzn1.application-oa2-client.af20a19a331f41b5b8fb9f320f2b329b" consumerSecret="e1d3b29401bb60857ed020ed5617ce7e6d04269cf341f6579805e4c7a2ff7e09" scopes="alexa::ask:skills:readwrite alexa::ask:skills:test alexa::ask:models:read alexa::ask:models:readwrite" resourceOwnerId="#[vars.ownerId]" />
+			<alexa:oauth-callback-config listenerConfig="HTTP_Listener_config" callbackPath="/callback" authorizePath="/authorize" externalCallbackUrl="http://localhost:8081/callback" />
+		</alexa:connection>
+	</alexa:config>
+	<flow name="create-demo-skill" doc:id="98f5cc3d-cecb-48e9-b395-726903623c59" >
+		<http:listener doc:name="Listener" doc:id="09e3ff65-465f-47be-979e-c9ddad2659b4" config-ref="HTTP_Listener_config" path="/create-skill"/>
+		<alexa:create-skill doc:name="Create skill" doc:id="7ff013c5-727c-43d9-9ee6-a9fb969feffa" config-ref="Alexa_Config" vendorId="MPLHQBOHBVJ16" summary="after cat enum skill" skillName="Friday_morning" description="This is for cat test" endpoint="https://myendpoint.com" category="SPORTS_NEWS">
+			<alexa:intents >
+				<alexa:intent intentName="myFriday" confirmationRequired="false" >
+					<alexa:slots >
+						<alexa:slot sname="Friday" type="AMAZON.US_FIRST_NAME" />
+					</alexa:slots>
+					<alexa:samples >
+						<alexa:sample value="Helo alexa how is today weather" />
+					</alexa:samples>
+				</alexa:intent>
+			</alexa:intents>
+		</alexa:create-skill>
+	</flow>
+	<flow name="update-demo-interaction" doc:id="5ffaadd0-aff1-4bef-b944-b21201cba2c2" >
+		<http:listener doc:name="Listener" doc:id="bb8a4a5e-24c6-42df-be51-a8ceb27848c4" config-ref="HTTP_Listener_config" path="/updateintents"/>
+		<alexa:update-skill-intents doc:name="Update skill intents" doc:id="c31b6ae8-3859-4f04-b6c7-d4443b89b803" config-ref="Alexa_Config" skillId="amzn1.ask.skill.19660998-cbef-4d4f-91c3-c2418a3ee3a0">
+			<alexa:model >
+				<alexa:dialog delegationStrategy="ALWAYS" >
+					<alexa:dialog-intents >
+						<alexa:dialog-intent intentName="Activity" confirmationRequired="false" >
+							<alexa:dialog-slots >
+								<alexa:dialog-slot sname="MyActivity" type="AMAZON.US_FIRST_NAME" />
+							</alexa:dialog-slots>
+						</alexa:dialog-intent>
+					</alexa:dialog-intents>
+				</alexa:dialog>
+				<alexa:language-model invocationName="my friday" >
+					<alexa:languate-intents >
+						<alexa:language-intent intentName="Activity" >
+							<alexa:slots >
+								<alexa:slot sname="MyActivity" type="AMAZON.US_FIRST_NAME" >
+									<alexa:samples >
+										<alexa:sample value="how was today" />
+									</alexa:samples>
+								</alexa:slot>
+							</alexa:slots>
+							<alexa:samples >
+							<alexa:sample value="How is weather today"></alexa:sample>
+							</alexa:samples>
+						</alexa:language-intent>
+						<alexa:language-intent intentName="AMAZON.StopIntent" >
+							
+						</alexa:language-intent>
+						<alexa:language-intent intentName="AMAZON.HelpIntent" >
+							
+						</alexa:language-intent>
+						<alexa:language-intent intentName="AMAZON.CancelIntent" >
+							
+						</alexa:language-intent>	
+					</alexa:languate-intents>
+				</alexa:language-model>
+			</alexa:model>
+		</alexa:update-skill-intents>
+	</flow>
+	<flow name="delete-demo-skill" doc:id="8b91b2fa-3336-408c-afe9-1033953e3c38" >
+		<http:listener doc:name="Listener" doc:id="4ff2ac59-8bd0-4123-aa10-98b3dbf55fa9" config-ref="HTTP_Listener_config" path="/delete-skill"/>
+		<alexa:delete-skill doc:name="Delete skill" doc:id="ca444341-4f6c-42f4-86e7-c82494e63466" config-ref="Alexa_Config" skillId="8854"/>
+	</flow>
+	<flow name="getSkillFlow" doc:id="8b57200b-32af-4e3c-a003-bd5d5703f326" >
+		<http:listener doc:name="Listener" doc:id="40b9fdda-413a-4904-904a-791cf188c37d" config-ref="HTTP_Listener_config" path="/get-skill"/>
+		<alexa:skill-info doc:name="Skill info" doc:id="c6aae6fd-6b3b-436b-b596-0f32129020e8" config-ref="Alexa_Config" skillId="124525"/>
+	</flow>
+	<flow name="udate-demo-skill" doc:id="81e67e11-8dcd-4616-b5dc-10e6813a227a" >
+		<http:listener doc:name="Listener" doc:id="e7a79183-61db-46c2-a125-1b9a841455cc" config-ref="HTTP_Listener_config" path="/updatemanifest"/>
+		<alexa:update-skill-manifest doc:name="Update skill manifest" doc:id="82dfc7b6-9894-45c3-8de0-ad66ce74dd66" config-ref="Alexa_Config" skillId="amzn1.ask.skill.19660998-cbef-4d4f-91c3-c2418a3ee3a0">
+			<alexa:manifest >
+				<alexa:publishing-information testingInstructions="No instruction" category="SMART_HOME" >
+					<alexa:distribution-countries >
+						<alexa:distribution-country value="US" />
+					</alexa:distribution-countries>
+					<alexa:locale skillName="Friday_afternoon" summary="Updating morningskill" description="Update should be done" >
+						<alexa:keywords >
+							<alexa:keyword value="hey afternoon" />
+						</alexa:keywords>
+						<alexa:example-phrases >
+							<alexa:example-phrase value="Hi, hello" />
+						</alexa:example-phrases>
+					</alexa:locale>
+				</alexa:publishing-information>
+				<alexa:privacy-and-compliance >
+					<alexa:plocale privacyPolicyUrl="https://myprivacyurl.com" termsOfUseUrl="https://myprivacyurl.com" />
+				</alexa:privacy-and-compliance>
+				<alexa:events >
+					<alexa:endpoint uri="https://www.ksquareinc.com/" sslCertificateType="Trusted" />
+					<alexa:subscriptions >
+						<alexa:sub-scription EventName="SKILL_DISABLED" />
+						<alexa:sub-scription EventName="SKILL_ENABLED" />
+					</alexa:subscriptions>
+				</alexa:events>
+				<alexa:apis >
+					<alexa:custom >
+						<alexa:endpoint uri="https://www.ksquareinc.com/" sslCertificateType="Trusted" />
+						<alexa:interfaces >
+							<alexa:interface type="CAN_FULFILL_INTENT_REQUEST" />
+						</alexa:interfaces>
+					</alexa:custom>
+				</alexa:apis>
+				<alexa:permissions >
+					<alexa:permission PermissionName="alexa::devices:all:address:full:read" />
+				</alexa:permissions>
+			</alexa:manifest>
+		</alexa:update-skill-manifest>
+	</flow>
+	
+	
+	</mule>
