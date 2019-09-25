@@ -15,9 +15,11 @@ This connector is use full for interacting with Alexa API to create,Update the e
 
 
 Add this dependency to your application pom.xml
----
+
+```
 <groupId>com.mulesoft.connectors</groupId>
 <artifactId>mule-alexa-connector</artifactId>
 <version>1.0.0</version>
 <classifier>mule-plugin</classifier>
----
+
+```
