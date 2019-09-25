@@ -20,11 +20,12 @@ Alexa connector is available on Mule 4.0.
 
 The Alexa connector supports the following capabilities:
 
-It used mule OAuth module to communicate with Alexa API.
-* It supports creation of Alexa skill
-* It supports Updating the Existing skill 
-* It supports deleting the existing skill
-* We can get Skill information which 
+It uses mule OAuth module to communicate with Alexa API.
+
+* It supports creation of Alexa skill.
+* It supports Updating the Existing skill. 
+* It supports deleting the existing skill.
+* We can get Skill information which already created.
 
 
 
