@@ -111,20 +111,10 @@ The unique vendor ID is  Amazon customer  customer ID (CID) that is tied to your
 
 *Example*: MPHXXXXXXX
 
-==== *Summary* : String
-Summary description of the skill, which is shown when viewing the list of skills in the Alexa Skills Store.
-
-*Example* : "This is a testing skill"
-
-
 ==== *Skill Name* : String(required)
 skill name for the new created skill.
 
 *Example* : "Test Skill"
-
-==== *Description* : String(required)
-A full description explaining what the skill can do and any prerequisites to using it (such as additional hardware, software, or accounts). For a Flash Briefing skill, you must list the feeds for the skill.
-
 
 
 === *Endpoint*
@@ -223,7 +213,7 @@ http://www.mulesoft.org/schema/mule/slack http://www.mulesoft.org/schema/mule/sl
 		<alexa:token-connection token="${alexa.token}" />
 	</alexa:config>
 	<flow name="create-skill" doc:id="c6863a22-7159-4f40-b31f-efe7e62498b8" >
-		<alexa:create-skill doc:name="Create skill" doc:id="bd4a6349-d817-46f4-8ac3-f714fd3efef3" config-ref="Alexa_Config" vendorId="MPLHQBOHBVJ16" summary="after cat enum skill" skillName="TestCase_2" description="This is for  test" endpoint="https://myendpoint.com" category="SPORTS_NEWS" invocationName ="my first skill">
+		<alexa:create-skill doc:name="Create skill" doc:id="bd4a6349-d817-46f4-8ac3-f714fd3efef3" config-ref="Alexa_Config" vendorId="MPLHQBOHBVJ16"  skillName="TestCase_2"  endpoint="https://myendpoint.com" category="SPORTS_NEWS" invocationName ="my first skill">
 			<alexa:intents >
 				<alexa:intent intentName="myTestCase" confirmationRequired="false" >
 					<alexa:slots >

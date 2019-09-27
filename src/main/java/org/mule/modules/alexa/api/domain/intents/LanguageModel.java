@@ -29,14 +29,11 @@ public class LanguageModel {
 	
 
 	public LanguageModel(List<LanguageIntent> languateIntents2, String invocationName2) {
-		// TODO Auto-generated constructor stub
-		
 		this.languateIntents= languateIntents2;
 		this.invocationName = invocationName2;
 	}
 	
 	public LanguageModel() {
-		// TODO Auto-generated constructor stub
 		
 	}
 
@@ -59,9 +56,8 @@ public class LanguageModel {
 
 	
 	public static LanguageModel defaultLanguageModel(LanguageModel languageModel) {
-		// TODO Auto-generated constructor stub
 		
-		return new LanguageModel(languageModel.getLanguateIntents().stream().map(li -> LanguageIntent.defaultLanguageIntent(li)).collect(Collectors.toList()),
+		return new LanguageModel(languageModel.getLanguateIntents().stream().map(li -> LanguageIntent.defaultLanguageIntentFromLanaguage(li)).collect(Collectors.toList()),
 				languageModel.getInvocationName());
 	}
 	

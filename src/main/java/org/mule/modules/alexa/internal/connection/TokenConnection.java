@@ -23,20 +23,17 @@ public class TokenConnection implements PoolingConnectionProvider<AlexaConnectio
 
 	@Override
 	public AlexaConnection connect() throws ConnectionException {
-		// TODO Auto-generated method stub no proxy here
 		return new AlexaConnection(token,httpService);
 	}
 
 	@Override
 	public void disconnect(AlexaConnection connection) {
-		// TODO Auto-generated method stub
 		connection.disconnect();
 		
 	}
 
 	@Override
 	public ConnectionValidationResult validate(AlexaConnection connection) {
-		// TODO Auto-generated method stub
 		return ConnectionValidationResult.success();
 	}
 

@@ -13,10 +13,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 
-public class Intent {
+public class Intent { // NOSONAR
 
 	public Intent() {
-		super();
 	}
 
 
@@ -47,7 +46,6 @@ public class Intent {
 
 	public Intent(String intentName, String confirmationRequired, List<Slot> slots, List<String> samples,
 			List<Prompt> prompts) {
-		super();
 		this.intentName = intentName;
 		this.confirmationRequired = confirmationRequired;
 		this.slots = slots;
@@ -101,11 +99,5 @@ public class Intent {
 
 	
 
-	@Override
-	public String toString() {
-		return "Intent [intentName=" + intentName + ", confirmationRequired=" + confirmationRequired + ", slots="
-				+ slots + ", samples=" + samples + ", prompts=" + prompts + "]";
-	}
-	
 
 }

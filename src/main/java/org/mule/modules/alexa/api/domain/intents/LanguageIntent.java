@@ -15,7 +15,7 @@ import org.mule.runtime.extension.api.annotation.param.Parameter;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class LanguageIntent {
+public class LanguageIntent { // NOSONAR
 	
 	public LanguageIntent() {
 		
@@ -71,15 +71,13 @@ public class LanguageIntent {
 		this.samples = samples;
 	}
 	
-	public static LanguageIntent defaultLanguageIntent(LanguageIntent languageIntent){
+	public static LanguageIntent defaultLanguageIntentFromLanaguage(LanguageIntent languageIntent){
+		List<Slot> languageSlot = languageIntent.getSlots().stream().map(s -> Slot.defaultSlot(s)).collect(Collectors.toList());
 		return new LanguageIntent(languageIntent.getIntentName(), 
-				languageIntent.getSlots().stream().map(s -> Slot.defaultSlot(s)).collect(Collectors.toList()), 
+				languageSlot, 
 				languageIntent.getSamples());
 	}
 
-	public static LanguageIntent defaultLanguageIntent(Intent languageIntent){
-		return new LanguageIntent(languageIntent.getIntentName(), 
-				languageIntent.getSlots().stream().map(s -> Slot.defaultSlot(s)).collect(Collectors.toList()), 
-				languageIntent.getSamples());
-	}
+	
+	
 }

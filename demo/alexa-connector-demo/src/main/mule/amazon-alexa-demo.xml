@@ -16,7 +16,7 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 	</alexa:config>
 	<flow name="create-demo-skill" doc:id="98f5cc3d-cecb-48e9-b395-726903623c59" >
 		<http:listener doc:name="Listener" doc:id="09e3ff65-465f-47be-979e-c9ddad2659b4" config-ref="HTTP_Listener_config" path="/create-skill"/>
-		<alexa:create-skill doc:name="Create skill" doc:id="7ff013c5-727c-43d9-9ee6-a9fb969feffa" config-ref="Alexa_Config" vendorId="MPLHQBOHBVJ16" summary="after cat enum skill" skillName="Friday_morning" description="This is for cat test" endpoint="https://myendpoint.com" category="SPORTS_NEWS">
+		<alexa:create-skill doc:name="Create skill" doc:id="7ff013c5-727c-43d9-9ee6-a9fb969feffa" config-ref="Alexa_Config" vendorId="MPLHQBOHBVJ16"  skillName="Friday_morning"  endpoint="https://myendpoint.com" category="SPORTS_NEWS">
 			<alexa:intents >
 				<alexa:intent intentName="myFriday" confirmationRequired="false" >
 					<alexa:slots >

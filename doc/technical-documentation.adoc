@@ -90,7 +90,7 @@ Default configuration
 `<alexa:create-skill>`
 
 +++
-This method used for creating skill, return error received from Alexa Server if some thing wrong in create request or missed some fields which are required fro skill creations.
+This method used for creating skill with basic information later we can update with full information using updateSkillManifest,updateSkillManifest and updateSkill operations, return error received from Alexa Server if some thing wrong in create request or missed some fields which are required forskill creations.
 +++
 
 ==== Parameters
@@ -99,9 +99,7 @@ This method used for creating skill, return error received from Alexa Server if 
 | Name | Type | Description | Default Value | Required
 | Configuration | String | The name of the configuration to use. | | *x*{nbsp}
 | Vendor Id a| String |  |  | *x*{nbsp}
-| Summary a| String |  |  | *x*{nbsp}
 | Skill Name a| String |  |  | *x*{nbsp}
-| Description a| String |  |  | *x*{nbsp}
 | Endpoint a| String |  |  | *x*{nbsp}
 | Category a| Enumeration, one of:
 
