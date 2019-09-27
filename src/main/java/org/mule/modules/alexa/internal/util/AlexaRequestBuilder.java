@@ -5,33 +5,18 @@
 package org.mule.modules.alexa.internal.util;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
-import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 import org.mule.modules.alexa.api.domain.create.CreateSkill;
 import org.mule.modules.alexa.api.domain.data.CategoryEnum;
-import org.mule.modules.alexa.api.domain.existing.Application;
-import org.mule.modules.alexa.api.domain.existing.Body;
-import org.mule.modules.alexa.api.domain.existing.Context;
-import org.mule.modules.alexa.api.domain.existing.ExistingIntent;
-import org.mule.modules.alexa.api.domain.existing.Reqest;
-import org.mule.modules.alexa.api.domain.existing.Request;
-import org.mule.modules.alexa.api.domain.existing.Session;
-import org.mule.modules.alexa.api.domain.existing.SkillRequest;
-import org.mule.modules.alexa.api.domain.existing.SlotName;
-import org.mule.modules.alexa.api.domain.existing.Sstem;
-import org.mule.modules.alexa.api.domain.existing.User;
 import org.mule.modules.alexa.api.domain.intents.Dialog;
 import org.mule.modules.alexa.api.domain.intents.DialogIntent;
 import org.mule.modules.alexa.api.domain.intents.DialogSlot;
@@ -53,7 +38,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -224,64 +208,7 @@ public class AlexaRequestBuilder {
 		return value;
 	}
 
-	public String getAlexaRequestJson(String applicationID, String requestType, Map<String, String> slots,
-			String intentName) throws AlexaApiException {
 
-		logger.debug("getAlexaRequestJson params applicationID:{} requestType {} slots {} intentName:{} ",
-				applicationID, requestType, slots, intentName);
-		Application application = new Application(applicationID);
-		User user = new User("amzn1.ask.account.12345ABCDEFGH");
-
-		Session session = new Session();
-		session.setOne(true);
-		session.setSessionId("aaf7b112-434c-11e7-2563-6bbd1672c748");
-		session.setApplication(application);
-		session.setUser(user);
-		Sstem system = new Sstem(application, user);
-		Context context = new Context(system);
-		ExistingIntent intent = new ExistingIntent();
-
-		prepareSlotForIntent(slots, intent);
-		intent.setName(intentName);
-
-		String nowAsISO = getTime();
-		Reqest reqest = new Reqest(requestType, "c03faf54-684d-11e7-6249-6bbd1825c634", nowAsISO, "en-US", intent);
-		Body body = new Body("1.0", session, context, reqest);
-		SkillRequest skillRequest = new SkillRequest(body);
-		Request request = new Request("Default", skillRequest);
-		String jsonStr = null;
-		try {
-			jsonStr = mapper.writeValueAsString(request);
-			logger.debug("getAlexaRequestJson json  {}", jsonStr);
-		} catch (JsonProcessingException e) {
-			logger.error("Exception while serializing json in updateCreatedSkill {}", e);
-			throw new AlexaApiException(e.getMessage(), AlexaApiErrorType.JSON_PARSER_EXCEPTION);
-		}
-		return jsonStr;
-	}
-
-	private ExistingIntent prepareSlotForIntent(Map<String, String> slots, ExistingIntent intent) {
-		Map<String, SlotName> slotNames = new HashMap<>();
-
-		for (Map.Entry<String, String> slot : slots.entrySet()) {
-			SlotName slotname = new SlotName();
-			slotname.setConfirmationStatus("NONE");
-			slotname.setName(slot.getKey());
-			slotname.setValue(slot.getValue());
-
-			slotNames.put(slot.getKey(), slotname);
-		}
-		intent.setSlots(slotNames);
-		return intent;
-	}
-
-	private String getTime() {
-		TimeZone tz = TimeZone.getTimeZone("CST");
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
-		df.setTimeZone(tz);
-		String nowAsISO = df.format(new Date());
-		return nowAsISO;
-	}
 
 	public String createManifestUpdateRequest(String skillId, Manifest manifest) {
 
