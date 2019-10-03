@@ -32,6 +32,13 @@
 	</build>
 
 	<dependencies>
+	
+	 <dependency>
+            <groupId>com.mulesoft.connectors</groupId>
+            <artifactId>mule-alexa-connector</artifactId>
+            <version>1.0.0</version>
+            <classifier>mule-plugin</classifier>
+        </dependency> 
         <dependency>
             <groupId>org.mule.connectors</groupId>
             <artifactId>mule-http-connector</artifactId>

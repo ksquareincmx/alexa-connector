@@ -26,6 +26,7 @@ import org.mule.modules.alexa.api.domain.intents.LanguageIntent;
 import org.mule.modules.alexa.api.domain.intents.LanguageModel;
 import org.mule.modules.alexa.api.domain.intents.Prompt;
 import org.mule.modules.alexa.api.domain.intents.Slot;
+import org.mule.modules.alexa.api.domain.intents.Variation;
 import org.mule.modules.alexa.api.domain.update.ApiInfo;
 import org.mule.modules.alexa.api.domain.update.Manifest;
 import org.mule.modules.alexa.api.domain.update.PrivacyComplaince;
@@ -59,15 +60,12 @@ public class AlexaRequestBuilder {
 	}
 
 	/**
-	 * 
+	 * This method builds json string for CreteSkill manifest scheme.
 	 * @param vendorId
-	 * @param summary
-	 * @param examplePhrases
-	 * @param keywords
 	 * @param skillName
-	 * @param description
 	 * @param endpoint
-	 * @return
+	 * @param category
+	 * @return String 
 	 * @throws AlexaApiException
 	 */
 	public String buildCreateSkillRequest(String vendorId,String skillName,
@@ -103,7 +101,7 @@ public class AlexaRequestBuilder {
 			jsonStr = mapper.writeValueAsString(newNode);
 			logger.info("Create Alexa Skill request: {}", jsonStr);
 		} catch (IOException e) {
-			logger.error("Exception while serializing json in createAlexaSkillRequestBuilder {}", e);
+			logger.error("Exception while serializing json in buildCreateSkillRequest {}", e);
 			throw new AlexaApiException(e.getMessage(), AlexaApiErrorType.JSON_PARSER_EXCEPTION);
 		}
 		return jsonStr;
@@ -124,9 +122,10 @@ public class AlexaRequestBuilder {
 
 		List<Prompt> prompts = intents.stream().map(m -> m.getPrompts()).flatMap(m -> m.stream())
 				.collect(Collectors.toList());
-		prompts.stream().map(m -> m.getVariations()).flatMap(v -> v.stream()).collect(Collectors.toList());
+		List<Variation> variations = prompts.stream().map(m -> m.getVariations()).flatMap(v -> v.stream()).collect(Collectors.toList());
 		interactionModel.setPrompts(prompts);
 
+		//
 		// set dialog and language model
 		Dialog dialog = new Dialog();
 		dialog.setDialogIntents(mapIntnetToDialogIntent(intents));

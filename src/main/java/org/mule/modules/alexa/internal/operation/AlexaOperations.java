@@ -45,18 +45,21 @@ public class AlexaOperations {
 	 * update with full information using updateSkillManifest,updateSkillManifest
 	 * and updateSkill operations, return error received from Alexa Server if some
 	 * thing wrong in create request or missed some fields which are required
-	 * forskill creations.
-	 * 
+	 * for skill creations.
+	 *  
 	 * @param alexaConnection
 	 * @param vendorId
-	 * @param summary
-	 * @param examplePhrases
-	 * @param keywords
 	 * @param skillName
-	 * @param description
+	 * 			name of the skill
 	 * @param endpoint
+	 * 			endpoint where skill events to be handled.
+	 * @param category
+	 * 			Category of the skill chosen form {@code : CategoryEnum}
+	 * @param invocationName
+	 * 			Name to invoke the alexa for first time
 	 * @param intents
-	 * @return String
+	 * @return String 
+	 * 			Json response from Alexa sever
 	 */
 	@MediaType(value = ANY, strict = false)
 	@Alias("createSkill")
@@ -93,7 +96,8 @@ public class AlexaOperations {
 	 * 
 	 * @param alexaConnection
 	 * @param skillId
-	 * @return json string of skill
+	 * @return String
+	 *       skill information in json format
 	 * @throws AlexaApiException
 	 */
 
@@ -126,11 +130,12 @@ public class AlexaOperations {
 	/**
 	 * This method updates the Manifest schema of skill, refer the manifest schema
 	 * of Alexa skill for more information
-	 * {@link https://developer.amazon.com/docs/smapi/skill-manifest.html }
+	 * @see <a href="https://developer.amazon.com/docs/smapi/skill-manifest.html">Skill Manifest</a>
+	 * 
 	 * 
 	 * @param alexaConnection
 	 * @param skillId
-	 *            Skill of existing skill
+	 *            SkillId of existing skill
 	 * @param manifest
 	 *            Manifest model
 	 * @return empty json object
@@ -156,7 +161,7 @@ public class AlexaOperations {
 	 * @param alexaConnection
 	 * @param model
 	 * @param skillId
-	 * @return
+	 * @return String
 	 */
 	@MediaType(value = ANY, strict = false)
 	@Alias("updateSkillIntents")
@@ -176,13 +181,16 @@ public class AlexaOperations {
 	/**
 	 * This method updates both Manifest and Interaction schema of existing skill.
 	 * Refer links for Manifest and Interactions schema
-	 * {@link https://developer.amazon.com/docs/smapi/skill-manifest.html}
-	 * {@link https://developer.amazon.com/docs/smapi/interaction-model-schema.html}
+	 * @see <a href="https://developer.amazon.com/docs/smapi/skill-manifest.html">Skill Manifest</a>
+	 * @see <a href="https://developer.amazon.com/docs/smapi/interaction-model-schema.html">Skill Interaction Model schema</a>
 	 * 
 	 * @param alexaConnection
 	 * @param skillId
+	 *      skillId which need to be updated
 	 * @param model
+	 *      data required for interaction schema of skill.
 	 * @param manifest
+	 *       data required for manifest schema of skill
 	 * @return String Update Skill Request Accepeted successfully for success.
 	 *         Updating skill having problem with Error message from Alexa server.
 	 * @throws AlexaApiException
