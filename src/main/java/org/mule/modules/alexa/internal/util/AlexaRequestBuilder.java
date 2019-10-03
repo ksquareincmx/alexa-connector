@@ -5,33 +5,18 @@
 package org.mule.modules.alexa.internal.util;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
-import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 import org.mule.modules.alexa.api.domain.create.CreateSkill;
 import org.mule.modules.alexa.api.domain.data.CategoryEnum;
-import org.mule.modules.alexa.api.domain.existing.Application;
-import org.mule.modules.alexa.api.domain.existing.Body;
-import org.mule.modules.alexa.api.domain.existing.Context;
-import org.mule.modules.alexa.api.domain.existing.ExistingIntent;
-import org.mule.modules.alexa.api.domain.existing.Reqest;
-import org.mule.modules.alexa.api.domain.existing.Request;
-import org.mule.modules.alexa.api.domain.existing.Session;
-import org.mule.modules.alexa.api.domain.existing.SkillRequest;
-import org.mule.modules.alexa.api.domain.existing.SlotName;
-import org.mule.modules.alexa.api.domain.existing.Sstem;
-import org.mule.modules.alexa.api.domain.existing.User;
 import org.mule.modules.alexa.api.domain.intents.Dialog;
 import org.mule.modules.alexa.api.domain.intents.DialogIntent;
 import org.mule.modules.alexa.api.domain.intents.DialogSlot;
@@ -40,6 +25,8 @@ import org.mule.modules.alexa.api.domain.intents.InteractionModel;
 import org.mule.modules.alexa.api.domain.intents.LanguageIntent;
 import org.mule.modules.alexa.api.domain.intents.LanguageModel;
 import org.mule.modules.alexa.api.domain.intents.Prompt;
+import org.mule.modules.alexa.api.domain.intents.Slot;
+import org.mule.modules.alexa.api.domain.intents.Variation;
 import org.mule.modules.alexa.api.domain.update.ApiInfo;
 import org.mule.modules.alexa.api.domain.update.Manifest;
 import org.mule.modules.alexa.api.domain.update.PrivacyComplaince;
@@ -53,7 +40,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -74,25 +60,22 @@ public class AlexaRequestBuilder {
 	}
 
 	/**
-	 * 
+	 * This method builds json string for CreteSkill manifest scheme.
 	 * @param vendorId
-	 * @param summary
-	 * @param examplePhrases
-	 * @param keywords
 	 * @param skillName
-	 * @param description
 	 * @param endpoint
-	 * @return
+	 * @param category
+	 * @return String 
 	 * @throws AlexaApiException
 	 */
-	public String buildCreateSkillRequest(String vendorId, String summary, String skillName, String description,
+	public String buildCreateSkillRequest(String vendorId,String skillName,
 			String endpoint, CategoryEnum category) throws AlexaApiException {
 
-		logger.debug("Method parameters are: vendorId: {} , summary: {}  , skillName: {} ,endpoint: {} ", vendorId,
-				summary, skillName, endpoint);
+		logger.debug("Method parameters are: vendorId: {} , skillName: {} ,endpoint: {} ", vendorId,
+				 skillName, endpoint);
 
 		// create locale
-		PublishLocale locale = createLocaleInfo(skillName, summary, description);
+		PublishLocale locale = createLocaleInfo(skillName, null, null);
 
 		// create publish information
 		PublishInfo publishInfo = createPublishingInfo(false, category, locale, Arrays.asList("US", "GB"));
@@ -118,8 +101,7 @@ public class AlexaRequestBuilder {
 			jsonStr = mapper.writeValueAsString(newNode);
 			logger.info("Create Alexa Skill request: {}", jsonStr);
 		} catch (IOException e) {
-			// TODO: handle exception
-			logger.error("Exception while serializing json in createAlexaSkillRequestBuilder {}", e);
+			logger.error("Exception while serializing json in buildCreateSkillRequest {}", e);
 			throw new AlexaApiException(e.getMessage(), AlexaApiErrorType.JSON_PARSER_EXCEPTION);
 		}
 		return jsonStr;
@@ -133,22 +115,23 @@ public class AlexaRequestBuilder {
 	 * @param intents
 	 * @return String -- response from alexa after successfull update.
 	 */
-	public String buildUpdateSkillRequest(String newskillId, List<Intent> intents) throws AlexaApiException {
+	public String buildUpdateSkillRequest(String newskillId,String invocationName, List<Intent> intents) throws AlexaApiException {
 
 		logger.info("updateCreatedSkill  parameters: newSkillId: {} intents : {}", newskillId, intents);
 		InteractionModel interactionModel = new InteractionModel();
 
 		List<Prompt> prompts = intents.stream().map(m -> m.getPrompts()).flatMap(m -> m.stream())
 				.collect(Collectors.toList());
-		prompts.stream().map(m -> m.getVariations()).flatMap(v -> v.stream()).collect(Collectors.toList());
+		List<Variation> variations = prompts.stream().map(m -> m.getVariations()).flatMap(v -> v.stream()).collect(Collectors.toList());
 		interactionModel.setPrompts(prompts);
 
+		//
 		// set dialog and language model
 		Dialog dialog = new Dialog();
 		dialog.setDialogIntents(mapIntnetToDialogIntent(intents));
 		LanguageModel language = new LanguageModel();
 		language.setLanguateIntents(mapIntnetToLanguageIntent(intents));
-		language.setInvocationName("my test case");
+		language.setInvocationName(invocationName);
 		
 		interactionModel.setDialog(dialog);
 		interactionModel.setLanguageModel(language);
@@ -202,11 +185,12 @@ public class AlexaRequestBuilder {
 		try {
 			rootNode = getMapper().readTree(json);
 			JsonNode fieldNode = rootNode.get(key);
+			System.out.println(fieldNode +"@@@@"+key);
 			if(key.equals("skillId") && Objects.nonNull(fieldNode)) {
 				value = fieldNode.asText();
 			}
-			if (Objects.isNull(fieldNode) && key.equals("SkillId")) {
-				// when skillId sure we get message as key
+			if (key.equals("skillId") && Objects.isNull(fieldNode)) {
+				// when wrong vendorid or data for given while skill creation we get here
 				String res = rootNode.asText();
 				logger.error("Creation of skill having problem  {} ", res);
 				throw new AlexaApiException(res, AlexaApiErrorType.VALIDATIONS);
@@ -217,71 +201,13 @@ public class AlexaRequestBuilder {
 			}
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			logger.error("Error while looking for key in json: ",e);
 			throw new AlexaApiException(e.getMessage(), AlexaApiErrorType.JSON_PARSER_EXCEPTION);
 		}
 		return value;
 	}
 
-	public String getAlexaRequestJson(String applicationID, String requestType, Map<String, String> slots,
-			String intentName) throws AlexaApiException {
 
-		logger.debug("getAlexaRequestJson params applicationID:{} requestType {} slots {} intentName:{} ",
-				applicationID, requestType, slots, intentName);
-		Application application = new Application(applicationID);
-		User user = new User("amzn1.ask.account.12345ABCDEFGH");
-
-		Session session = new Session();
-		session.setOne(true);
-		session.setSessionId("aaf7b112-434c-11e7-2563-6bbd1672c748");
-		session.setApplication(application);
-		session.setUser(user);
-		Sstem system = new Sstem(application, user);
-		Context context = new Context(system);
-		ExistingIntent intent = new ExistingIntent();
-
-		prepareSlotForIntent(slots, intent);
-		intent.setName(intentName);
-
-		String nowAsISO = getTime();
-		Reqest reqest = new Reqest(requestType, "c03faf54-684d-11e7-6249-6bbd1825c634", nowAsISO, "en-US", intent);
-		Body body = new Body("1.0", session, context, reqest);
-		SkillRequest skillRequest = new SkillRequest(body);
-		Request request = new Request("Default", skillRequest);
-		String jsonStr = null;
-		try {
-			jsonStr = mapper.writeValueAsString(request);
-			logger.debug("getAlexaRequestJson json  {}", jsonStr);
-		} catch (JsonProcessingException e) {
-			logger.error("Exception while serializing json in updateCreatedSkill {}", e);
-			throw new AlexaApiException(e.getMessage(), AlexaApiErrorType.JSON_PARSER_EXCEPTION);
-		}
-		return jsonStr;
-	}
-
-	private ExistingIntent prepareSlotForIntent(Map<String, String> slots, ExistingIntent intent) {
-		Map<String, SlotName> slotNames = new HashMap<>();
-
-		for (Map.Entry<String, String> slot : slots.entrySet()) {
-			SlotName slotname = new SlotName();
-			slotname.setConfirmationStatus("NONE");
-			slotname.setName(slot.getKey());
-			slotname.setValue(slot.getValue());
-
-			slotNames.put(slot.getKey(), slotname);
-		}
-		intent.setSlots(slotNames);
-		return intent;
-	}
-
-	private String getTime() {
-		TimeZone tz = TimeZone.getTimeZone("CST");
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
-		df.setTimeZone(tz);
-		String nowAsISO = df.format(new Date());
-		return nowAsISO;
-	}
 
 	public String createManifestUpdateRequest(String skillId, Manifest manifest) {
 
@@ -377,11 +303,16 @@ public class AlexaRequestBuilder {
 	}
 
 	private List<LanguageIntent> mapIntnetToLanguageIntent(List<Intent> intents) {
-		return intents.stream().map(in -> LanguageIntent.defaultLanguageIntent(in))
+		return intents.stream().map(in -> defaultLanguageIntentFromIntent(in))
 				.collect(Collectors.toList());
 
 	}
-
+	private  LanguageIntent defaultLanguageIntentFromIntent(Intent intent){
+		List<Slot> intentSlots = intent.getSlots().stream().map(s -> Slot.defaultSlot(s)).collect(Collectors.toList());
+		return new LanguageIntent(intent.getIntentName(), 
+				intentSlots,
+				intent.getSamples());
+	}
 	private DialogIntent mapIntent(Intent intent) {
 		// Iterate slots and prepare Dialog slots
 		

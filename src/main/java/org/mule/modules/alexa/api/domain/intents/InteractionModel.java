@@ -42,6 +42,8 @@ public class InteractionModel {
 	@Expression(ExpressionSupport.SUPPORTED)
 	@JsonIgnore
 	private List<Prompt> prompts = new ArrayList<Prompt>();
+	
+	//private Map<String,List<Variation>> 
 
 	public Dialog getDialog() {
 		return dialog;
@@ -67,6 +69,7 @@ public class InteractionModel {
 		this.prompts = prompts;
 	}
 
+	
 	public static InteractionModel defaultInteractionModel(InteractionModel im) {
 		// dialog
 		Dialog d = Dialog.defaultDialog(im.getDialog());

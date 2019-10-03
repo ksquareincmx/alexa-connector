@@ -8,7 +8,6 @@ import static org.mule.runtime.api.meta.ExpressionSupport.SUPPORTED;
 import static org.mule.runtime.extension.api.annotation.param.MediaType.ANY;
 
 import java.util.List;
-import java.util.Objects;
 
 import org.mule.modules.alexa.api.domain.AlexaRequestURL;
 import org.mule.modules.alexa.api.domain.data.CategoryEnum;
@@ -16,7 +15,6 @@ import org.mule.modules.alexa.api.domain.intents.Intent;
 import org.mule.modules.alexa.api.domain.intents.InteractionModel;
 import org.mule.modules.alexa.api.domain.update.Manifest;
 import org.mule.modules.alexa.internal.connection.AlexaConnection;
-import org.mule.modules.alexa.internal.error.AlexaApiErrorType;
 import org.mule.modules.alexa.internal.exceptions.AlexaApiException;
 import org.mule.modules.alexa.internal.util.AlexaRequestBuilder;
 import org.mule.runtime.api.meta.ExpressionSupport;
@@ -43,54 +41,65 @@ public class AlexaOperations {
 	private AlexaRequestBuilder requestBuilder = new AlexaRequestBuilder();
 
 	/**
-	 * This method used for creating skill, return error received from Alexa Server if some thing wrong in create request or missed some fields which are required fro skill creations.
-	 * 
+	 * This method used for creating skill with basic information later we can
+	 * update with full information using updateSkillManifest,updateSkillManifest
+	 * and updateSkill operations, return error received from Alexa Server if some
+	 * thing wrong in create request or missed some fields which are required
+	 * for skill creations.
+	 *  
 	 * @param alexaConnection
 	 * @param vendorId
-	 * @param summary
-	 * @param examplePhrases
-	 * @param keywords
 	 * @param skillName
-	 * @param description
+	 * 			name of the skill
 	 * @param endpoint
+	 * 			endpoint where skill events to be handled.
+	 * @param category
+	 * 			Category of the skill chosen form {@code : CategoryEnum}
+	 * @param invocationName
+	 * 			Name to invoke the alexa for first time
 	 * @param intents
-	 * @return String
+	 * @return String 
+	 * 			Json response from Alexa sever
 	 */
 	@MediaType(value = ANY, strict = false)
 	@Alias("createSkill")
 	public String createSkill(@Connection AlexaConnection alexaConnection, @Expression(SUPPORTED) String vendorId,
-			@Expression(SUPPORTED) String summary, @Expression(SUPPORTED) String skillName,
-			@Expression(SUPPORTED) String description, @Expression(SUPPORTED) String endpoint,@Expression(ExpressionSupport.NOT_SUPPORTED)CategoryEnum category,
-			@Optional @NullSafe @Expression(ExpressionSupport.NOT_SUPPORTED) @ParameterDsl(allowReferences = false) List<Intent> intents)
-			throws AlexaApiException {
+			@Expression(SUPPORTED) String skillName, @Expression(SUPPORTED) String endpoint,
+			@Expression(ExpressionSupport.NOT_SUPPORTED) CategoryEnum category,
+			@Expression(SUPPORTED) String invocationName,
+			@Optional @NullSafe @Expression(ExpressionSupport.NOT_SUPPORTED) @ParameterDsl(allowReferences = false) List<Intent> intents) {
 
 		logger.debug("Access token {}", alexaConnection.getAccessToken());
-		String alexaRequest = requestBuilder.buildCreateSkillRequest(vendorId, summary, skillName, description,
-				endpoint,category);
+		String alexaRequest = requestBuilder.buildCreateSkillRequest(vendorId, skillName, endpoint, category);
 
 		String createSkillResponse = alexaConnection.sendRequest(HttpConstants.Method.POST,
 				AlexaRequestURL.CREATE_ALEXA_SKILL, alexaRequest);
 
 		logger.info("Create Alexa Skill Response {}", createSkillResponse);
 		String skillId = requestBuilder.readValueForKey(createSkillResponse, "skillId");
-		if (skillId == null || Objects.isNull(skillId)) {
-			throw new AlexaApiException("Error while creation of Alexa Skill: " + createSkillResponse,
-					AlexaApiErrorType.VALIDATIONS);
-		}
+
 		logger.info("Alexa SkillId {}", skillId);
 
-		String updateSkillRequest = requestBuilder.buildUpdateSkillRequest(skillId, intents);
+		String updateSkillRequest = requestBuilder.buildUpdateSkillRequest(skillId, invocationName, intents);
 		String updateUrl = String.format(AlexaRequestURL.UPDATE_ALEXA_SKILL, skillId);
 		String updateRes = alexaConnection.sendRequest(HttpConstants.Method.PUT, updateUrl, updateSkillRequest);
 		String errorMsg = requestBuilder.readValueForKey(updateRes, "message");
-		if(errorMsg!=null) {
+		if (errorMsg != null) {
 			return errorMsg;
 		}
 		return "Alexa Skill created successfully with SkillId:" + skillId;
 
 	}
 
-	
+	/**
+	 * This method return skill information for the given skillId.
+	 * 
+	 * @param alexaConnection
+	 * @param skillId
+	 * @return String
+	 *       skill information in json format
+	 * @throws AlexaApiException
+	 */
 
 	@MediaType(value = ANY, strict = false)
 	@Alias("skillInfo")
@@ -101,6 +110,14 @@ public class AlexaOperations {
 		return alexaConnection.sendRequest(HttpConstants.Method.GET, url, null);
 	}
 
+	/**
+	 * This method deletes the skill for the given skillId
+	 * 
+	 * @param alexaConnection
+	 * @param skillId
+	 * @return empty {@code : {}}
+	 * @throws Exception
+	 */
 	@MediaType(value = ANY, strict = false)
 	@Alias("deleteSkill")
 	public String deleteSkill(@Connection AlexaConnection alexaConnection, @Expression(SUPPORTED) String skillId)
@@ -110,10 +127,24 @@ public class AlexaOperations {
 		return alexaConnection.sendRequest(HttpConstants.Method.DELETE, deleteUrl, null);
 	}
 
+	/**
+	 * This method updates the Manifest schema of skill, refer the manifest schema
+	 * of Alexa skill for more information
+	 * @see <a href="https://developer.amazon.com/docs/smapi/skill-manifest.html">Skill Manifest</a>
+	 * 
+	 * 
+	 * @param alexaConnection
+	 * @param skillId
+	 *            SkillId of existing skill
+	 * @param manifest
+	 *            Manifest model
+	 * @return empty json object
+	 * @throws AlexaApiException
+	 */
 	@MediaType(value = ANY, strict = false)
 	@Alias("updateSkillManifest")
 	public String updateManifest(@Connection AlexaConnection alexaConnection, @Expression(SUPPORTED) String skillId,
-			@Optional @NullSafe @Expression Manifest manifest) throws AlexaApiException {
+			@Optional @NullSafe @Expression Manifest manifest) {
 		logger.info("Update Manifest with skillId {}", skillId);
 		String result;
 
@@ -124,6 +155,14 @@ public class AlexaOperations {
 		return result;
 	}
 
+	/**
+	 * This is used to update interaction model schema of the Alexa skill.
+	 * 
+	 * @param alexaConnection
+	 * @param model
+	 * @param skillId
+	 * @return String
+	 */
 	@MediaType(value = ANY, strict = false)
 	@Alias("updateSkillIntents")
 	public String updateInteraction(@Connection AlexaConnection alexaConnection,
@@ -139,11 +178,27 @@ public class AlexaOperations {
 		return updateRes;
 	}
 
+	/**
+	 * This method updates both Manifest and Interaction schema of existing skill.
+	 * Refer links for Manifest and Interactions schema
+	 * @see <a href="https://developer.amazon.com/docs/smapi/skill-manifest.html">Skill Manifest</a>
+	 * @see <a href="https://developer.amazon.com/docs/smapi/interaction-model-schema.html">Skill Interaction Model schema</a>
+	 * 
+	 * @param alexaConnection
+	 * @param skillId
+	 *      skillId which need to be updated
+	 * @param model
+	 *      data required for interaction schema of skill.
+	 * @param manifest
+	 *       data required for manifest schema of skill
+	 * @return String Update Skill Request Accepeted successfully for success.
+	 *         Updating skill having problem with Error message from Alexa server.
+	 * @throws AlexaApiException
+	 */
 	@MediaType(value = ANY, strict = false)
 	@Alias("updateSkill")
 	public String updateSkill(@Connection AlexaConnection alexaConnection, @Expression(SUPPORTED) String skillId,
-			@Optional @NullSafe @Expression InteractionModel model,
-			@Optional @NullSafe @Expression Manifest manifest) throws AlexaApiException {
+			@Optional @NullSafe @Expression InteractionModel model, @Optional @NullSafe @Expression Manifest manifest) {
 
 		String interactionRes = updateInteraction(alexaConnection, model, skillId);
 

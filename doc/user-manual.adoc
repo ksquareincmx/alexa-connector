@@ -88,7 +88,7 @@ Save configuration. Your configuration should look like:
 	</alexa:config>
 ```
 +
-image::./images/Google-Aanalytics_Config.png[]
+image::./images/Alexa_Oauth1_1.png , ./images/Alexa_Oauth1_2.png , ./images/Alexa_Oauth_token.png
 +
 +
 . To get authorize  user should flow *pre-mandatory* steps as follows:
@@ -106,25 +106,15 @@ create skill operation is responsible for creating a new alexa skill .
 
 Input Parameters for generate report:
 
-=== *Vendor ID* : String(required)
+==== *Vendor ID* : String(required)
 The unique vendor ID is  Amazon customer  customer ID (CID) that is tied to your Developer Console account can be found after creating an alexa developer account.  can be found at "https://developer.amazon.com/settings/console/mycid?".
 
 *Example*: MPHXXXXXXX
 
-=== *Summary* : String
-Summary description of the skill, which is shown when viewing the list of skills in the Alexa Skills Store.
-
-*Example* : "This is a testing skill"
-
-
-=== *Skill Name* : String(required)
+==== *Skill Name* : String(required)
 skill name for the new created skill.
 
 *Example* : "Test Skill"
-
-=== *Description* : String(required)
-A full description explaining what the skill can do and any prerequisites to using it (such as additional hardware, software, or accounts). For a Flash Briefing skill, you must list the feeds for the skill.
-
 
 
 === *Endpoint*
@@ -133,8 +123,16 @@ Contains the uri field. This is service third party https endpoint.
 
 *Example* : https://alexaservice.us-e1.cloudhub.io/test
 
+=== *Category*
+
+ Category of the the skill, select from the drop-down list.
+ 
+=== *invocationName*
+
+ Invocation name of the skill, it can't start with capital letter and can't have word alexa in the name.
+ 
 === *Intents* : Object
-==== *IntentName * : String(required)
+==== *IntentName* : String(required)
 Name of the intent that has dialog rules.
 
 ==== *Confirmation Required* : Boolean(optional)
@@ -153,7 +151,7 @@ Name of the slot in the dialog intent.
 Type of the slot in the dialog intent.
 
 
-=== *Dialog Prompts* : String(required)
+==== *Dialog Prompts* : String(required)
 ==== *key*: String(required)
 Identifier of the prompt
 
@@ -164,135 +162,191 @@ Text that Alexa says as a prompt.
 == Use Case: Studio
 
 === Create a Keyspace
-. Create a new *Mule Project* in Anypoint Studio and fill in the Google Analytics  *credentials* in `src/main/resources/mule-app.properties`.
+. Create a new *Mule Project* in Anypoint Studio and add alexa token property  in `src/main/resources/mule-app.properties` file .
 
 +
-image::./images/test_flow.png[]
+image::./images/GetSkill_Flow.png
 +
 
-[source,code,linenums]
+. For this connector to work we have to pass OAuth connection as conf-ref to every operation, conf-ref can be in two ways First we can declare as global element and refering in operation
+  second one we can directly pass token to operation
+  
+[source,code]
 ----
-config.jsonPath= <JSON_PATH>
-config.application_name=<APPLICATION_NAME>
+	<alexa:config name="Alexa_Config" doc:name="Alexa Config" doc:id="a084b9bc-6a69-42e5-b411-9de3862582b5" >
+		<alexa:connection >
+			<alexa:oauth-authorization-code consumerKey="amzn1.application-oa2-client.af20a19a331f41b5b8fb9f320f2b329b" consumerSecret="e1d3b29401bb60857ed020ed5617ce7e6d04269cf341f6579805e4c7a2ff7e09" scopes="alexa::ask:skills:readwrite alexa::ask:skills:test alexa::ask:models:read alexa::ask:models:readwrite" resourceOwnerId="#[vars.ownerId]" />
+			<alexa:oauth-callback-config listenerConfig="HTTP_Listener_config" callbackPath="/callback" authorizePath="/authorize" externalCallbackUrl="http://localhost:8081/callback" />
+		</alexa:connection>
+	</alexa:config>
+	
+	<alexa:config name="Alexa_Config" doc:name="Alexa Config" doc:id="91096669-d273-4393-855d-4e6a6d271e05" >
+		<alexa:token-connection token="${alexa.token}" />
+	</alexa:config>
+	
 ----
 
 . Drag an *HTTP* connector onto the canvas and leave the default values for Host and Port and set the path to `/test`.
 
-. In the general tab fill the required query parameters by using valid Google Analytics ID , start-date, end-date and build Metrics Query.
-
-. In the Advance tab you can use optional query parameters such as sorting, filter, dimensions , segments to get more precise data.
+. In the general tab fill the required query parameters for the operation to run successful.
 
 . Run the app. In a browser, use the following URL 
 
 `http://localhost:8081/test`
 
-== Use Case: XML
+== Use Case: XML which uses only token
 
 
 [source,code]
 ----
 <?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns:google-analytics="http://www.mulesoft.org/schema/mule/google-analytics"
-	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
-http://www.mulesoft.org/schema/mule/google-analytics http://www.mulesoft.org/schema/mule/google-analytics/current/mule-google-analytics.xsd">
-   <configuration-properties file="mule-app.properties" />
-	<google-analytics:config name="Google_Analytics_Config"
-		doc:name="Google Analytics Config" doc:id="9cb86789-1ca1-4eda-b007-e2ca4bd63a6b">
-		<google-analytics:connection jsonFilePath="${config.jsonPath}" applicationName="#${config.application_name}"/>
-	</google-analytics:config>
-	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="6641e0fd-1048-470f-9e8b-f42a5e07310b" >
-		<http:listener-connection host="0.0.0.0" port="8081" />
-	</http:listener-config>
-	<flow name="generateReportFlow" doc:id="c71676e1-21db-4aab-9745-1bc945381b69" >
-		<http:listener doc:name="Listener" doc:id="7b3c8178-f8a1-48ea-95e7-2acfdb8ba7d6" config-ref="HTTP_Listener_config" path="/test"/>
-		<google-analytics:generate-report doc:name="Generate report" doc:id="7d1826c8-1465-43e4-b5ca-c126f2b57381" config-ref="Google_Analytics_Config" profileId="#['xxxxxxx']" startDate="#['2019-01-15']" endDate="#['2019-02-15']">
-			<google-analytics:metrix-parameters>
-            <google-analytics:metrics-parameter value="Sessions" />
-            <google-analytics:metrics-parameter value="Bounces" />
-         </google-analytics:metrix-parameters>
-         <google-analytics:dimension-parameters>
-            <google-analytics:dimension-parameter value="Country"/>
-         </google-analytics:dimension-parameters>
-         <google-analytics:filter-parameter>
-             <google-analytics:filter-params>
-               <google-analytics:filter-parameter-type key="Sessions" operator="GreaterThan" value="1" operation="AND" />
-            </google-analytics:filter-params> 
-         </google-analytics:filter-parameter>
-         <google-analytics:segmentparameter >
-				<google-analytics:segmentparams >
-					<google-analytics:segment-parameter-type segmentKey="Users" segmentType="Condition" segmentFilter="Sessions" segmentOpertor="GreaterThan" segmentValue="1" />
-				</google-analytics:segmentparams>
-			</google-analytics:segmentparameter>
-		</google-analytics:generate-report>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	 xmlns:slack="http://www.mulesoft.org/schema/mule/slack"
+	xmlns:alexa="http://www.mulesoft.org/schema/mule/alexa"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/alexa http://www.mulesoft.org/schema/mule/alexa/current/mule-alexa.xsd
+http://www.mulesoft.org/schema/mule/slack http://www.mulesoft.org/schema/mule/slack/current/mule-slack.xsd">
+	<configuration-properties file="automation-credentials.properties" />
+	<alexa:config name="Alexa_Config" doc:name="Alexa Config" doc:id="91096669-d273-4393-855d-4e6a6d271e05" >
+		<alexa:token-connection token="${alexa.token}" />
+	</alexa:config>
+	<flow name="create-skill" doc:id="c6863a22-7159-4f40-b31f-efe7e62498b8" >
+		<alexa:create-skill doc:name="Create skill" doc:id="bd4a6349-d817-46f4-8ac3-f714fd3efef3" config-ref="Alexa_Config" vendorId="MPLHQBOHBVJ16"  skillName="TestCase_2"  endpoint="https://myendpoint.com" category="SPORTS_NEWS" invocationName ="my first skill">
+			<alexa:intents >
+				<alexa:intent intentName="myTestCase" confirmationRequired="false" >
+					<alexa:slots >
+						<alexa:slot sname="TestExe" type="AMAZON.US_FIRST_NAME" />
+					</alexa:slots>
+					<alexa:samples >
+						<alexa:sample value="This is for test case execution" />
+					</alexa:samples>
+				</alexa:intent>
+			</alexa:intents>
+		</alexa:create-skill>
 	</flow>
 </mule>
 
+----
+
+== *Update Skill*
+==== *Skill 	ID* : String(required)
+Unique identifier of skill.
+
+==== *Interaction model*
+Add the required fields from dialog
+
+==== *Manifest schema model*
+Add the required fields from Dialog
+
+==== For more information 
+https://developer.amazon.com/docs/smapi/skill-manifest.html#permissions
+https://developer.amazon.com/docs/smapi/interaction-model-schema.html
+
+[source,code]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule  xmlns:slack="http://www.mulesoft.org/schema/mule/slack"
+	xmlns:alexa="http://www.mulesoft.org/schema/mule/alexa"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/alexa http://www.mulesoft.org/schema/mule/alexa/current/mule-alexa.xsd
+http://www.mulesoft.org/schema/mule/slack http://www.mulesoft.org/schema/mule/slack/current/mule-slack.xsd">
+	<configuration-properties file="automation-credentials.properties" />
+	<alexa:config name="Alexa_Config" doc:name="Alexa Config" doc:id="91096669-d273-4393-855d-4e6a6d271e09" >
+		<alexa:token-connection token="${alexa.token}" />
+	</alexa:config>
+	<flow name="update-skill" doc:id="b42238cf-83c1-4561-ae39-a244c7c920be8885577" >
+	<alexa:update-skill doc:name="Update skill" doc:id="28fbc22e-835e-418b-8610-3cbe420e2fa7" config-ref="Alexa_Config" skillId="amzn1.ask.skill.d6010e1f-412b-4240-b206-3acaf9edfd25">
+			<alexa:model >
+				<alexa:dialog delegationStrategy="ALWAYS" >
+					<alexa:dialog-intents >
+						<alexa:dialog-intent intentName="Test_Activity" confirmationRequired="false" >
+							<alexa:dialog-slots >
+								<alexa:dialog-slot sname="MyActivity" type="AMAZON.US_FIRST_NAME" />
+							</alexa:dialog-slots>
+						</alexa:dialog-intent>
+					</alexa:dialog-intents>
+				</alexa:dialog>
+				<alexa:language-model invocationName="my friday test" >
+					<alexa:languate-intents >
+						<alexa:language-intent intentName="Test_Activity" >
+							<alexa:slots >
+								<alexa:slot sname="MyActivity" type="AMAZON.US_FIRST_NAME" >
+									<alexa:samples >
+										<alexa:sample value="how was today" />
+									</alexa:samples>
+								</alexa:slot>
+							</alexa:slots>
+							<alexa:samples >
+							<alexa:sample value="How is weather today"></alexa:sample>
+							</alexa:samples>
+						</alexa:language-intent>
+						<alexa:language-intent intentName="AMAZON.StopIntent" >
+							
+						</alexa:language-intent>
+						<alexa:language-intent intentName="AMAZON.HelpIntent" >
+							
+						</alexa:language-intent>
+						<alexa:language-intent intentName="AMAZON.CancelIntent" >
+							
+						</alexa:language-intent>	
+					</alexa:languate-intents>
+				</alexa:language-model>
+			</alexa:model>
+			<alexa:manifest >
+				<alexa:publishing-information testingInstructions="No instruction" category="SMART_HOME" >
+					<alexa:distribution-countries >
+						<alexa:distribution-country value="US" />
+					</alexa:distribution-countries>
+					<alexa:locale skillName="Test_update_2" summary="Test Updating Evening" description="Update should be done" >
+						<alexa:keywords >
+							<alexa:keyword value="hey afternoon" />
+						</alexa:keywords>
+						<alexa:example-phrases >
+							<alexa:example-phrase value="Hi, hello" />
+						</alexa:example-phrases>
+					</alexa:locale>
+				</alexa:publishing-information>
+				<alexa:privacy-and-compliance >
+					<alexa:plocale privacyPolicyUrl="https://mytesturl.com" termsOfUseUrl="https://myprivacyurl.com" />
+				</alexa:privacy-and-compliance>
+				<alexa:events >
+					<alexa:endpoint uri="https://www.ksquareinc.com/" sslCertificateType="Trusted" />
+					<alexa:subscriptions >
+						<alexa:sub-scription EventName="SKILL_DISABLED" />
+						<alexa:sub-scription EventName="SKILL_ENABLED" />
+					</alexa:subscriptions>
+				</alexa:events>
+				<alexa:apis >
+					<alexa:custom >
+						<alexa:endpoint uri="https://www.ksquareinc.com/" sslCertificateType="Trusted" />
+						<alexa:interfaces >
+							<alexa:interface type="CAN_FULFILL_INTENT_REQUEST" />
+						</alexa:interfaces>
+					</alexa:custom>
+				</alexa:apis>
+				<alexa:permissions >
+					<alexa:permission PermissionName="alexa::devices:all:address:full:read" />
+				</alexa:permissions>
+			</alexa:manifest>
+		</alexa:update-skill>
+
+	</flow>
+</mule>
 
 ----
 
+=== *Skill Info* : 
 
-== *Update Skill*
-=== *Skill 	ID* : String(required)
-Unique identifier of skill.
-
-=== *API Endpoint* : String(optional)
-Contains the uri field. This is service third party https endpoint.
-
-=== *Interfaces*: String
-This for the interfaces supported by a custom skill.
-
-[%Enum Values]
-|===
-|ALEXA_PRESENTATION_APL
-|AUDIO_PLAYER
-|CAN_FULFILL_INTENT_REQUEST
-|GADGET_CONTROLLER
-|GAME_ENGINE
-|RENDER_TEMPLATE
-|VIDEO_APP
-|===
-
-=== *Permissions* : String()
-An array of named permissions that the skill can use. A flash briefing skill cannot include a permissions object.
-
-For more information 
-https://developer.amazon.com/docs/smapi/skill-manifest.html#permissions
-
-=== *Event endpoint* String()
-
-==== *uri* : 
-Sets the global default endpoint 
-
-==== *sslCertificateType* : String()
-The SSL certificate type for the skill's HTTPS endpoint.
-
-[%Enum Values]
-|===
-|SelfSigned
-|Trusted
-|Wildcard
-|===
-
-=== *Subscriptions* : String()
-Contains an array of eventName objects, each of which contains the name of a skill event. These include: SKILL_PROACTIVE_SUBSCRIPTION_CHANGED,SKILL_PERMISSION_CHANGED, and SKILL_PERMISSION_ACCEPTED.
-
-
-== *Skill Info* : 
-
-=== *Skill Id * : String (required)
+==== *Skill Id* : String (required)
 Unique identifier of skill.
 
 
+=== *Update Skill Intents* :
 
-==
-
-== *Update Skill Intents* :
-
-=== *Dialog* :
+==== *Dialog* :
 
 
 ==== *Intents* :
@@ -319,13 +373,13 @@ Type of the slot in the dialog intent.
 ====== *Prompts*:
 Collection of prompts for this slot.
 
-======= *Id*: String(required)
+====== *Id*: String(required)
 
 Identifier of the prompt.
 
-======= *Vmap*:
+====== *variations*:
 
-
+variation data of the prompts
 
  (i) *Type* : String (Required) 
  One of: "PlainText" or "SSML"
@@ -386,7 +440,8 @@ Text that Alexa says as a prompt.
 ==== *id* : String(Required)
 Identifier of the prompt
 
-==== *Vmap*:
+==== *variations*:
+list of prompt variations
 
 ===== *Type* : String (Required)
 One of: "PlainText" or "SSML". 
@@ -394,11 +449,70 @@ One of: "PlainText" or "SSML".
 ===== *Value* : String (Required)
 Text that Alexa says as a prompt.
 
+[source,code]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:alexa="http://www.mulesoft.org/schema/mule/alexa" 
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/alexa http://www.mulesoft.org/schema/mule/alexa/current/mule-alexa.xsd">
+	<configuration-properties file="automation-credentials.properties" />
+	<alexa:config name="Alexa_Config" doc:name="Alexa Config" doc:id="a1b20c0f-e314-4b93-aa65-f49df33f1fc4" >
+		<alexa:token-connection token="${alexa.token}" />
+	</alexa:config>
+	<flow name="update-skill-intents" doc:id="1ff1bc2f-4891-4c79-9b2a-6ab5d873b7dd" >
+		<alexa:update-skill-intents doc:name="Update skill intents" doc:id="ed1ca33e-5f0b-48fd-832a-139dd02c5ded" config-ref="Alexa_Config" skillId="amzn1.ask.skill.50bd0d61-9feb-4926-ad89-1280aef320ce">
+			<alexa:model >
+				<alexa:dialog delegationStrategy="ALWAYS" >
+					<alexa:dialog-intents >
+						<alexa:dialog-intent intentName="Test_Activity" confirmationRequired="false" >
+							<alexa:dialog-slots >
+								<alexa:dialog-slot sname="MyActivity" type="AMAZON.US_FIRST_NAME" />
+							</alexa:dialog-slots>
+						</alexa:dialog-intent>
+					</alexa:dialog-intents>
+				</alexa:dialog>
+				<alexa:language-model invocationName="my friday test" >
+					<alexa:languate-intents >
+						<alexa:language-intent intentName="Test_Activity" >
+							<alexa:slots >
+								<alexa:slot sname="MyActivity" type="AMAZON.US_FIRST_NAME" >
+									<alexa:samples >
+										<alexa:sample value="how was today" />
+									</alexa:samples>
+								</alexa:slot>
+							</alexa:slots>
+							<alexa:samples >
+							<alexa:sample value="How is weather today"></alexa:sample>
+							</alexa:samples>
+						</alexa:language-intent>
+						<alexa:language-intent intentName="AMAZON.StopIntent" >
+							
+						</alexa:language-intent>
+						<alexa:language-intent intentName="AMAZON.HelpIntent" >
+							
+						</alexa:language-intent>
+						<alexa:language-intent intentName="AMAZON.CancelIntent" >
+							
+						</alexa:language-intent>	
+					</alexa:languate-intents>
+				</alexa:language-model>
+			</alexa:model>
+		</alexa:update-skill-intents>
+	</flow>
+</mule>
+
+----
+
+
+
 == *Update Skill Manifest*
 
 === *Skill ID*:
 
 === *Manifest* : Object(Required)
+
 === *Publishing Information* : Object(Required)
 
 ==== *isAvailableWorldwide* : 
@@ -503,13 +617,67 @@ An array of named permissions that the skill can use. A flash briefing skill can
 For more information 
 https://developer.amazon.com/docs/smapi/skill-manifest.html#permissions
 
+[source,code]
+----
+<?xml version="1.0" encoding="UTF-8"?>
 
-== *Delete Skill* :
+<mule 
+	xmlns:alexa="http://www.mulesoft.org/schema/mule/alexa"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/alexa http://www.mulesoft.org/schema/mule/alexa/current/mule-alexa.xsd">
+	<configuration-properties file="automation-credentials.properties" />
+	<alexa:config name="Alexa_Config" doc:name="Alexa Config" doc:id="a1b20c0f-e314-4b93-aa65-f49df33f1fc4" >
+		<alexa:token-connection token="${alexa.token}" />
+	</alexa:config>
+	
+	<flow name="update-skill-manifest" doc:id="f7772c8b-13ff-43d1-98ee-c1b7dba1b47e" >
+		<alexa:update-skill-manifest doc:name="Update skill manifest" doc:id="69300be7-8cea-4945-b89d-c99d0f402a08" config-ref="Alexa_Config" skillId="amzn1.ask.skill.50bd0d61-9feb-4926-ad89-1280aef320ce">
+			<alexa:manifest >
+				<alexa:publishing-information testingInstructions="No instruction" category="SMART_HOME" >
+					<alexa:distribution-countries >
+						<alexa:distribution-country value="US" />
+					</alexa:distribution-countries>
+					<alexa:locale skillName="Test_update_2" summary="Test Updating Evening" description="Update should be done" >
+						<alexa:keywords >
+							<alexa:keyword value="hey afternoon" />
+						</alexa:keywords>
+						<alexa:example-phrases >
+							<alexa:example-phrase value="Hi, hello" />
+						</alexa:example-phrases>
+					</alexa:locale>
+				</alexa:publishing-information>
+				<alexa:privacy-and-compliance >
+					<alexa:plocale privacyPolicyUrl="https://mytesturl.com" termsOfUseUrl="https://myprivacyurl.com" />
+				</alexa:privacy-and-compliance>
+				<alexa:events >
+					<alexa:endpoint uri="https://www.ksquareinc.com/" sslCertificateType="Trusted" />
+					<alexa:subscriptions >
+						<alexa:sub-scription EventName="SKILL_DISABLED" />
+						<alexa:sub-scription EventName="SKILL_ENABLED" />
+					</alexa:subscriptions>
+				</alexa:events>
+				<alexa:apis >
+					<alexa:custom >
+						<alexa:endpoint uri="https://www.ksquareinc.com/" sslCertificateType="Trusted" />
+						<alexa:interfaces >
+							<alexa:interface type="CAN_FULFILL_INTENT_REQUEST" />
+						</alexa:interfaces>
+					</alexa:custom>
+				</alexa:apis>
+				<alexa:permissions >
+					<alexa:permission PermissionName="alexa::devices:all:address:full:read" />
+				</alexa:permissions>
+			</alexa:manifest>
+		</alexa:update-skill-manifest>
+	</flow>
+</mule>
 
-=== *Skill Id * : String (required)
+----
+
+=== *Delete Skill* :
+
+=== *Skill Id* : String (required)
 Unique identifier of skill.
-
-
 
 
 

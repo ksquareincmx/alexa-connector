@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>2b8017cc-fb1c-47a9-81b1-3d9cba8d0a1e</groupId>
-	<artifactId>mule-alexa-extension-one</artifactId>
+	<groupId>com.mulesoft.connectors</groupId>
+	<artifactId>mule-alexa-connector</artifactId>
 	<version>1.0.0</version>
 	<packaging>mule-extension</packaging>
 	<name>AlexaConnector4</name>
@@ -20,7 +21,7 @@
 		<javaxWsRsApiVersion>2.1</javaxWsRsApiVersion>
 		<schedulerServiceVersion>1.1.2</schedulerServiceVersion>
 		<mule.maven.plugin.version>3.3.2</mule.maven.plugin.version>
-
+		<munit.version>2.2.1</munit.version>
 	</properties>
 
 
@@ -100,6 +101,20 @@
 			<version>1.1.7</version>
 			<classifier>mule-plugin</classifier>
 		</dependency>
+		<dependency>
+			<groupId>com.mulesoft.munit</groupId>
+			<artifactId>munit-runner</artifactId>
+			<version>2.2.1</version>
+			<classifier>mule-plugin</classifier>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.mulesoft.munit</groupId>
+			<artifactId>munit-tools</artifactId>
+			<version>2.2.1</version>
+			<classifier>mule-plugin</classifier>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -123,47 +138,36 @@
 					</sharedLibraries>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>com.mulesoft.munit</groupId>
+				<artifactId>munit-extensions-maven-plugin</artifactId>
+				<version>1.0.0-BETA</version>
+				<executions>
+					<execution>
+						<phase>integration-test</phase>
+						<goals>
+							<goal>test</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
+
+
 	<repositories>
 		<repository>
-			<id>anypoint-exchange</id>
-			<name>Anypoint Exchange</name>
-			<url>https://maven.anypoint.mulesoft.com/api/v1/maven</url>
-			<layout>default</layout>
-		</repository>
-		<repository>
-			<id>mulesoft-releases</id>
-			<name>MuleSoft Releases Repository</name>
-			<url>https://repository.mulesoft.org/releases/</url>
-			<layout>default</layout>
+			<id>mule-releases</id>
+			<name>Nexus Public Releases</name>
+			<url>https://repository-master.mulesoft.org/nexus/content/repositories/releases/</url>
 		</repository>
 	</repositories>
-
-	<distributionManagement>
-		<snapshotRepository>
-			<id>Repository</id>
-			<name>Exchange Repository</name>
-			<url>https://maven.anypoint.mulesoft.com/api/v1/organizations/2b8017cc-fb1c-47a9-81b1-3d9cba8d0a1e/maven</url>
-			<layout>default</layout>
-		</snapshotRepository>
-		<repository>
-			<id>Repository</id>
-			<name>Exchange Repository</name>
-			<url>https://maven.anypoint.mulesoft.com/api/v1/organizations/2b8017cc-fb1c-47a9-81b1-3d9cba8d0a1e/maven</url>
-			<layout>default</layout>
-		</repository>
-	</distributionManagement>
-
-	<pluginRepositories>
-		<pluginRepository>
-			<id>mulesoft-releases</id>
-			<name>mulesoft release repository</name>
-			<layout>default</layout>
-			<url>https://repository.mulesoft.org/releases/</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</pluginRepository>
-	</pluginRepositories>
+	
+	<scm>
+		<connection>scm:git:git://github.com/yalamandaksquare/Alexa-connector.git</connection>
+		<developerConnection>scm:git:git@github.com/yalamandaksquare/Alexa-connector.git</developerConnection>
+		<url>https://github.com/yalamandaksquare/Alexa-connector.git</url>
+		<tag>alexa-connector-1.0.0</tag>
+	</scm>
 </project>

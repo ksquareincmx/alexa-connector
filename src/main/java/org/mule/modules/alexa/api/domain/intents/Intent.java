@@ -1,3 +1,6 @@
+/**
+ * (c) 2003-2017 MuleSoft, Inc. The software in this package is published under the terms of the Commercial Free Software license V.1 a copy of which has been included with this distribution in the LICENSE.md file.
+ */
 package org.mule.modules.alexa.api.domain.intents;
 
 import java.util.List;
@@ -8,14 +11,11 @@ import org.mule.runtime.extension.api.annotation.param.Parameter;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * (c) 2003-2017 MuleSoft, Inc. The software in this package is published under the terms of the Commercial Free Software license V.1 a copy of which has been included with this distribution in the LICENSE.md file.
- */
 
-public class Intent {
+
+public class Intent { // NOSONAR
 
 	public Intent() {
-		super();
 	}
 
 
@@ -46,7 +46,6 @@ public class Intent {
 
 	public Intent(String intentName, String confirmationRequired, List<Slot> slots, List<String> samples,
 			List<Prompt> prompts) {
-		super();
 		this.intentName = intentName;
 		this.confirmationRequired = confirmationRequired;
 		this.slots = slots;
@@ -100,11 +99,5 @@ public class Intent {
 
 	
 
-	@Override
-	public String toString() {
-		return "Intent [intentName=" + intentName + ", confirmationRequired=" + confirmationRequired + ", slots="
-				+ slots + ", samples=" + samples + ", prompts=" + prompts + "]";
-	}
-	
 
 }

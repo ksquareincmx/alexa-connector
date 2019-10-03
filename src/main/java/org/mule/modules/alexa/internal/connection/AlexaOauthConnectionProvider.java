@@ -16,7 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @AuthorizationCode(authorizationUrl = "https://www.amazon.com/ap/oa", accessTokenUrl = "https://api.amazon.com/auth/o2/token")
-public class AlexaOauthConnectionProvider implements PoolingConnectionProvider<AlexaConnection> {
+public class AlexaOauthConnectionProvider implements PoolingConnectionProvider<AlexaConnection> { // NOSONAR
 
 	private static final Logger logger = LoggerFactory.getLogger(AlexaOauthConnectionProvider.class);
 

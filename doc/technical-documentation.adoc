@@ -1,0 +1,774 @@
+:toc:               left
+:toc-title:         Alexa Module
+:toclevels:         2
+:last-update-label!:
+:docinfo:
+:source-highlighter: coderay
+:icons: font
+
+
+= Alexa Module Documentation Reference
+
++++
+This is the main class of an extension, is the entry point from which configurations, connection providers, operations and sources are going to be declared.
++++
+
+
+== Configurations
+---
+[[config]]
+=== Config
+
++++
+Default configuration
++++
+
+==== Parameters
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+| Name | Type | Description | Default Value | Required
+|Name | String | The name for this configuration. Connectors reference the configuration with this name. | | *x*{nbsp}
+| Connection a| * <<config_connection, Connection>> {nbsp}
+* <<config_token, Token>> {nbsp}
+ | The connection types that can be provided to this configuration. | | *x*{nbsp}
+| Expiration Policy a| <<ExpirationPolicy>> |  +++Configures the minimum amount of time that a dynamic configuration instance can remain idle before the runtime considers it eligible for expiration. This does not mean that the platform will expire the instance at the exact moment that it becomes eligible. The runtime will actually purge the instances when it sees it fit.+++ |  | {nbsp}
+|======================
+
+==== Connection Types
+[[config_connection]]
+===== Connection
+
+
+====== Parameters
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+| Name | Type | Description | Default Value | Required
+| Reconnection a| <<Reconnection>> |  +++When the application is deployed, a connectivity test is performed on all connectors. If set to true, deployment will fail if the test doesn't pass after exhausting the associated reconnection strategy+++ |  | {nbsp}
+| Pooling Profile a| <<PoolingProfile>> |  +++Characteristics of the connection pool+++ |  | {nbsp}
+| Consumer Key a| String |  +++The OAuth consumerKey as registered with the service provider+++ |  | *x*{nbsp}
+| Consumer Secret a| String |  +++The OAuth consumerSecret as registered with the service provider+++ |  | *x*{nbsp}
+| Authorization Url a| String |  +++The service provider's authorization endpoint URL+++ |  +++https://www.amazon.com/ap/oa+++ | {nbsp}
+| Access Token Url a| String |  +++The service provider's accessToken endpoint URL+++ |  +++https://api.amazon.com/auth/o2/token+++ | {nbsp}
+| Scopes a| String |  +++The OAuth scopes to be requested during the dance. If not provided, it will default to those in the annotation+++ |  | {nbsp}
+| Resource Owner Id a| String |  +++The resourceOwnerId which each component should use if it doesn't reference otherwise.+++ |  | {nbsp}
+| Before a| String |  +++The name of a flow to be executed right before starting the OAuth dance+++ |  | {nbsp}
+| After a| String |  +++The name of a flow to be executed right after an accessToken has been received+++ |  | {nbsp}
+| Listener Config a| String |  +++A reference to a <http:listener-config /> to be used in order to create the listener that will catch the access token callback endpoint.+++ |  | *x*{nbsp}
+| Callback Path a| String |  +++The path of the access token callback endpoint+++ |  | *x*{nbsp}
+| Authorize Path a| String |  +++The path of the local http endpoint which triggers the OAuth dance+++ |  | *x*{nbsp}
+| External Callback Url a| String |  +++If the callback endpoint is behind a proxy or should be accessed through a non direct URL, use this parameter to tell the OAuth provider the URL it should use to access the callback+++ |  | {nbsp}
+| Object Store a| String |  +++A reference to the object store that should be used to store each resource owner id's data. If not specified, runtime will automatically provision the default one.+++ |  | {nbsp}
+|======================
+[[config_token]]
+===== Token
+
+
+====== Parameters
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+| Name | Type | Description | Default Value | Required
+| Token a| String |  |  | *x*{nbsp}
+| Reconnection a| <<Reconnection>> |  +++When the application is deployed, a connectivity test is performed on all connectors. If set to true, deployment will fail if the test doesn't pass after exhausting the associated reconnection strategy+++ |  | {nbsp}
+| Pooling Profile a| <<PoolingProfile>> |  +++Characteristics of the connection pool+++ |  | {nbsp}
+|======================
+
+==== Associated Operations
+* <<createSkill>> {nbsp}
+* <<deleteSkill>> {nbsp}
+* <<skillInfo>> {nbsp}
+* <<unauthorize>> {nbsp}
+* <<updateSkill>> {nbsp}
+* <<updateSkillIntents>> {nbsp}
+* <<updateSkillManifest>> {nbsp}
+
+
+
+== Operations
+
+[[createSkill]]
+=== Create Skill
+`<alexa:create-skill>`
+
++++
+This method used for creating skill with basic information later we can update with full information using updateSkillManifest,updateSkillManifest and updateSkill operations, return error received from Alexa Server if some thing wrong in create request or missed some fields which are required forskill creations.
++++
+
+==== Parameters
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+| Name | Type | Description | Default Value | Required
+| Configuration | String | The name of the configuration to use. | | *x*{nbsp}
+| Vendor Id a| String |  |  | *x*{nbsp}
+| Skill Name a| String |  |  | *x*{nbsp}
+| Endpoint a| String |  |  | *x*{nbsp}
+| Category a| Enumeration, one of:
+
+** ALARMS_AND_CLOCKS
+** ASTROLOGY
+** BUSINESS_AND_FINANCE
+** CALCULATORS
+** CALENDARS_AND_REMINDERS
+** CHILDRENS_EDUCATION_AND_REFERENCE
+** CHILDRENS_GAMES
+** CHILDRENS_MUSIC_AND_AUDIO
+** CHILDRENS_NOVELTY_AND_HUMOR
+** COMMUNICATION
+** CONNECTED_CAR
+** COOKING_AND_RECIPE
+** CURRENCY_GUIDES_AND_CONVERTERS
+** DATING
+** DELIVERY_AND_TAKEOUT
+** DEVICE_TRACKING
+** EDUCATION_AND_REFERENCE
+** EVENT_FINDERS
+** EXERCISE_AND_WORKOUT
+** FASHION_AND_STYLE
+** FLIGHT_FINDERS
+** FRIENDS_AND_FAMILY
+** GAME_INFO_AND_ACCESSORY
+** GAMES
+** HEALTH_AND_FITNESS
+** HOTEL_FINDERS
+** KNOWLEDGE_AND_TRIVIA
+** MOVIE_AND_TV_KNOWLEDGE_AND_TRIVIA
+** MOVIE_INFO_AND_REVIEWS
+** MOVIE_SHOWTIMES
+** MUSIC_AND_AUDIO_ACCESSORIES
+** MUSIC_AND_AUDIO_KNOWLEDGE_AND_TRIVIA
+** MUSIC_INFO_REVIEWS_AND_RECOGNITION_SERVICE
+** NAVIGATION_AND_TRIP_PLANNER
+** NEWS
+** NOVELTY
+** ORGANIZERS_AND_ASSISTANTS
+** PETS_AND_ANIMAL
+** PODCAST
+** PUBLIC_TRANSPORTATION
+** RELIGION_AND_SPIRITUALITY
+** RESTAURANT_BOOKING_INFO_AND_REVIEW
+** SCHOOLS
+** SCORE_KEEPING
+** SELF_IMPROVEMENT
+** SHOPPING
+** SMART_HOME
+** SOCIAL_NETWORKING
+** SPORTS_GAMES
+** SPORTS_NEWS
+** STREAMING_SERVICE
+** TAXI_AND_RIDESHARING
+** TO_DO_LISTS_AND_NOTES
+** TRANSLATORS
+** TV_GUIDES
+** UNIT_CONVERTERS
+** WEATHER
+** WINE_AND_BEVERAGE
+** ZIP_CODE_LOOKUP |  |  | *x*{nbsp}
+| Invocation Name a| String |  |  | *x*{nbsp}
+| Intents a| Array of <<Intent>> |  |  | {nbsp}
+| Output Mime Type a| String |  +++The mime type of the payload that this operation outputs.+++ |  | {nbsp}
+| Target Variable a| String |  +++The name of a variable on which the operation's output will be placed+++ |  | {nbsp}
+| Target Value a| String |  +++An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable+++ |  +++#[payload]+++ | {nbsp}
+| Reconnection Strategy a| * <<reconnect>>
+* <<reconnect-forever>> |  +++A retry strategy in case of connectivity errors+++ |  | {nbsp}
+|======================
+
+==== Output
+[cols=".^50%,.^50%"]
+|======================
+| *Type* a| String
+|======================
+
+==== For Configurations.
+* <<config>> {nbsp}
+
+==== Throws
+* ALEXA:RETRY_EXHAUSTED {nbsp}
+* ALEXA:CONNECTIVITY {nbsp}
+
+
+[[deleteSkill]]
+=== Delete Skill
+`<alexa:delete-skill>`
+
++++
+This method deletes the skill for the given skillId
++++
+
+==== Parameters
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+| Name | Type | Description | Default Value | Required
+| Configuration | String | The name of the configuration to use. | | *x*{nbsp}
+| Skill Id a| String |  |  | *x*{nbsp}
+| Output Mime Type a| String |  +++The mime type of the payload that this operation outputs.+++ |  | {nbsp}
+| Target Variable a| String |  +++The name of a variable on which the operation's output will be placed+++ |  | {nbsp}
+| Target Value a| String |  +++An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable+++ |  +++#[payload]+++ | {nbsp}
+| Reconnection Strategy a| * <<reconnect>>
+* <<reconnect-forever>> |  +++A retry strategy in case of connectivity errors+++ |  | {nbsp}
+|======================
+
+==== Output
+[cols=".^50%,.^50%"]
+|======================
+| *Type* a| String
+|======================
+
+==== For Configurations.
+* <<config>> {nbsp}
+
+==== Throws
+* ALEXA:RETRY_EXHAUSTED {nbsp}
+* ALEXA:CONNECTIVITY {nbsp}
+
+
+[[skillInfo]]
+=== Skill Info
+`<alexa:skill-info>`
+
++++
+This method return skill information for the given skillId.
++++
+
+==== Parameters
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+| Name | Type | Description | Default Value | Required
+| Configuration | String | The name of the configuration to use. | | *x*{nbsp}
+| Skill Id a| String |  |  | *x*{nbsp}
+| Output Mime Type a| String |  +++The mime type of the payload that this operation outputs.+++ |  | {nbsp}
+| Target Variable a| String |  +++The name of a variable on which the operation's output will be placed+++ |  | {nbsp}
+| Target Value a| String |  +++An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable+++ |  +++#[payload]+++ | {nbsp}
+| Reconnection Strategy a| * <<reconnect>>
+* <<reconnect-forever>> |  +++A retry strategy in case of connectivity errors+++ |  | {nbsp}
+|======================
+
+==== Output
+[cols=".^50%,.^50%"]
+|======================
+| *Type* a| String
+|======================
+
+==== For Configurations.
+* <<config>> {nbsp}
+
+==== Throws
+* ALEXA:RETRY_EXHAUSTED {nbsp}
+* ALEXA:CONNECTIVITY {nbsp}
+
+
+[[unauthorize]]
+=== Unauthorize
+`<alexa:unauthorize>`
+
++++
+Deletes all the access token information of a given resource owner id so that it's impossible to execute any operation for that user without doing the authorization dance again
++++
+
+==== Parameters
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+| Name | Type | Description | Default Value | Required
+| Configuration | String | The name of the configuration to use. | | *x*{nbsp}
+| Resource Owner Id a| String |  +++The id of the resource owner which access should be invalidated+++ |  | {nbsp}
+|======================
+
+
+==== For Configurations.
+* <<config>> {nbsp}
+
+
+
+[[updateSkill]]
+=== Update Skill
+`<alexa:update-skill>`
+
++++
+This method updates both Manifest and Interaction schema of existing skill. Refer links for Manifest and Interactions schema https://developer.amazon.com/docs/smapi/skill-manifest.html https://developer.amazon.com/docs/smapi/interaction-model-schema.html
++++
+
+==== Parameters
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+| Name | Type | Description | Default Value | Required
+| Configuration | String | The name of the configuration to use. | | *x*{nbsp}
+| Skill Id a| String |  |  | *x*{nbsp}
+| Model a| <<InteractionModel>> |  |  | {nbsp}
+| Manifest a| <<Manifest>> |  |  | {nbsp}
+| Output Mime Type a| String |  +++The mime type of the payload that this operation outputs.+++ |  | {nbsp}
+| Target Variable a| String |  +++The name of a variable on which the operation's output will be placed+++ |  | {nbsp}
+| Target Value a| String |  +++An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable+++ |  +++#[payload]+++ | {nbsp}
+| Reconnection Strategy a| * <<reconnect>>
+* <<reconnect-forever>> |  +++A retry strategy in case of connectivity errors+++ |  | {nbsp}
+|======================
+
+==== Output
+[cols=".^50%,.^50%"]
+|======================
+| *Type* a| String
+|======================
+
+==== For Configurations.
+* <<config>> {nbsp}
+
+==== Throws
+* ALEXA:RETRY_EXHAUSTED {nbsp}
+* ALEXA:CONNECTIVITY {nbsp}
+
+
+[[updateSkillIntents]]
+=== Update Skill Intents
+`<alexa:update-skill-intents>`
+
++++
+This is used to update interaction model schema of the Alexa skill.
++++
+
+==== Parameters
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+| Name | Type | Description | Default Value | Required
+| Configuration | String | The name of the configuration to use. | | *x*{nbsp}
+| Model a| <<InteractionModel>> |  |  | {nbsp}
+| Skill Id a| String |  |  | *x*{nbsp}
+| Output Mime Type a| String |  +++The mime type of the payload that this operation outputs.+++ |  | {nbsp}
+| Target Variable a| String |  +++The name of a variable on which the operation's output will be placed+++ |  | {nbsp}
+| Target Value a| String |  +++An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable+++ |  +++#[payload]+++ | {nbsp}
+| Reconnection Strategy a| * <<reconnect>>
+* <<reconnect-forever>> |  +++A retry strategy in case of connectivity errors+++ |  | {nbsp}
+|======================
+
+==== Output
+[cols=".^50%,.^50%"]
+|======================
+| *Type* a| String
+|======================
+
+==== For Configurations.
+* <<config>> {nbsp}
+
+==== Throws
+* ALEXA:RETRY_EXHAUSTED {nbsp}
+* ALEXA:CONNECTIVITY {nbsp}
+
+
+[[updateSkillManifest]]
+=== Update Skill Manifest
+`<alexa:update-skill-manifest>`
+
++++
+This method updates the Manifest schema of skill, refer the manifest schema of Alexa skill for more information https://developer.amazon.com/docs/smapi/skill-manifest.html
++++
+
+==== Parameters
+[cols=".^20%,.^20%,.^35%,.^20%,^.^5%", options="header"]
+|======================
+| Name | Type | Description | Default Value | Required
+| Configuration | String | The name of the configuration to use. | | *x*{nbsp}
+| Skill Id a| String |  +++Skill of existing skill+++ |  | *x*{nbsp}
+| Manifest a| <<Manifest>> |  +++Manifest model+++ |  | {nbsp}
+| Output Mime Type a| String |  +++The mime type of the payload that this operation outputs.+++ |  | {nbsp}
+| Target Variable a| String |  +++The name of a variable on which the operation's output will be placed+++ |  | {nbsp}
+| Target Value a| String |  +++An expression that will be evaluated against the operation's output and the outcome of that expression will be stored in the target variable+++ |  +++#[payload]+++ | {nbsp}
+| Reconnection Strategy a| * <<reconnect>>
+* <<reconnect-forever>> |  +++A retry strategy in case of connectivity errors+++ |  | {nbsp}
+|======================
+
+==== Output
+[cols=".^50%,.^50%"]
+|======================
+| *Type* a| String
+|======================
+
+==== For Configurations.
+* <<config>> {nbsp}
+
+==== Throws
+* ALEXA:RETRY_EXHAUSTED {nbsp}
+* ALEXA:CONNECTIVITY {nbsp}
+
+
+
+== Types
+[[Reconnection]]
+=== Reconnection
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| Fails Deployment a| Boolean | When the application is deployed, a connectivity test is performed on all connectors. If set to true, deployment will fail if the test doesn't pass after exhausting the associated reconnection strategy |  | 
+| Reconnection Strategy a| * <<reconnect>>
+* <<reconnect-forever>> | The reconnection strategy to use |  | 
+|======================
+
+[[reconnect]]
+=== Reconnect
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| Frequency a| Number | How often (in ms) to reconnect |  | 
+| Count a| Number | How many reconnection attempts to make |  | 
+|======================
+
+[[reconnect-forever]]
+=== Reconnect Forever
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| Frequency a| Number | How often (in ms) to reconnect |  | 
+|======================
+
+[[PoolingProfile]]
+=== Pooling Profile
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| Max Active a| Number | Controls the maximum number of Mule components that can be borrowed from a session at one time. When set to a negative value, there is no limit to the number of components that may be active at one time. When maxActive is exceeded, the pool is said to be exhausted. |  | 
+| Max Idle a| Number | Controls the maximum number of Mule components that can sit idle in the pool at any time. When set to a negative value, there is no limit to the number of Mule components that may be idle at one time. |  | 
+| Max Wait a| Number | Specifies the number of milliseconds to wait for a pooled component to become available when the pool is exhausted and the exhaustedAction is set to WHEN_EXHAUSTED_WAIT. |  | 
+| Min Eviction Millis a| Number | Determines the minimum amount of time an object may sit idle in the pool before it is eligible for eviction. When non-positive, no objects will be evicted from the pool due to idle time alone. |  | 
+| Eviction Check Interval Millis a| Number | Specifies the number of milliseconds between runs of the object evictor. When non-positive, no object evictor is executed. |  | 
+| Exhausted Action a| Enumeration, one of:
+
+** WHEN_EXHAUSTED_GROW
+** WHEN_EXHAUSTED_WAIT
+** WHEN_EXHAUSTED_FAIL | Specifies the behavior of the Mule component pool when the pool is exhausted. Possible values are: "WHEN_EXHAUSTED_FAIL", which will throw a NoSuchElementException, "WHEN_EXHAUSTED_WAIT", which will block by invoking Object.wait(long) until a new or idle object is available, or WHEN_EXHAUSTED_GROW, which will create a new Mule instance and return it, essentially making maxActive meaningless. If a positive maxWait value is supplied, it will block for at most that many milliseconds, after which a NoSuchElementException will be thrown. If maxThreadWait is a negative value, it will block indefinitely. |  | 
+| Initialisation Policy a| Enumeration, one of:
+
+** INITIALISE_NONE
+** INITIALISE_ONE
+** INITIALISE_ALL | Determines how components in a pool should be initialized. The possible values are: INITIALISE_NONE (will not load any components into the pool on startup), INITIALISE_ONE (will load one initial component into the pool on startup), or INITIALISE_ALL (will load all components in the pool on startup) |  | 
+| Disabled a| Boolean | Whether pooling should be disabled |  | 
+|======================
+
+[[ExpirationPolicy]]
+=== Expiration Policy
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| Max Idle Time a| Number | A scalar time value for the maximum amount of time a dynamic configuration instance should be allowed to be idle before it's considered eligible for expiration |  | 
+| Time Unit a| Enumeration, one of:
+
+** NANOSECONDS
+** MICROSECONDS
+** MILLISECONDS
+** SECONDS
+** MINUTES
+** HOURS
+** DAYS | A time unit that qualifies the maxIdleTime attribute |  | 
+|======================
+
+[[Intent]]
+=== Intent
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| Intent Name a| String |  |  | x
+| Confirmation Required a| String |  |  | x
+| Slots a| Array of <<Slot>> |  |  | 
+| Samples a| Array of String |  |  | 
+| Prompts a| Array of <<Prompt>> |  |  | 
+|======================
+
+[[Slot]]
+=== Slot
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| Sname a| String |  |  | 
+| Type a| String |  |  | 
+| Samples a| Array of String |  |  | 
+|======================
+
+[[Prompt]]
+=== Prompt
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| Pid a| String |  |  | x
+| Variations a| Array of <<Variation>> |  |  | x
+|======================
+
+[[Variation]]
+=== Variation
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| Type a| String |  |  | x
+| Value a| String |  |  | x
+|======================
+
+[[InteractionModel]]
+=== Interaction Model
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| Dialog a| <<Dialog>> |  |  | 
+| Language Model a| <<LanguageModel>> |  |  | 
+| Prompts a| Array of <<Prompt>> |  |  | 
+|======================
+
+[[Dialog]]
+=== Dialog
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| Dialog Intents a| Array of <<DialogIntent>> |  |  | 
+| Delegation Strategy a| String |  |  | 
+|======================
+
+[[DialogIntent]]
+=== Dialog Intent
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| Intent Name a| String |  |  | x
+| Confirmation Required a| String |  |  | 
+| Dialog Slots a| Array of <<DialogSlot>> |  |  | 
+| Dialog Prompts a| Object |  |  | 
+|======================
+
+[[DialogSlot]]
+=== Dialog Slot
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| Sname a| String |  |  | x
+| Type a| String |  |  | 
+| Slotprompt a| Object |  |  | 
+|======================
+
+[[LanguageModel]]
+=== Language Model
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| Languate Intents a| Array of <<LanguageIntent>> |  |  | 
+| Invocation Name a| String |  |  | 
+|======================
+
+[[LanguageIntent]]
+=== Language Intent
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| Intent Name a| String |  |  | x
+| Slots a| Array of <<Slot>> |  |  | 
+| Samples a| Array of String |  |  | 
+|======================
+
+[[Manifest]]
+=== Manifest
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| Publishing Information a| <<PublishInfo>> |  |  | x
+| Privacy And Compliance a| <<PrivacyComplaince>> |  |  | 
+| Events a| <<Events>> |  |  | x
+| Apis a| <<ApiInfo>> |  |  | x
+| Permissions a| Array of <<Permission>> |  |  | x
+|======================
+
+[[PublishInfo]]
+=== Publish Info
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| Is Available Worldwide a| Boolean |  | false | 
+| Testing Instructions a| String |  |  | x
+| Category a| Enumeration, one of:
+
+** ALARMS_AND_CLOCKS
+** ASTROLOGY
+** BUSINESS_AND_FINANCE
+** CALCULATORS
+** CALENDARS_AND_REMINDERS
+** CHILDRENS_EDUCATION_AND_REFERENCE
+** CHILDRENS_GAMES
+** CHILDRENS_MUSIC_AND_AUDIO
+** CHILDRENS_NOVELTY_AND_HUMOR
+** COMMUNICATION
+** CONNECTED_CAR
+** COOKING_AND_RECIPE
+** CURRENCY_GUIDES_AND_CONVERTERS
+** DATING
+** DELIVERY_AND_TAKEOUT
+** DEVICE_TRACKING
+** EDUCATION_AND_REFERENCE
+** EVENT_FINDERS
+** EXERCISE_AND_WORKOUT
+** FASHION_AND_STYLE
+** FLIGHT_FINDERS
+** FRIENDS_AND_FAMILY
+** GAME_INFO_AND_ACCESSORY
+** GAMES
+** HEALTH_AND_FITNESS
+** HOTEL_FINDERS
+** KNOWLEDGE_AND_TRIVIA
+** MOVIE_AND_TV_KNOWLEDGE_AND_TRIVIA
+** MOVIE_INFO_AND_REVIEWS
+** MOVIE_SHOWTIMES
+** MUSIC_AND_AUDIO_ACCESSORIES
+** MUSIC_AND_AUDIO_KNOWLEDGE_AND_TRIVIA
+** MUSIC_INFO_REVIEWS_AND_RECOGNITION_SERVICE
+** NAVIGATION_AND_TRIP_PLANNER
+** NEWS
+** NOVELTY
+** ORGANIZERS_AND_ASSISTANTS
+** PETS_AND_ANIMAL
+** PODCAST
+** PUBLIC_TRANSPORTATION
+** RELIGION_AND_SPIRITUALITY
+** RESTAURANT_BOOKING_INFO_AND_REVIEW
+** SCHOOLS
+** SCORE_KEEPING
+** SELF_IMPROVEMENT
+** SHOPPING
+** SMART_HOME
+** SOCIAL_NETWORKING
+** SPORTS_GAMES
+** SPORTS_NEWS
+** STREAMING_SERVICE
+** TAXI_AND_RIDESHARING
+** TO_DO_LISTS_AND_NOTES
+** TRANSLATORS
+** TV_GUIDES
+** UNIT_CONVERTERS
+** WEATHER
+** WINE_AND_BEVERAGE
+** ZIP_CODE_LOOKUP |  |  | x
+| Distribution Countries a| Array of String |  |  | x
+| Locale a| <<PublishLocale>> |  |  | x
+|======================
+
+[[PublishLocale]]
+=== Publish Locale
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| Skill Name a| String |  |  | x
+| Summary a| String |  |  | x
+| Description a| String |  |  | x
+| Keywords a| Array of String |  |  | x
+| Example Phrases a| Array of String |  |  | x
+|======================
+
+[[PrivacyComplaince]]
+=== Privacy Complaince
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| Allows Purchases a| Boolean |  | false | 
+| Uses Personal Info a| Boolean |  | false | 
+| Is Child Directed a| Boolean |  | false | 
+| Is Export Compliant a| Boolean |  | false | 
+| Contains Ads a| Boolean |  | false | 
+| Plocale a| <<PrivacyLocale>> |  |  | x
+|======================
+
+[[PrivacyLocale]]
+=== Privacy Locale
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| Privacy Policy Url a| String |  |  | x
+| Terms Of Use Url a| String |  |  | x
+|======================
+
+[[Events]]
+=== Events
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| Endpoint a| <<EndpointInfo>> |  |  | x
+| Subscriptions a| Array of <<SubScription>> |  |  | 
+|======================
+
+[[EndpointInfo]]
+=== Endpoint Info
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| Uri a| String |  |  | 
+| Ssl Certificate Type a| String |  |  | 
+|======================
+
+[[SubScription]]
+=== Sub Scription
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| Event Name a| Enumeration, one of:
+
+** SKILL_ENABLED
+** SKILL_DISABLED
+** SKILL_PERMISSION_ACCEPTED
+** SKILL_PERMISSION_CHANGED
+** SKILL_ACCOUNT_LINKED |  |  | x
+|======================
+
+[[ApiInfo]]
+=== Api Info
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| Custom a| <<CustomApi>> |  |  | x
+|======================
+
+[[CustomApi]]
+=== Custom Api
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| Endpoint a| <<EndpointInfo>> |  |  | x
+| Interfaces a| Array of <<Interface>> |  |  | 
+|======================
+
+[[Interface]]
+=== Interface
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| Type a| Enumeration, one of:
+
+** ALEXA_PRESENTATION_APL
+** AUDIO_PLAYER
+** CAN_FULFILL_INTENT_REQUEST
+** GADGET_CONTROLLER
+** GAME_ENGINE
+** RENDER_TEMPLATE
+** VIDEO_APP |  |  | 
+|======================
+
+[[Permission]]
+=== Permission
+
+[cols=".^20%,.^25%,.^30%,.^15%,.^10%", options="header"]
+|======================
+| Field | Type | Description | Default Value | Required
+| Permission Name a| String |  |  | x
+|======================
+

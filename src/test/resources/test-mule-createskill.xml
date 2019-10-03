@@ -12,11 +12,40 @@ http://www.mulesoft.org/schema/mule/slack http://www.mulesoft.org/schema/mule/sl
 		<alexa:token-connection token="${alexa.token}" />
 	</alexa:config>
 	<flow name="create-skill" doc:id="c6863a22-7159-4f40-b31f-efe7e62498b8" >
-		<alexa:create-skill doc:name="Create skill" doc:id="bd4a6349-d817-46f4-8ac3-f714fd3efef3" config-ref="Alexa_Config" vendorId="MPLHQBOHBVJ16" summary="after cat enum skill" skillName="TestCase_2" description="This is for  test" endpoint="https://myendpoint.com" category="SPORTS_NEWS">
+		<alexa:create-skill doc:name="Create skill" doc:id="bd4a6349-d817-46f4-8ac3-f714fd3efef3" config-ref="Alexa_Config" vendorId="MPLHQBOHBVJ16"  skillName="TestCase_2"  endpoint="https://myendpoint.com" category="SPORTS_NEWS" invocationName ="my first skill">
 			<alexa:intents >
 				<alexa:intent intentName="myTestCase" confirmationRequired="false" >
 					<alexa:slots >
 						<alexa:slot sname="TestExe" type="AMAZON.US_FIRST_NAME" />
+					</alexa:slots>
+					<alexa:samples >
+						<alexa:sample value="This is for test case execution" />
+					</alexa:samples>
+				</alexa:intent>
+			</alexa:intents>
+		</alexa:create-skill>
+	</flow>
+	
+	<flow name="wrong-skill" doc:id="00cec99c-be25-41d4-9df6-4bcacfeb680c" >
+		<alexa:create-skill doc:name="Create skill" doc:id="cb542a53-9184-4874-886d-8990f43251cb" config-ref="Alexa_Config" vendorId="MPLHQBOHBVJ154"  skillName="TestCase_Wrong"  endpoint="https://myendpoint.com" category="SPORTS_NEWS" invocationName ="Alexa">
+			<alexa:intents >
+				<alexa:intent intentName="myTestCase" confirmationRequired="false" >
+					<alexa:slots >
+						<alexa:slot sname="TestExe" type="AMAZON.US_FIRST_NAME" />
+					</alexa:slots>
+					<alexa:samples >
+						<alexa:sample value="This is for test case execution" />
+					</alexa:samples>
+				</alexa:intent>
+			</alexa:intents>
+		</alexa:create-skill>
+	</flow>
+	<flow name="wrong-skill-intents" doc:id="59d3a246-8a13-43ff-a6b8-3f53f73cac3c" >
+		<alexa:create-skill doc:name="Create skill" doc:id="878c4c39-93f2-441b-87cf-c0377c9c507b" config-ref="Alexa_Config" vendorId="MPLHQBOHBVJ16"  skillName="TestCase_"  endpoint="https://myendpoint.com" category="SPORTS_NEWS" invocationName ="my wrong skill">
+			<alexa:intents >
+				<alexa:intent intentName="myTestCase" confirmationRequired="false" >
+					<alexa:slots >
+						<alexa:slot sname="TestExe" type="AMAZON.TEST" />
 					</alexa:slots>
 					<alexa:samples >
 						<alexa:sample value="This is for test case execution" />
