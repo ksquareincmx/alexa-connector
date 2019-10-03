@@ -6,6 +6,10 @@ package org.mule.modules.alexa.api.domain.update;
 
 public class UpdateSkill {
 	
+	public UpdateSkill() {
+		
+	}
+	
 	private Manifest manifest;
 
 	public UpdateSkill(Manifest manifest) {

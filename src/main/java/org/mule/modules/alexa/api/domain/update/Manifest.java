@@ -14,6 +14,20 @@ import org.mule.runtime.extension.api.annotation.param.Parameter;
 
 public class Manifest {
 
+	public Manifest() {
+		super();
+	}
+	
+	public Manifest(String manifestVersion, PublishInfo publishingInformation, PrivacyComplaince privacyAndCompliance,
+			Events events, ApiInfo apis, List<Permission> permissions) {
+		super();
+		this.manifestVersion = manifestVersion;
+		this.publishingInformation = publishingInformation;
+		this.privacyAndCompliance = privacyAndCompliance;
+		this.events = events;
+		this.apis = apis;
+		this.permissions = permissions;
+	}
 	private String manifestVersion;
 
 	@Parameter
@@ -33,20 +47,6 @@ public class Manifest {
 	@Parameter
 	private List<Permission> permissions = new ArrayList<Permission>();
 
-	public Manifest() {
-		super();
-	}
-
-	public Manifest(String manifestVersion, PublishInfo publishingInformation, PrivacyComplaince privacyAndCompliance,
-			Events events, ApiInfo apis, List<Permission> permissions) {
-		super();
-		this.manifestVersion = manifestVersion;
-		this.publishingInformation = publishingInformation;
-		this.privacyAndCompliance = privacyAndCompliance;
-		this.events = events;
-		this.apis = apis;
-		this.permissions = permissions;
-	}
 
 	public String getManifestVersion() {
 		return manifestVersion;

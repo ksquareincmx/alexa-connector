@@ -10,6 +10,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CreateSkill {
 
+	
+	public CreateSkill() {
+		super();
+	}
+
 	private String vendorId;
 	
 	private Manifest manifest;

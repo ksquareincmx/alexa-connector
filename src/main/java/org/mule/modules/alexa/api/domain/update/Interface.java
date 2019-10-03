@@ -11,13 +11,13 @@ import org.mule.runtime.extension.api.annotation.param.Parameter;
 
 public class Interface {
 
+	public Interface() {
+		
+	}
 	public Interface(InterfacesEnum type) {
 		this.type = type;
 	}
 
-	public Interface() {
-
-	}
 
 	@Parameter
 	@Optional
@@ -25,7 +25,6 @@ public class Interface {
 	private InterfacesEnum type;
 
 	
-
 	public InterfacesEnum getType() {
 		return type;
 	}

@@ -8,18 +8,18 @@ import org.mule.runtime.extension.api.annotation.param.Parameter;
 
 public class Variation {
 
-
-	@Parameter
-	private String type;
-	
-	@Parameter
-	private String value;
 	
 	
 	public Variation() {
 		
 	}
 
+	
+	@Parameter
+	private String type;
+	
+	@Parameter
+	private String value;
 	
 
 	public Variation(String type2, String value2) {

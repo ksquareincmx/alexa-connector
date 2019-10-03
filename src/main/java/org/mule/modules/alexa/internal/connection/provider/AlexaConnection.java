@@ -2,7 +2,7 @@
  * (c) 2003-2017 MuleSoft, Inc. The software in this package is published under the terms of the Commercial Free Software license V.1 a copy of which has been included with this distribution in the LICENSE.md file.
  */
 
-package org.mule.modules.alexa.internal.connection;
+package org.mule.modules.alexa.internal.connection.provider;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,9 +45,7 @@ public class AlexaConnection {
 		return "Bearer " + accessToken;
 	}
 
-	public void setAccessToken(String accessToken) {
-		this.accessToken = accessToken;
-	}
+	
 
 	public String sendRequest(HttpConstants.Method method, String uri, String content) {
 		logger.info("Sending request to Alexa with uri {} , method {}", method, uri);

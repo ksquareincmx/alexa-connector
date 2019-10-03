@@ -17,7 +17,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Dialog {
 
 	public Dialog() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public Dialog(List<DialogIntent> dialogIntents, String delegationStrategy) {
