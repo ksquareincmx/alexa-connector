@@ -12,6 +12,9 @@ import org.mule.runtime.extension.api.annotation.param.Parameter;
 public class SubScription {
 
 	
+	public SubScription() {
+		super();
+	}
 
 	public SubScription(EventsEnum eventName) {
 		this.eventName = eventName;
@@ -24,9 +27,6 @@ public class SubScription {
 
 	
 
-	public SubScription() {
-		super();
-	}
 
 	
 	public EventsEnum getEventName() {

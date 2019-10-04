@@ -14,6 +14,34 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class PrivacyComplaince {
+	
+	public PrivacyComplaince() {
+		
+	}
+	
+	public PrivacyComplaince(boolean allowsPurchases, boolean usesPersonalInfo, boolean isChildDirected,
+			boolean isExportCompliant, boolean containsAds) {
+		super();
+		this.allowsPurchases = allowsPurchases;
+		this.usesPersonalInfo = usesPersonalInfo;
+		this.isChildDirected = isChildDirected;
+		this.isExportCompliant = isExportCompliant;
+		this.containsAds = containsAds;
+		priLocalemap.put("en-US", getPlocale());
+	}
+	
+	public PrivacyComplaince(boolean allowsPurchases, boolean usesPersonalInfo, boolean isChildDirected,
+			boolean isExportCompliant, boolean containsAds,Map<String, PrivacyLocale> priLocalemap) {
+		super();
+		this.priLocalemap = priLocalemap;
+		this.allowsPurchases = allowsPurchases;
+		this.usesPersonalInfo = usesPersonalInfo;
+		this.isChildDirected = isChildDirected;
+		this.isExportCompliant = isExportCompliant;
+		this.containsAds = containsAds;
+	}
+	
+	
 
 	@Parameter
 	@Expression
@@ -37,33 +65,6 @@ public class PrivacyComplaince {
 
 	private Map<String, PrivacyLocale> priLocalemap = new HashMap<>();
 
-	public PrivacyComplaince() {
-
-	}
-
-	public PrivacyComplaince(boolean allowsPurchases, boolean usesPersonalInfo, boolean isChildDirected,
-			boolean isExportCompliant, boolean containsAds) {
-		super();
-		this.allowsPurchases = allowsPurchases;
-		this.usesPersonalInfo = usesPersonalInfo;
-		this.isChildDirected = isChildDirected;
-		this.isExportCompliant = isExportCompliant;
-		this.containsAds = containsAds;
-		priLocalemap.put("en-US", getPlocale());
-	}
-	
-	public PrivacyComplaince(boolean allowsPurchases, boolean usesPersonalInfo, boolean isChildDirected,
-			boolean isExportCompliant, boolean containsAds,Map<String, PrivacyLocale> priLocalemap) {
-		super();
-		this.priLocalemap = priLocalemap;
-		this.allowsPurchases = allowsPurchases;
-		this.usesPersonalInfo = usesPersonalInfo;
-		this.isChildDirected = isChildDirected;
-		this.isExportCompliant = isExportCompliant;
-		this.containsAds = containsAds;
-	}
-
-	
 
 	@JsonProperty("allowsPurchases")
 	public boolean isAllowsPurchases() {

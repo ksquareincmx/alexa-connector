@@ -10,9 +10,6 @@ import org.mule.runtime.extension.api.annotation.param.Parameter;
 
 public class ApiInfo {
 
-	@Parameter
-	@Expression
-	private CustomApi custom;
 
 	public ApiInfo() {
 
@@ -21,6 +18,9 @@ public class ApiInfo {
 	public ApiInfo(CustomApi custom) {
 		this.custom = custom;
 	}
+	@Parameter
+	@Expression
+	private CustomApi custom;
 
 	public CustomApi getCustom() {
 		return custom;

@@ -9,6 +9,17 @@ import org.mule.runtime.extension.api.annotation.param.Parameter;
  */
 
 public class PrivacyLocale {
+	
+	public PrivacyLocale() {
+		
+	}
+	
+	
+	public PrivacyLocale(String privacyPolicyUrl, String termsOfUseUrl) {
+		super();
+		this.privacyPolicyUrl = privacyPolicyUrl;
+		this.termsOfUseUrl = termsOfUseUrl;
+	}
 
 	@Parameter
 	private String privacyPolicyUrl;
@@ -18,22 +29,6 @@ public class PrivacyLocale {
 	private String termsOfUseUrl;
 	
 	
-	
-	public PrivacyLocale() {
-		
-	}
-	
-	
-
-
-	public PrivacyLocale(String privacyPolicyUrl, String termsOfUseUrl) {
-		super();
-		this.privacyPolicyUrl = privacyPolicyUrl;
-		this.termsOfUseUrl = termsOfUseUrl;
-	}
-
-
-
 
 	public String getPrivacyPolicyUrl() {
 		return privacyPolicyUrl;

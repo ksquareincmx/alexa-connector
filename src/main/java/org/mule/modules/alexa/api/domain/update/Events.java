@@ -17,6 +17,11 @@ public class Events {
 	public Events() {
 		
 	}
+	public Events(EndpointInfo endpoint, List<SubScription> subscriptions) {
+		this.endpoint = endpoint;
+		this.subscriptions = subscriptions;
+	}
+	
 	@Parameter
 	@Expression
 	private EndpointInfo endpoint;
@@ -26,11 +31,6 @@ public class Events {
 	@Optional
 	private List<SubScription> subscriptions = new ArrayList<SubScription>();
 
-
-	public Events(EndpointInfo endpoint, List<SubScription> subscriptions) {
-		this.endpoint = endpoint;
-		this.subscriptions = subscriptions;
-	}
 
 	public EndpointInfo getEndpoint() {
 		return endpoint;

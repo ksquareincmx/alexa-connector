@@ -16,6 +16,12 @@ public class CustomApi {
 
 	}
 
+	public CustomApi(EndpointInfo endpoint, List<Interface> interfaces) {
+		
+		this.endpoint = endpoint;
+		this.interfaces = interfaces;
+		
+	}
 	@Parameter
 	@Expression
 	private EndpointInfo endpoint;
@@ -24,12 +30,6 @@ public class CustomApi {
 	@Optional
 	private List<Interface> interfaces;
 
-	public CustomApi(EndpointInfo endpoint, List<Interface> interfaces) {
-
-		this.endpoint = endpoint;
-		this.interfaces = interfaces;
-
-	}
 
 	public EndpointInfo getEndpoint() {
 		return endpoint;

@@ -17,10 +17,32 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class PublishInfo {
+	
+	public PublishInfo() {
+		
+	}
+	
+	public PublishInfo(Boolean isAvailableWorldwide,  CategoryEnum category,
+			List<String> distributionCountries, PublishLocale locale) {
+		this.locale = locale;
+		this.isAvailableWorldwide = isAvailableWorldwide;
+		this.category = category;
+		this.distributionCountries = distributionCountries;
+		localeval.put("en-US", getLocale());
+	}
+	
+	public PublishInfo(Boolean isAvailableWorldwide, String testingInstructions, CategoryEnum category,
+			List<String> distributionCountries, Map<String,PublishLocale> localeval) {
+		this.localeval = localeval;
+		this.isAvailableWorldwide = isAvailableWorldwide;
+		this.testingInstructions = testingInstructions;
+		this.category = category;
+		this.distributionCountries = distributionCountries;
+	}
 
 	@Parameter
 	@Expression
-	private Boolean isAvailableWorldwide;
+	private boolean isAvailableWorldwide;
 
 	@Parameter
 	@Expression
@@ -50,27 +72,6 @@ public class PublishInfo {
 		this.localeval = localeval;
 	}
 
-	public PublishInfo() {
-
-	}
-
-	public PublishInfo(Boolean isAvailableWorldwide,  CategoryEnum category,
-			List<String> distributionCountries, PublishLocale locale) {
-		this.locale = locale;
-		this.isAvailableWorldwide = isAvailableWorldwide;
-		this.category = category;
-		this.distributionCountries = distributionCountries;
-		localeval.put("en-US", getLocale());
-	}
-	
-	public PublishInfo(Boolean isAvailableWorldwide, String testingInstructions, CategoryEnum category,
-			List<String> distributionCountries, Map<String,PublishLocale> localeval) {
-		this.localeval = localeval;
-		this.isAvailableWorldwide = isAvailableWorldwide;
-		this.testingInstructions = testingInstructions;
-		this.category = category;
-		this.distributionCountries = distributionCountries;
-	}
 
 	public PublishLocale getLocale() {
 		return locale;
@@ -80,11 +81,11 @@ public class PublishInfo {
 		this.locale = locale;
 	}
 
-	public Boolean getIsAvailableWorldwide() {
+	public boolean getIsAvailableWorldwide() {
 		return isAvailableWorldwide;
 	}
 
-	public void setIsAvailableWorldwide(Boolean isAvailableWorldwide) {
+	public void setIsAvailableWorldwide(boolean isAvailableWorldwide) {
 		this.isAvailableWorldwide = isAvailableWorldwide;
 	}
 

@@ -6,8 +6,10 @@ package org.mule.modules.alexa.internal.extension;
 
 import org.mule.runtime.extension.api.annotation.Extension;
 import org.mule.modules.alexa.internal.config.AlexaConfiguration;
+import org.mule.runtime.api.meta.Category;
 import org.mule.runtime.extension.api.annotation.Configurations;
 import org.mule.runtime.extension.api.annotation.dsl.xml.Xml;
+import org.mule.runtime.extension.api.annotation.license.RequiresEnterpriseLicense;
 
 /**
  * This is the main class of an extension, is the entry point from which
@@ -16,7 +18,8 @@ import org.mule.runtime.extension.api.annotation.dsl.xml.Xml;
  */
 
 @Xml(prefix = "alexa")
-@Extension(name = "Alexa")
+@Extension(name = "Alexa" , category=Category.CERTIFIED)
+@RequiresEnterpriseLicense(allowEvaluationLicense = true)
 @Configurations(AlexaConfiguration.class)
 public class AlexaExtension {
 

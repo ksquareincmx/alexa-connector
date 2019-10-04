@@ -16,6 +16,27 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 
 public class PublishLocale {
+	
+	public PublishLocale() {
+		
+	}
+	
+	public PublishLocale(String skillName, String summary, String description) {
+		super();
+		this.skillName = skillName;
+		this.summary = summary;
+		this.description = description;
+	}
+	
+	public PublishLocale(String skillName, String summary, String description, List<String> keywords,
+			List<String> examplePhrases) {
+		super();
+		this.skillName = skillName;
+		this.summary = summary;
+		this.description = description;
+		this.keywords = keywords;
+		this.examplePhrases = examplePhrases;
+	}
 
 	@Parameter
 	private String skillName;
@@ -31,26 +52,6 @@ public class PublishLocale {
 	@Parameter
 	private List<String> examplePhrases;
 
-	public PublishLocale() {
-
-	}
-
-	public PublishLocale(String skillName, String summary, String description) {
-		super();
-		this.skillName = skillName;
-		this.summary = summary;
-		this.description = description;
-	}
-
-	public PublishLocale(String skillName, String summary, String description, List<String> keywords,
-			List<String> examplePhrases) {
-		super();
-		this.skillName = skillName;
-		this.summary = summary;
-		this.description = description;
-		this.keywords = keywords;
-		this.examplePhrases = examplePhrases;
-	}
 
 	public String getSummary() {
 		return summary;

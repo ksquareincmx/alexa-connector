@@ -14,7 +14,7 @@ import org.mule.modules.alexa.api.domain.data.CategoryEnum;
 import org.mule.modules.alexa.api.domain.intents.Intent;
 import org.mule.modules.alexa.api.domain.intents.InteractionModel;
 import org.mule.modules.alexa.api.domain.update.Manifest;
-import org.mule.modules.alexa.internal.connection.AlexaConnection;
+import org.mule.modules.alexa.internal.connection.provider.AlexaConnection;
 import org.mule.modules.alexa.internal.exceptions.AlexaApiException;
 import org.mule.modules.alexa.internal.util.AlexaRequestBuilder;
 import org.mule.runtime.api.meta.ExpressionSupport;

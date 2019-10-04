@@ -16,6 +16,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class LanguageModel {
 
+
+	
+	public LanguageModel() {
+		
+	}
+
+	public LanguageModel(List<LanguageIntent> languateIntents2, String invocationName2) {
+		this.languateIntents= languateIntents2;
+		this.invocationName = invocationName2;
+	}
+	
 	@Parameter
 	@Optional
 	@Expression(ExpressionSupport.SUPPORTED)
@@ -25,17 +36,6 @@ public class LanguageModel {
 	@Optional
 	@Expression(ExpressionSupport.SUPPORTED)
 	private String invocationName;
-
-	
-
-	public LanguageModel(List<LanguageIntent> languateIntents2, String invocationName2) {
-		this.languateIntents= languateIntents2;
-		this.invocationName = invocationName2;
-	}
-	
-	public LanguageModel() {
-		
-	}
 
 	@JsonProperty("intents")
 	public List<LanguageIntent> getLanguateIntents() {
