@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <mule xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	  xmlns:alexa="http://www.mulesoft.org/schema/mule/alexa"
 	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="
+	http://www.mulesoft.org/schema/mule/alexa http://www.mulesoft.org/schema/mule/alexa/current/mule-alexa.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
 	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="d0d066ba-b827-4171-ac71-4eb8b045dada" >
 		<http:listener-connection host="0.0.0.0" port="8081" />
 	</http:listener-config>
+	
 	<alexa:config name="Alexa_Config" doc:name="Alexa Config" doc:id="fabe2c17-9f98-4ed7-93da-684802f39110" >
 		<alexa:connection >
 			<alexa:oauth-authorization-code consumerKey="amzn1.application-oa2-client.af20a19a331f41b5b8fb9f320f2b329b" consumerSecret="e1d3b29401bb60857ed020ed5617ce7e6d04269cf341f6579805e4c7a2ff7e09" scopes="alexa::ask:skills:readwrite alexa::ask:skills:test alexa::ask:models:read alexa::ask:models:readwrite" resourceOwnerId="#[vars.ownerId]" />
@@ -16,7 +19,7 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 	</alexa:config>
 	<flow name="create-demo-skill" doc:id="98f5cc3d-cecb-48e9-b395-726903623c59" >
 		<http:listener doc:name="Listener" doc:id="09e3ff65-465f-47be-979e-c9ddad2659b4" config-ref="HTTP_Listener_config" path="/create-skill"/>
-		<alexa:create-skill doc:name="Create skill" doc:id="7ff013c5-727c-43d9-9ee6-a9fb969feffa" config-ref="Alexa_Config" vendorId="MPLHQBOHBVJ16"  skillName="Friday_morning"  endpoint="https://myendpoint.com" category="SPORTS_NEWS">
+		<alexa:create-skill doc:name="Create skill" doc:id="7ff013c5-727c-43d9-9ee6-a9fb969feffa" config-ref="Alexa_Config" vendorId="MPLHQBOHBVJ16"  skillName="Friday_morning"  endpoint="https://myendpoint.com" category="SPORTS_NEWS" invocationName="test">
 			<alexa:intents >
 				<alexa:intent intentName="myFriday" confirmationRequired="false" >
 					<alexa:slots >
