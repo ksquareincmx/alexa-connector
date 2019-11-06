@@ -122,7 +122,7 @@ public class AlexaRequestBuilder {
 
 		List<Prompt> prompts = intents.stream().map(m -> m.getPrompts()).flatMap(m -> m.stream())
 				.collect(Collectors.toList());
-		List<Variation> variations = prompts.stream().map(m -> m.getVariations()).flatMap(v -> v.stream()).collect(Collectors.toList());
+		prompts.stream().map(m -> m.getVariations()).flatMap(v -> v.stream()).collect(Collectors.toList());
 		interactionModel.setPrompts(prompts);
 
 		//
