@@ -43,7 +43,6 @@ public class InteractionModel {
 	@JsonIgnore
 	private List<Prompt> prompts = new ArrayList<Prompt>();
 	
-	//private Map<String,List<Variation>> 
 
 	public Dialog getDialog() {
 		return dialog;

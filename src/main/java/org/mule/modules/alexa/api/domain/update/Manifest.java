@@ -98,8 +98,6 @@ public class Manifest {
 
 	public static Manifest defaultManifest(Manifest manifest) {
 
-		// TODO: Because of CGLIB invoking by mule need to recreate the structure//
-		// manually, bug
 		// PublishInfo
 		PublishInfo publishInfo = PublishInfo.defaultPublishInfo(manifest.getPublishingInformation());
 		// PrivacyComplaince

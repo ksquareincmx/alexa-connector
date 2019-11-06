@@ -15,7 +15,7 @@ import org.mule.runtime.extension.api.annotation.param.Parameter;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class LanguageIntent { // NOSONAR
+public class LanguageIntent { 
 	
 	public LanguageIntent() {
 		

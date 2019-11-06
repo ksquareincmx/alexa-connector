@@ -14,7 +14,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Prompt {
 
 	public Prompt() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	

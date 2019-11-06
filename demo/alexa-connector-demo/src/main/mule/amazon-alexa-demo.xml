@@ -29,6 +29,9 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 						<alexa:sample value="Helo alexa how is today weather" />
 					</alexa:samples>
 				</alexa:intent>
+				<alexa:intent confirmationRequired="false" intentName="AMAZON.StopIntent" />
+				<alexa:intent confirmationRequired="false" intentName="AMAZON.HelpIntent" />
+				<alexa:intent confirmationRequired="false" intentName="AMAZON.CancelIntent" />
 			</alexa:intents>
 		</alexa:create-skill>
 	</flow>

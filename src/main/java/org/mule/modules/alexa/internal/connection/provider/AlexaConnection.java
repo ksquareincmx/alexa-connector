@@ -107,7 +107,7 @@ public class AlexaConnection {
 		HttpEntity entity = response.getEntity();
 		InputStream in = entity.getContent();
 		String res = IOUtils.toString(in);
-		//TODO Here we get {}(empty bracket from alexa), so returning result as below
+		//Here we get {}(empty bracket from alexa), so returning result as below
 		
 		logger.debug("Response from ALexa: {} status code {}", res, status);
 

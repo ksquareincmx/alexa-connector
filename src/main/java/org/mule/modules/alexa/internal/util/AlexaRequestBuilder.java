@@ -26,7 +26,6 @@ import org.mule.modules.alexa.api.domain.intents.LanguageIntent;
 import org.mule.modules.alexa.api.domain.intents.LanguageModel;
 import org.mule.modules.alexa.api.domain.intents.Prompt;
 import org.mule.modules.alexa.api.domain.intents.Slot;
-import org.mule.modules.alexa.api.domain.intents.Variation;
 import org.mule.modules.alexa.api.domain.update.ApiInfo;
 import org.mule.modules.alexa.api.domain.update.Manifest;
 import org.mule.modules.alexa.api.domain.update.PrivacyComplaince;
@@ -261,7 +260,7 @@ public class AlexaRequestBuilder {
 			} else if (value.asText() != null && !value.asText().isEmpty()) {
 				ret.set(key, value);
 			}
-			// TODO removed {annotations:{}} from json we need to find why the annotations
+			// removed {annotations:{}} from json we need to find why the annotations
 			// is added
 			// to json even if it is not model objects, i assume it is because of @Component
 			// annotation from mule

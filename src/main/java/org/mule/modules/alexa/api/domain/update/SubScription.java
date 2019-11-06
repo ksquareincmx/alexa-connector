@@ -26,9 +26,6 @@ public class SubScription {
 	private EventsEnum eventName;
 
 	
-
-
-	
 	public EventsEnum getEventName() {
 		return eventName;
 	}
