@@ -184,7 +184,6 @@ public class AlexaRequestBuilder {
 		try {
 			rootNode = getMapper().readTree(json);
 			JsonNode fieldNode = rootNode.get(key);
-			System.out.println(fieldNode +"@@@@"+key);
 			if(key.equals("skillId") && Objects.nonNull(fieldNode)) {
 				value = fieldNode.asText();
 			}
@@ -219,7 +218,7 @@ public class AlexaRequestBuilder {
 			JsonNode newNode = removeExtraFields((ObjectNode) mapper.readTree(res));
 
 			res = mapper.writeValueAsString(newNode);
-			System.out.println("createManifestUpdateRequest:" + res);
+			//System.out.println("createManifestUpdateRequest:" + res);
 			logger.debug("createManifestUpdateRequest json  {}", res);
 		} catch (IOException e) {
 			logger.error("Exception while serializing json in createUpdateRequest {}", e);

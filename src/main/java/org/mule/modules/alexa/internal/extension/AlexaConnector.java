@@ -21,6 +21,6 @@ import org.mule.runtime.extension.api.annotation.license.RequiresEnterpriseLicen
 @Extension(name = "Alexa" , category=Category.CERTIFIED)
 @RequiresEnterpriseLicense(allowEvaluationLicense = true)
 @Configurations(AlexaConfiguration.class)
-public class AlexaExtension {
+public class AlexaConnector {
 
 }
