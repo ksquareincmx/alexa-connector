@@ -179,6 +179,7 @@ public class AlexaRequestBuilder {
 	}
 
 	public String readValueForKey(String json, String key) {
+		logger.info("readValueForKey skill response  {} ", json);
 		String value =null;
 		JsonNode rootNode;
 		try {
