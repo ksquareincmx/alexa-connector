@@ -12,7 +12,6 @@ import org.mule.functional.junit4.MuleArtifactFunctionalTestCase;
 	
 	@Override
 	protected String getConfigFile() {
-		// TODO Auto-generated method stub
 		return "test-mule-updateskillmanifest.xml";
 	}
 	

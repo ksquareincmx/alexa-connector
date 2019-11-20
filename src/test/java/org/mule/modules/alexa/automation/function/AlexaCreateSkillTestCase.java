@@ -6,43 +6,30 @@ package org.mule.modules.alexa.automation.function;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mule.functional.junit4.MuleArtifactFunctionalTestCase;
-import org.mule.modules.alexa.internal.exceptions.AlexaApiException;
 
-
- public class AlexaCreateSkillTestCase extends MuleArtifactFunctionalTestCase{
+public class AlexaCreateSkillTestCase extends MuleArtifactFunctionalTestCase {
 
 	@Override
 	protected String getConfigFile() {
-		// TODO Auto-generated method stub
 		return "test-mule-createskill.xml";
 	}
-	
-	@Test
-	public void testCreateSkill() throws Exception{
-		 String payloadValue = ((String)flowRunner("create-skill").run()
-                 .getMessage()
-                 .getPayload()
-                 .getValue());
-		 Assert.assertEquals(payloadValue.contains("Alexa Skill created successfully"),true);
-	} 
-	
-	@Test(expected = Exception.class)
-	public void testWrongCreateSkill_NoskillId() throws Exception{
-		 String payloadValue = ((String)flowRunner("wrong-skill").run()
-                 .getMessage()
-                 .getPayload()
-                 .getValue());
-		 System.out.println(payloadValue);
-	} 
-	
-	@Test
-	public void testWrongCreateSkill_Intents() throws Exception{
-		 String payloadValue = ((String)flowRunner("wrong-skill-intents").run()
-                 .getMessage()
-                 .getPayload()
-                 .getValue());
-		 Assert.assertEquals(payloadValue.contains("message"),true);
-	} 
-	
-} 
 
+	@Test
+	public void testCreateSkill() throws Exception {
+		String payloadValue = ((String) flowRunner("create-skill").run().getMessage().getPayload().getValue());
+		Assert.assertEquals(payloadValue.contains("Alexa Skill created successfully"), true);
+	}
+
+	@Test(expected = Exception.class)
+	public void testWrongCreateSkill_NoskillId() throws Exception {
+		String payloadValue = ((String) flowRunner("wrong-skill").run().getMessage().getPayload().getValue());
+		System.out.println(payloadValue);
+	}
+
+	@Test
+	public void testWrongCreateSkill_Intents() throws Exception {
+		String payloadValue = ((String) flowRunner("wrong-skill-intents").run().getMessage().getPayload().getValue());
+		Assert.assertEquals(payloadValue.contains("message"), true);
+	}
+
+}

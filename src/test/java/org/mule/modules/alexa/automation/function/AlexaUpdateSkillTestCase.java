@@ -11,7 +11,6 @@ public class AlexaUpdateSkillTestCase extends MuleArtifactFunctionalTestCase {
 
 	@Override
 	protected String getConfigFile() {
-		// TODO Auto-generated method stub
 		return "test-mule-updateskill.xml";
 	}
 

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule  xmlns:slack="http://www.mulesoft.org/schema/mule/slack"
+<mule 
 	xmlns:alexa="http://www.mulesoft.org/schema/mule/alexa"
 	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/alexa http://www.mulesoft.org/schema/mule/alexa/current/mule-alexa.xsd
-http://www.mulesoft.org/schema/mule/slack http://www.mulesoft.org/schema/mule/slack/current/mule-slack.xsd">
+http://www.mulesoft.org/schema/mule/alexa http://www.mulesoft.org/schema/mule/alexa/current/mule-alexa.xsd">
 	<configuration-properties file="automation-credentials.properties" />
 	<alexa:config name="Alexa_Config" doc:name="Alexa Config" doc:id="91096669-d273-4393-855d-4e6a6d271e09" >
 		<alexa:token-connection token="${alexa.token}" />
