@@ -6,7 +6,7 @@
 	<artifactId>mule-alexa-connector</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>mule-extension</packaging>
-	<name>AlexaConnector4</name>
+	<name>AlexaConnector</name>
 
 	<parent>
 		<artifactId>mule-certified-parent</artifactId>
@@ -164,9 +164,9 @@
 	</repositories>
 	
 	<scm>
-		<connection>scm:git:git://github.com/yalamandaksquare/Alexa-connector.git</connection>
-		<developerConnection>scm:git:git@github.com/yalamandaksquare/Alexa-connector.git</developerConnection>
-		<url>https://github.com/yalamandaksquare/Alexa-connector.git</url>
-		<tag>alexa-connector-1.0.0</tag>
+		<connection>scm:git:git://github.com/ksquareincmx/alexa-connector.git</connection>
+		<developerConnection>scm:git:git@github.com/ksquareincmx/alexa-connector.git</developerConnection>
+		<url>https://github.com/ksquareincmx/alexa-connector.git</url>
+		<tag>HEAD</tag>
 	</scm>
 </project>
